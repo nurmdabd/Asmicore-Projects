@@ -1,0 +1,181 @@
+# ==================================================
+# Configuration variables
+# ==================================================
+TOP_NAME := testbench
+
+RTL_DIR    := rtl
+TB_DIR     := tb
+TB_CPP_DIR := tb_cpp
+WORK_DIR   := work
+OBJ_DIR    ?= obj_dir
+LOG_DIR    := $(WORK_DIR)/logs
+WAVE_DIR   := $(WORK_DIR)/waves
+
+FILELIST_COMMON := filelists/common.f
+FILELIST_TB     := filelists/tb_top.f
+
+VALID_TESTS := axis_register uart_lite axis_fifo axis_afifo axis_arbiter axis_arbiter_beat axis_arbiter_weighted axis_upsizer axis_downsizer axis_rr_converter axis_rr_upsizer axis_rr_downsizer dma axil_register axil_gpio uart_axil_slave uart_axil_master cdma
+TESTNAME    ?= axis_register
+
+SRC_BP      ?=
+SINK_BP     ?=
+TESTTYPE    ?=
+READY_PROB  ?=
+FRAME_FIFO  ?=
+
+AXIS_SRC_BP_VAL   := $(if $(SRC_BP),$(SRC_BP),0)
+AXIS_SINK_BP_VAL  := $(if $(SINK_BP),$(SINK_BP),0)
+AXIS_FRAME_VAL    := $(if $(FRAME_FIFO),$(FRAME_FIFO),0)
+AFIFO_TESTTYPE_VAL:= $(if $(TESTTYPE),$(TESTTYPE),0)
+DMA_TESTTYPE_VAL  := $(if $(TESTTYPE),$(TESTTYPE),4)
+CDMA_TESTTYPE_VAL := $(if $(TESTTYPE),$(TESTTYPE),1)
+READY_PROB_VAL    := $(if $(READY_PROB),$(READY_PROB),100)
+
+ifeq ($(TESTNAME),axis_register)
+  RUN_TAG := $(TESTNAME)_src$(AXIS_SRC_BP_VAL)_sink$(AXIS_SINK_BP_VAL)
+else ifeq ($(TESTNAME),uart_lite)
+  RUN_TAG := $(TESTNAME)
+else ifeq ($(TESTNAME),axis_arbiter)
+  RUN_TAG := $(TESTNAME)_src$(AXIS_SRC_BP_VAL)_sink$(AXIS_SINK_BP_VAL)
+else ifeq ($(TESTNAME),axis_arbiter_beat)
+  RUN_TAG := $(TESTNAME)_src$(AXIS_SRC_BP_VAL)_sink$(AXIS_SINK_BP_VAL)
+else ifeq ($(TESTNAME),axis_arbiter_weighted)
+  RUN_TAG := $(TESTNAME)_src$(AXIS_SRC_BP_VAL)_sink$(AXIS_SINK_BP_VAL)
+else ifeq ($(TESTNAME),axis_upsizer)
+  RUN_TAG := $(TESTNAME)_src$(AXIS_SRC_BP_VAL)_sink$(AXIS_SINK_BP_VAL)
+else ifeq ($(TESTNAME),axis_downsizer)
+  RUN_TAG := $(TESTNAME)_src$(AXIS_SRC_BP_VAL)_sink$(AXIS_SINK_BP_VAL)
+else ifeq ($(TESTNAME),axis_rr_converter)
+  RUN_TAG := $(TESTNAME)_src$(AXIS_SRC_BP_VAL)_sink$(AXIS_SINK_BP_VAL)
+else ifeq ($(TESTNAME),axis_rr_upsizer)
+  RUN_TAG := $(TESTNAME)_src$(AXIS_SRC_BP_VAL)_sink$(AXIS_SINK_BP_VAL)
+else ifeq ($(TESTNAME),axis_rr_downsizer)
+  RUN_TAG := $(TESTNAME)_src$(AXIS_SRC_BP_VAL)_sink$(AXIS_SINK_BP_VAL)
+else ifeq ($(TESTNAME),axis_fifo)
+  RUN_TAG := $(TESTNAME)_ff$(AXIS_FRAME_VAL)_src$(AXIS_SRC_BP_VAL)_sink$(AXIS_SINK_BP_VAL)
+else ifeq ($(TESTNAME),axis_afifo)
+  RUN_TAG := $(TESTNAME)_ff$(AXIS_FRAME_VAL)_tt$(AFIFO_TESTTYPE_VAL)_src$(AXIS_SRC_BP_VAL)_sink$(AXIS_SINK_BP_VAL)
+else ifeq ($(TESTNAME),dma)
+  RUN_TAG := $(TESTNAME)_tt$(DMA_TESTTYPE_VAL)_rp$(READY_PROB_VAL)
+else ifeq ($(TESTNAME),axil_gpio)
+  RUN_TAG := $(TESTNAME)
+else ifeq ($(TESTNAME),uart_axil_slave)
+  RUN_TAG := $(TESTNAME)
+else ifeq ($(TESTNAME),uart_axil_master)
+  RUN_TAG := $(TESTNAME)
+else ifeq ($(TESTNAME),cdma)
+  RUN_TAG := $(TESTNAME)_tt$(CDMA_TESTTYPE_VAL)_rp$(READY_PROB_VAL)
+else
+  RUN_TAG := $(TESTNAME)
+endif
+
+LOG_FILE   := $(LOG_DIR)/$(RUN_TAG).log
+WAVE_FILE  := $(WAVE_DIR)/$(RUN_TAG).fst
+
+SIM_CPP   := $(shell find $(TB_CPP_DIR) -name '*.cpp')
+
+# ENV_FILE per test
+ifeq ($(TESTNAME),axis_register)
+    ENV_FILE := $(TB_DIR)/tests/axis/test_axis_register.sv
+else ifeq ($(TESTNAME),axis_fifo)
+    ENV_FILE := $(TB_DIR)/tests/axis/test_axis_fifo.sv
+else ifeq ($(TESTNAME),uart_lite)
+    ENV_FILE := $(TB_DIR)/tests/uart/test_uart_lite.sv
+else ifeq ($(TESTNAME),axis_afifo)
+    ENV_FILE := $(TB_DIR)/tests/axis/test_axis_afifo.sv
+else ifeq ($(TESTNAME),axis_arbiter)
+    ENV_FILE := $(TB_DIR)/tests/axis/test_axis_arbiter.sv
+else ifeq ($(TESTNAME),axis_arbiter_beat)
+    ENV_FILE := $(TB_DIR)/tests/axis/test_axis_arbiter_beat.sv
+else ifeq ($(TESTNAME),axis_arbiter_weighted)
+    ENV_FILE := $(TB_DIR)/tests/axis/test_axis_arbiter_weighted.sv
+else ifeq ($(TESTNAME),axis_upsizer)
+    ENV_FILE := $(TB_DIR)/tests/axis/test_axis_upsizer.sv
+else ifeq ($(TESTNAME),axis_downsizer)
+    ENV_FILE := $(TB_DIR)/tests/axis/test_axis_downsizer.sv
+else ifeq ($(TESTNAME),axis_rr_converter)
+    ENV_FILE := $(TB_DIR)/tests/axis/test_axis_rr_converter.sv
+else ifeq ($(TESTNAME),axis_rr_upsizer)
+    ENV_FILE := $(TB_DIR)/tests/axis/test_axis_rr_upsizer.sv
+else ifeq ($(TESTNAME),axis_rr_downsizer)
+    ENV_FILE := $(TB_DIR)/tests/axis/test_axis_rr_downsizer.sv
+else ifeq ($(TESTNAME),dma)
+    ENV_FILE := $(TB_DIR)/tests/axi/test_dma.sv
+else ifeq ($(TESTNAME),axil_register)
+    ENV_FILE := $(TB_DIR)/tests/axil/test_axil_register.sv
+else ifeq ($(TESTNAME),axil_gpio)
+    ENV_FILE := $(TB_DIR)/tests/axil/test_axil_gpio.sv
+else ifeq ($(TESTNAME),uart_axil_slave)
+    ENV_FILE := $(TB_DIR)/tests/axil/test_uart_axil_slave.sv
+else ifeq ($(TESTNAME),uart_axil_master)
+    ENV_FILE := $(TB_DIR)/tests/axil/test_uart_axil_master.sv
+else ifeq ($(TESTNAME),cdma)
+    ENV_FILE := $(TB_DIR)/tests/axi/test_cdma.sv
+endif
+
+
+SIM_ARGS :=
+SIM_ARGS += $(if $(SRC_BP),+SRC_BP=$(SRC_BP))
+SIM_ARGS += $(if $(SINK_BP),+SINK_BP=$(SINK_BP))
+SIM_ARGS += $(if $(TESTTYPE),+TESTTYPE=$(TESTTYPE))
+SIM_ARGS += $(if $(READY_PROB),+READY_PROB=$(READY_PROB))
+
+# ------------------------
+# VERILATOR macros per test
+# ------------------------
+ifeq ($(TESTNAME),axis_register)
+  VERILATOR_DEFS := +define+USE_AXIS_REGISTER
+else ifeq ($(TESTNAME),uart_lite)
+  VERILATOR_DEFS := +define+USE_UART_LITE
+else ifeq ($(TESTNAME),axis_fifo)
+  VERILATOR_DEFS := +define+USE_AXIS_FIFO
+  ifeq ($(FRAME_FIFO),1)
+    VERILATOR_DEFS += +define+FRAME_FIFO
+  endif
+else ifeq ($(TESTNAME),axis_afifo)
+  VERILATOR_DEFS := +define+USE_AXIS_AFIFO
+  ifeq ($(FRAME_FIFO),1)
+    VERILATOR_DEFS += +define+FRAME_FIFO
+  endif
+else ifeq ($(TESTNAME),axis_arbiter)
+  VERILATOR_DEFS := +define+USE_AXIS_ARBITER
+else ifeq ($(TESTNAME),axis_arbiter_beat)
+  VERILATOR_DEFS := +define+USE_AXIS_ARBITER_BEAT
+else ifeq ($(TESTNAME),axis_arbiter_weighted)
+  VERILATOR_DEFS := +define+USE_AXIS_ARBITER_WEIGHTED
+else ifeq ($(TESTNAME),axis_upsizer)
+  VERILATOR_DEFS := +define+USE_AXIS_UPSIZER
+else ifeq ($(TESTNAME),axis_downsizer)
+  VERILATOR_DEFS := +define+USE_AXIS_DOWNSIZER
+else ifeq ($(TESTNAME),axis_rr_converter)
+  VERILATOR_DEFS := +define+USE_AXIS_RR_CONVERTER
+else ifeq ($(TESTNAME),axis_rr_upsizer)
+  VERILATOR_DEFS := +define+USE_AXIS_RR_UPSIZER
+else ifeq ($(TESTNAME),axis_rr_downsizer)
+  VERILATOR_DEFS := +define+USE_AXIS_RR_DOWNSIZER
+else ifeq ($(TESTNAME),dma)
+  VERILATOR_DEFS := +define+USE_DMA_TEST
+else ifeq ($(TESTNAME),axil_register)
+  VERILATOR_DEFS := +define+USE_AXIL_REGISTER
+else ifeq ($(TESTNAME),axil_gpio)
+  VERILATOR_DEFS := +define+USE_AXIL_GPIO
+else ifeq ($(TESTNAME),uart_axil_slave)
+  VERILATOR_DEFS := +define+USE_UART_AXIL_SLAVE
+else ifeq ($(TESTNAME),uart_axil_master)
+  VERILATOR_DEFS := +define+USE_UART_AXIL_MASTER
+else ifeq ($(TESTNAME),cdma)
+  VERILATOR_DEFS := +define+USE_CDMA_TEST
+endif
+
+VERILATOR_SRCS := \
+	-f $(FILELIST_COMMON) \
+	-f $(FILELIST_TB) \
+	$(ENV_FILE) \
+	$(SIM_CPP)
+
+# Validate TESTNAME
+ifndef SKIP_VALIDATE
+  ifeq ($(filter $(TESTNAME),$(VALID_TESTS)),)
+    $(error TESTNAME '$(TESTNAME)' is invalid. Valid values: $(VALID_TESTS))
+  endif
+endif

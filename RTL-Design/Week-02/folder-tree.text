@@ -1,0 +1,191 @@
+Week-02
+├── docs
+│   ├── axi
+│   │   ├── section_01_overview.md
+│   │   ├── section_02_soc_position.md
+│   │   ├── section_03_signal_table.md
+│   │   ├── section_04_transaction_flow.md
+│   │   ├── section_05_fsm.md
+│   │   ├── section_06_rtl_understanding.md
+│   │   ├── section_07_common_issues.md
+│   │   ├── section_08_ir_structure.md
+│   │   └── section_09_learning.md
+│   ├── issue_log.md
+│   └── uart
+│       ├── section_01_overview.md
+│       ├── section_02_soc_position.md
+│       ├── section_03_signal_table.md
+│       ├── section_04_transaction_flow.md
+│       ├── section_05_fsm.md
+│       ├── section_06_rtl_understanding.md
+│       ├── section_07_common_issues.md
+│       ├── section_08_ir_structure.md
+│       └── section_09_learning.md
+├── experiments
+├── logs
+├── outputs
+│   ├── ast
+│   ├── ir
+│   ├── logs
+│   ├── manifests
+│   ├── preprocess
+│   ├── reports
+│   └── tokens
+├── rtl
+│   ├── UART
+│   │   ├── Makefile
+│   │   ├── README.md
+│   │   ├── notes
+│   │   ├── src
+│   │   │   ├── UART.v
+│   │   │   ├── UART_Baud_Rate.v
+│   │   │   ├── UART_Rx.v
+│   │   │   └── UART_Tx.v
+│   │   ├── tb
+│   │   │   ├── UART_Baud_Rate_tb.v
+│   │   │   ├── UART_Rx_tb.v
+│   │   │   ├── UART_Tx_tb.v
+│   │   │   └── UART_tb.v
+│   │   └── waveforms
+│   │       ├── uart.png
+│   │       ├── uart_baud_rate_generator.png
+│   │       ├── uart_receiver.png
+│   │       └── uart_transmitter.png
+│   └── verilaxi
+│       ├── Dockerfile
+│       ├── LICENSE
+│       ├── Makefile
+│       ├── README.md
+│       ├── docs
+│       │   ├── axi_rr_up_down_sizer.svg
+│       │   ├── axis_arbiter.svg
+│       │   ├── axis_fifo.png
+│       │   ├── cdc_fifo.svg
+│       │   ├── cdc_t1.png
+│       │   ├── cdc_t2.png
+│       │   ├── cdma.png
+│       │   ├── cdma.svg
+│       │   ├── dma.png
+│       │   ├── dma.svg
+│       │   ├── dma_fsm.svg
+│       │   ├── mm2mm_fsm.svg
+│       │   ├── mm2s_fsm.svg
+│       │   ├── s2mm_fsm.svg
+│       │   ├── snix_axil_gpio.svg
+│       │   ├── uart_lite.svg
+│       │   ├── uart_rx_fsm.svg
+│       │   └── uart_tx_fsm.svg
+│       ├── filelists
+│       │   ├── common.f
+│       │   ├── rtl.f
+│       │   └── tb_top.f
+│       ├── mk
+│       │   ├── build.mk
+│       │   ├── config.mk
+│       │   ├── help.mk
+│       │   ├── menu.mk
+│       │   └── synth.mk
+│       ├── rtl
+│       │   ├── axi
+│       │   │   ├── snix_axi_cdma.sv
+│       │   │   ├── snix_axi_dma.sv
+│       │   │   ├── snix_axi_mm2mm.sv
+│       │   │   ├── snix_axi_mm2s.sv
+│       │   │   └── snix_axi_s2mm.sv
+│       │   ├── axil
+│       │   │   ├── snix_axi_cdma_csr.sv
+│       │   │   ├── snix_axi_dma_csr.sv
+│       │   │   ├── snix_axil_gpio.sv
+│       │   │   ├── snix_axil_register.sv
+│       │   │   ├── snix_uart_axil_master.sv
+│       │   │   └── snix_uart_axil_slave.sv
+│       │   ├── axis
+│       │   │   ├── snix_axis_afifo.sv
+│       │   │   ├── snix_axis_arbiter.sv
+│       │   │   ├── snix_axis_downsizer.sv
+│       │   │   ├── snix_axis_fifo.sv
+│       │   │   ├── snix_axis_register.sv
+│       │   │   ├── snix_axis_rr_converter.sv
+│       │   │   ├── snix_axis_rr_downsizer.sv
+│       │   │   ├── snix_axis_rr_upsizer.sv
+│       │   │   └── snix_axis_upsizer.sv
+│       │   ├── common
+│       │   │   ├── snix_async_fifo.sv
+│       │   │   ├── snix_register_slice.sv
+│       │   │   └── snix_sync_fifo.sv
+│       │   └── uart
+│       │       └── snix_uart_lite.sv
+│       ├── scripts
+│       │   └── sweep.sh
+│       ├── tb
+│       │   ├── assertions
+│       │   │   ├── axi_4k_checker.sv
+│       │   │   ├── axi_mm_checker.sv
+│       │   │   ├── axil_checker.sv
+│       │   │   └── axis_checker.sv
+│       │   ├── classes
+│       │   │   ├── axi
+│       │   │   │   ├── axi_driver.sv
+│       │   │   │   ├── axi_master.sv
+│       │   │   │   └── axi_slave.sv
+│       │   │   ├── axil
+│       │   │   │   ├── axil_driver.sv
+│       │   │   │   ├── axil_master.sv
+│       │   │   │   └── axil_slave.sv
+│       │   │   └── axis
+│       │   │       ├── axis_connect.sv
+│       │   │       ├── axis_driver.sv
+│       │   │       ├── axis_sink.sv
+│       │   │       └── axis_source.sv
+│       │   ├── common
+│       │   │   ├── sample_axi_if.sv
+│       │   │   ├── sample_axil_if.sv
+│       │   │   └── sample_axis_if.sv
+│       │   ├── interfaces
+│       │   │   ├── axi_if.sv
+│       │   │   ├── axil_if.sv
+│       │   │   └── axis_if.sv
+│       │   ├── macros
+│       │   │   └── axi_macros.sv
+│       │   ├── packages
+│       │   │   ├── axi_cdma_pkg.sv
+│       │   │   ├── axi_dma_pkg.sv
+│       │   │   └── axi_pkg.sv
+│       │   ├── tests
+│       │   │   ├── axi
+│       │   │   │   ├── test_cdma.sv
+│       │   │   │   └── test_dma.sv
+│       │   │   ├── axil
+│       │   │   │   ├── test_axil_gpio.sv
+│       │   │   │   ├── test_axil_register.sv
+│       │   │   │   ├── test_uart_axil_master.sv
+│       │   │   │   └── test_uart_axil_slave.sv
+│       │   │   ├── axis
+│       │   │   │   ├── test_axis_afifo.sv
+│       │   │   │   ├── test_axis_arbiter.sv
+│       │   │   │   ├── test_axis_arbiter_beat.sv
+│       │   │   │   ├── test_axis_arbiter_weighted.sv
+│       │   │   │   ├── test_axis_downsizer.sv
+│       │   │   │   ├── test_axis_fifo.sv
+│       │   │   │   ├── test_axis_register.sv
+│       │   │   │   ├── test_axis_rr_converter.sv
+│       │   │   │   ├── test_axis_rr_downsizer.sv
+│       │   │   │   ├── test_axis_rr_upsizer.sv
+│       │   │   │   └── test_axis_upsizer.sv
+│       │   │   └── uart
+│       │   │       └── test_uart_lite.sv
+│       │   └── top
+│       │       └── testbench.sv
+│       ├── tb_cpp
+│       │   └── sim_main.cpp
+│       └── verilaxi_developer_guide.md
+├── rtl_formatter.py
+└── scripts
+    ├── clock_reset_analyzer.py
+    ├── input_normalizer.py
+    ├── ir_builder.py
+    ├── lexer_tokenizer.py
+    ├── parser_v0.py
+    └── sv_preprocessor.py
+
+48 directories, 140 files
