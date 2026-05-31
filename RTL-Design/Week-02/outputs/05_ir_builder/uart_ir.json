@@ -1,9 +1,40 @@
 {
     "schema_version": "0.1",
-    "generated_at": "2026-06-01T00:59:11.757232",
+    "metadata": {
+        "generated_by": "05_ir_builder.py",
+        "generated_at": "2026-05-31T20:00:21.112679+00:00",
+        "schema_version": "0.1",
+        "design_name": "UART",
+        "top_module": "uart_top_design",
+        "input_ast": "uart_ast.json",
+        "input_metadata": "pipeline_metadata.json"
+    },
+    "statistics": {
+        "module_count": 4,
+        "port_count": 25,
+        "signal_count": 20,
+        "instance_count": 3,
+        "always_block_count": 12,
+        "assign_count": 0
+    },
+    "fsm_hints": {
+        "states": [
+            "IDLE",
+            "START",
+            "DATA",
+            "STOP"
+        ]
+    },
+    "hierarchy_hints": {
+        "uart_top_design": [
+            "uart_baud_rate",
+            "uart_tx",
+            "uart_rx"
+        ]
+    },
     "modules": [
         {
-            "name": "uart_top_design",
+            "module_name": "uart_top_design",
             "metadata": {
                 "line_start": 10,
                 "line_end": 99
@@ -40,63 +71,72 @@
                     "direction": "input",
                     "datatype": "wire",
                     "width": null,
-                    "line": 11
+                    "line": 11,
+                    "role": "clock"
                 },
                 {
                     "name": "rst",
                     "direction": "input",
                     "datatype": "wire",
                     "width": null,
-                    "line": 12
+                    "line": 12,
+                    "role": "reset"
                 },
                 {
                     "name": "address",
                     "direction": "input",
                     "datatype": "wire",
                     "width": "[1:0]",
-                    "line": 13
+                    "line": 13,
+                    "role": "address"
                 },
                 {
                     "name": "write_data",
                     "direction": "input",
                     "datatype": "wire",
                     "width": "[31:0]",
-                    "line": 14
+                    "line": 14,
+                    "role": "data"
                 },
                 {
                     "name": "we",
                     "direction": "input",
                     "datatype": "wire",
                     "width": null,
-                    "line": 15
+                    "line": 15,
+                    "role": "control"
                 },
                 {
                     "name": "tx",
                     "direction": "output",
                     "datatype": "wire",
                     "width": null,
-                    "line": 16
+                    "line": 16,
+                    "role": "serial_tx"
                 },
                 {
                     "name": "rx",
                     "direction": "input",
                     "datatype": "wire",
                     "width": null,
-                    "line": 17
+                    "line": 17,
+                    "role": "serial_rx"
                 },
                 {
                     "name": "re",
                     "direction": "input",
                     "datatype": "wire",
                     "width": null,
-                    "line": 18
+                    "line": 18,
+                    "role": "control"
                 },
                 {
                     "name": "read_data",
                     "direction": "output",
                     "datatype": "reg",
                     "width": "[7:0]",
-                    "line": 19
+                    "line": 19,
+                    "role": "data"
                 }
             ],
             "signals": [
@@ -104,31 +144,36 @@
                     "name": "baud_division",
                     "datatype": "reg",
                     "width": "[31:0]",
-                    "line": 29
+                    "line": 29,
+                    "role": "unknown"
                 },
                 {
                     "name": "enable",
                     "datatype": "reg",
                     "width": null,
-                    "line": 30
+                    "line": 30,
+                    "role": "unknown"
                 },
                 {
                     "name": "data_out",
                     "datatype": "reg",
                     "width": "[7:0]",
-                    "line": 31
+                    "line": 31,
+                    "role": "datapath"
                 },
                 {
                     "name": "data_in",
                     "datatype": "wire",
                     "width": "[7:0]",
-                    "line": 32
+                    "line": 32,
+                    "role": "datapath"
                 },
                 {
                     "name": "baud_tick",
                     "datatype": "wire",
                     "width": null,
-                    "line": 68
+                    "line": 68,
+                    "role": "unknown"
                 }
             ],
             "instances": [
@@ -158,7 +203,7 @@
             ]
         },
         {
-            "name": "uart_baud_rate",
+            "module_name": "uart_baud_rate",
             "metadata": {
                 "line_start": 106,
                 "line_end": 165
@@ -170,35 +215,40 @@
                     "direction": "input",
                     "datatype": "wire",
                     "width": null,
-                    "line": 107
+                    "line": 107,
+                    "role": "clock"
                 },
                 {
                     "name": "rst",
                     "direction": "input",
                     "datatype": "wire",
                     "width": null,
-                    "line": 108
+                    "line": 108,
+                    "role": "reset"
                 },
                 {
                     "name": "baud_division",
                     "direction": "input",
                     "datatype": "wire",
                     "width": "[31:0]",
-                    "line": 109
+                    "line": 109,
+                    "role": "unknown"
                 },
                 {
                     "name": "en",
                     "direction": "input",
                     "datatype": "wire",
                     "width": null,
-                    "line": 110
+                    "line": 110,
+                    "role": "control"
                 },
                 {
                     "name": "baud_tick",
                     "direction": "output",
                     "datatype": "reg",
                     "width": null,
-                    "line": 111
+                    "line": 111,
+                    "role": "unknown"
                 }
             ],
             "signals": [
@@ -206,19 +256,22 @@
                     "name": "temp_en",
                     "datatype": "reg",
                     "width": null,
-                    "line": 122
+                    "line": 122,
+                    "role": "unknown"
                 },
                 {
                     "name": "delayed_en",
                     "datatype": "reg",
                     "width": null,
-                    "line": 123
+                    "line": 123,
+                    "role": "unknown"
                 },
                 {
                     "name": "baud_count",
                     "datatype": "reg",
                     "width": "[31:0]",
-                    "line": 140
+                    "line": 140,
+                    "role": "baud_counter"
                 }
             ],
             "instances": [],
@@ -237,7 +290,7 @@
             ]
         },
         {
-            "name": "uart_rx",
+            "module_name": "uart_rx",
             "metadata": {
                 "line_start": 172,
                 "line_end": 305
@@ -274,35 +327,40 @@
                     "direction": "input",
                     "datatype": null,
                     "width": null,
-                    "line": 173
+                    "line": 173,
+                    "role": "clock"
                 },
                 {
                     "name": "rst",
                     "direction": "input",
                     "datatype": null,
                     "width": null,
-                    "line": 174
+                    "line": 174,
+                    "role": "reset"
                 },
                 {
                     "name": "baud_tick",
                     "direction": "input",
                     "datatype": null,
                     "width": null,
-                    "line": 175
+                    "line": 175,
+                    "role": "unknown"
                 },
                 {
                     "name": "rx",
                     "direction": "input",
                     "datatype": null,
                     "width": null,
-                    "line": 176
+                    "line": 176,
+                    "role": "serial_rx"
                 },
                 {
                     "name": "ext_data_out",
                     "direction": "output",
                     "datatype": "reg",
                     "width": "[7:0]",
-                    "line": 177
+                    "line": 177,
+                    "role": "data"
                 }
             ],
             "signals": [
@@ -310,37 +368,43 @@
                     "name": "count_16",
                     "datatype": "reg",
                     "width": "[3:0]",
-                    "line": 180
+                    "line": 180,
+                    "role": "baud_counter"
                 },
                 {
                     "name": "count_16_indication",
                     "datatype": "reg",
                     "width": null,
-                    "line": 181
+                    "line": 181,
+                    "role": "unknown"
                 },
                 {
                     "name": "count_8",
                     "datatype": "reg",
                     "width": "[2:0]",
-                    "line": 216
+                    "line": 216,
+                    "role": "bit_counter"
                 },
                 {
                     "name": "count_8_indication",
                     "datatype": "reg",
                     "width": null,
-                    "line": 217
+                    "line": 217,
+                    "role": "unknown"
                 },
                 {
                     "name": "data_save",
                     "datatype": "reg",
                     "width": "[7:0]",
-                    "line": 218
+                    "line": 218,
+                    "role": "shift_register"
                 },
                 {
                     "name": "current_state",
                     "datatype": "reg",
                     "width": "[1:0]",
-                    "line": 265
+                    "line": 265,
+                    "role": "state_register"
                 }
             ],
             "instances": [],
@@ -374,7 +438,7 @@
             ]
         },
         {
-            "name": "uart_tx",
+            "module_name": "uart_tx",
             "metadata": {
                 "line_start": 312,
                 "line_end": 434
@@ -411,42 +475,48 @@
                     "direction": "input",
                     "datatype": "wire",
                     "width": null,
-                    "line": 313
+                    "line": 313,
+                    "role": "clock"
                 },
                 {
                     "name": "rst",
                     "direction": "input",
                     "datatype": "wire",
                     "width": null,
-                    "line": 314
+                    "line": 314,
+                    "role": "reset"
                 },
                 {
                     "name": "baud_tick",
                     "direction": "input",
                     "datatype": "wire",
                     "width": null,
-                    "line": 315
+                    "line": 315,
+                    "role": "unknown"
                 },
                 {
                     "name": "ext_data_in",
                     "direction": "input",
                     "datatype": "wire",
                     "width": "[7:0]",
-                    "line": 316
+                    "line": 316,
+                    "role": "data"
                 },
                 {
                     "name": "en",
                     "direction": "input",
                     "datatype": "wire",
                     "width": null,
-                    "line": 317
+                    "line": 317,
+                    "role": "control"
                 },
                 {
                     "name": "tx",
                     "direction": "output",
                     "datatype": "reg",
                     "width": null,
-                    "line": 318
+                    "line": 318,
+                    "role": "serial_tx"
                 }
             ],
             "signals": [
@@ -454,37 +524,43 @@
                     "name": "count_16",
                     "datatype": "reg",
                     "width": "[3:0]",
-                    "line": 321
+                    "line": 321,
+                    "role": "baud_counter"
                 },
                 {
                     "name": "count_16_indication",
                     "datatype": "reg",
                     "width": null,
-                    "line": 322
+                    "line": 322,
+                    "role": "unknown"
                 },
                 {
                     "name": "count_8",
                     "datatype": "reg",
                     "width": "[2:0]",
-                    "line": 349
+                    "line": 349,
+                    "role": "bit_counter"
                 },
                 {
                     "name": "count_8_indication",
                     "datatype": "reg",
                     "width": null,
-                    "line": 350
+                    "line": 350,
+                    "role": "unknown"
                 },
                 {
                     "name": "data_save",
                     "datatype": "reg",
                     "width": "[7:0]",
-                    "line": 351
+                    "line": 351,
+                    "role": "shift_register"
                 },
                 {
                     "name": "current_state",
                     "datatype": "reg",
                     "width": "[1:0]",
-                    "line": 390
+                    "line": 390,
+                    "role": "state_register"
                 }
             ],
             "instances": [],

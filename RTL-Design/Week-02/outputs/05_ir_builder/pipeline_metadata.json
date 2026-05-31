@@ -2,8 +2,8 @@
     "pipeline_version": "1.0",
     "design_name": "UART",
     "rtl_root": "/home/nurmdabd/Asmicore-Projects/RTL-Design/Week-02/rtl/UART",
-    "generated_by": "04_parser_v0.py",
-    "current_stage": "parser_v0",
+    "generated_by": "05_ir_builder.py",
+    "current_stage": "ir_builder",
     "top_modules": [
         "uart_top_design"
     ],
@@ -13,8 +13,8 @@
         "uart_tb",
         "uart_tx_tb"
     ],
-    "timestamp": "2026-06-01T00:59:11.767050",
-    "previous_stage": "lexer_tokenizer",
+    "timestamp": "2026-05-31T20:00:21.115735+00:00",
+    "previous_stage": "parser_v0",
     "preprocessed_files": [
         "src/UART.v",
         "src/UART_Baud_Rate.v",
@@ -53,5 +53,19 @@
     "ast_file": "uart_ast.json",
     "parser_schema_version": "0.1",
     "unsupported_patterns": [],
-    "unsupported_pattern_count": 0
+    "unsupported_pattern_count": 0,
+    "ir_schema_version": "0.1",
+    "ir_file": "uart_ir.json",
+    "modules_converted": 4,
+    "ports_converted": 25,
+    "signals_converted": 20,
+    "hierarchy_entries": 1,
+    "fsm_states": [
+        "IDLE",
+        "START",
+        "DATA",
+        "STOP"
+    ],
+    "ir_generated": true,
+    "ir_output_file": "uart_ir.json"
 }

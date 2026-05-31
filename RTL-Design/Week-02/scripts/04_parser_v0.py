@@ -20,6 +20,18 @@ import sys
 from pathlib import Path
 from datetime import datetime
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+
+OUTPUT_DIR = (
+    SCRIPT_DIR.parent
+    / "outputs"
+    / "04_parser_v0"
+)
+
+OUTPUT_DIR.mkdir(
+    parents=True,
+    exist_ok=True
+)
 
 # ============================================================
 # CONFIGURATION
@@ -84,6 +96,20 @@ def safe_token(tokens, index):
         return tokens[index]
     return None
 
+# ============================================================
+# Metadata Loading
+# ============================================================
+
+def load_metadata(
+    metadata_file: Path
+):
+
+    with metadata_file.open(
+        "r",
+        encoding="utf-8",
+    ) as fp:
+
+        return json.load(fp)
 
 # ============================================================
 # AST INITIALIZATION
@@ -692,7 +718,6 @@ def write_observation_log(path, ast):
 def build_metadata(ast):
 
     metadata = {
-        "schema_version": SCHEMA_VERSION,
         "modules_detected": len(ast["modules"]),
         "ports_detected": 0,
         "signals_detected": 0,
@@ -719,6 +744,72 @@ def build_metadata(ast):
             len(module["assigns"])
 
     return metadata
+
+def write_pipeline_metadata(
+    previous_metadata,
+    parser_metadata,
+    unsupported,
+):
+
+    metadata = dict(
+        previous_metadata
+    )
+
+    metadata.update(
+        parser_metadata
+    )
+
+    metadata["previous_stage"] = (
+        metadata.get(
+            "current_stage",
+            "lexer_tokenizer"
+        )
+    )
+
+    metadata["current_stage"] = (
+        "parser_v0"
+    )
+
+    metadata["generated_by"] = (
+        "04_parser_v0.py"
+    )
+
+    metadata["ast_file"] = (
+        "uart_ast.json"
+    )
+
+    metadata["parser_schema_version"] = (
+        SCHEMA_VERSION
+    )
+
+    metadata["unsupported_patterns"] = (
+        unsupported
+    )
+
+    metadata["unsupported_pattern_count"] = (
+        len(unsupported)
+    )
+
+    metadata["timestamp"] = (
+        datetime.now().isoformat()
+    )
+
+    metadata_file = (
+        OUTPUT_DIR
+        / "pipeline_metadata.json"
+    )
+
+    with open(
+        metadata_file,
+        "w",
+        encoding="utf-8"
+    ) as fp:
+
+        json.dump(
+            metadata,
+            fp,
+            indent=4
+        )
 
 
 # ============================================================
@@ -777,17 +868,8 @@ def main():
         )
         sys.exit(1)
 
-    SCRIPT_DIR = Path(__file__).resolve().parent
-
-    OUTPUT_DIR = (
-        SCRIPT_DIR.parent
-        / "outputs"
-        / "04_parser_v0"
-    )
-
-    OUTPUT_DIR.mkdir(
-        parents=True,
-        exist_ok=True
+    previous_metadata = load_metadata(
+        metadata_file
     )
 
     with open(token_stream_file, "r") as fp:
@@ -827,11 +909,14 @@ def main():
         ast
     )
 
-    metadata = build_metadata(ast)
+    parser_metadata = build_metadata(
+        ast
+    )
 
-    write_json(
-        OUTPUT_DIR / "pipeline_metadata.json",
-        metadata
+    write_pipeline_metadata(
+        previous_metadata,
+        parser_metadata,
+        unsupported,
     )
 
     print(
