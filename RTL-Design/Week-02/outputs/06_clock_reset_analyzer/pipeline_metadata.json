@@ -1,0 +1,83 @@
+{
+    "pipeline_version": "1.0",
+    "design_name": "UART",
+    "rtl_root": "/home/nurmdabd/Asmicore-Projects/RTL-Design/Week-02/rtl/UART",
+    "generated_by": "06_clock_reset_analyzer.py",
+    "current_stage": "clock_reset_analyzer",
+    "top_modules": [
+        "uart_top_design"
+    ],
+    "excluded_testbenches": [
+        "uart_baud_rate_tb",
+        "uart_rx_tb",
+        "uart_tb",
+        "uart_tx_tb"
+    ],
+    "timestamp": "2026-05-31T21:20:16.238899+00:00",
+    "previous_stage": "ir_builder",
+    "preprocessed_files": [
+        "src/UART.v",
+        "src/UART_Baud_Rate.v",
+        "src/UART_Rx.v",
+        "src/UART_Tx.v"
+    ],
+    "flattened_output": "uart_preprocessed.sv",
+    "include_count": 0,
+    "macro_count": 0,
+    "conditional_count": 0,
+    "package_count": 0,
+    "parameters": {
+        "BAUD_DATA": "0",
+        "ENABLE": "1",
+        "TX_DATA": "2",
+        "RX_DATA": "3",
+        "IDLE": "0",
+        "START": "1",
+        "DATA": "2",
+        "STOP": "3"
+    },
+    "token_stream": "uart_token_stream.json",
+    "token_count": 1514,
+    "fsm_states_detected": [
+        "IDLE",
+        "START",
+        "DATA",
+        "STOP"
+    ],
+    "modules_detected": 4,
+    "ports_detected": 25,
+    "signals_detected": 20,
+    "instances_detected": 3,
+    "always_blocks_detected": 12,
+    "assigns_detected": 0,
+    "ast_file": "uart_ast.json",
+    "parser_schema_version": "0.1",
+    "unsupported_patterns": [],
+    "unsupported_pattern_count": 0,
+    "ir_schema_version": "0.1",
+    "ir_file": "uart_ir.json",
+    "modules_converted": 4,
+    "ports_converted": 25,
+    "signals_converted": 20,
+    "hierarchy_entries": 1,
+    "fsm_states": [
+        "IDLE",
+        "START",
+        "DATA",
+        "STOP"
+    ],
+    "ir_generated": true,
+    "ir_output_file": "uart_ir.json",
+    "clock_reset_schema_version": "0.1",
+    "clock_reset_report": "clock_reset_report.json",
+    "modules_analyzed": 4,
+    "unique_clock_signals": 1,
+    "unique_reset_signals": 1,
+    "clock_names": [
+        "clk"
+    ],
+    "reset_names": [
+        "rst"
+    ],
+    "clock_reset_analysis_completed": true
+}

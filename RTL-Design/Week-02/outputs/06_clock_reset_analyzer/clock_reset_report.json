@@ -1,0 +1,94 @@
+{
+    "schema_version": "0.1",
+    "metadata": {
+        "generated_by": "06_clock_reset_analyzer.py",
+        "generated_at": "2026-05-31T21:20:16.237673+00:00",
+        "input_ir": "uart_ir.json",
+        "input_metadata": "pipeline_metadata.json"
+    },
+    "summary": {
+        "modules_analyzed": 4,
+        "unique_clock_signals": 1,
+        "unique_reset_signals": 1,
+        "clock_names": [
+            "clk"
+        ],
+        "reset_names": [
+            "rst"
+        ]
+    },
+    "modules": [
+        {
+            "module_name": "uart_top_design",
+            "clock_signals": [
+                "clk"
+            ],
+            "reset_signals": [
+                {
+                    "name": "rst",
+                    "polarity": "active_high"
+                }
+            ],
+            "reset_type": "combinational_only",
+            "always_blocks": {
+                "total": 1,
+                "sequential": 0,
+                "combinational": 1
+            }
+        },
+        {
+            "module_name": "uart_baud_rate",
+            "clock_signals": [
+                "clk"
+            ],
+            "reset_signals": [
+                {
+                    "name": "rst",
+                    "polarity": "active_high"
+                }
+            ],
+            "reset_type": "synchronous",
+            "always_blocks": {
+                "total": 2,
+                "sequential": 2,
+                "combinational": 0
+            }
+        },
+        {
+            "module_name": "uart_rx",
+            "clock_signals": [
+                "clk"
+            ],
+            "reset_signals": [
+                {
+                    "name": "rst",
+                    "polarity": "active_high"
+                }
+            ],
+            "reset_type": "synchronous",
+            "always_blocks": {
+                "total": 5,
+                "sequential": 4,
+                "combinational": 1
+            }
+        },
+        {
+            "module_name": "uart_tx",
+            "clock_signals": [
+                "clk"
+            ],
+            "reset_signals": [
+                {
+                    "name": "rst",
+                    "polarity": "active_high"
+                }
+            ],
+            "reset_type": "synchronous",
+            "always_blocks": {
+                "total": 4,
+                "sequential": 3,
+                "combinational": 1
+            }
+        }
+    ]
+}
