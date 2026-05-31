@@ -1,0 +1,9 @@
+{
+    "schema_version": "0.1",
+    "modules_detected": 4,
+    "ports_detected": 25,
+    "signals_detected": 20,
+    "instances_detected": 3,
+    "always_blocks_detected": 12,
+    "assigns_detected": 0
+}

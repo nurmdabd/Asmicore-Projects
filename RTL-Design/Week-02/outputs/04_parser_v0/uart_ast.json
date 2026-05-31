@@ -1,0 +1,516 @@
+{
+    "schema_version": "0.1",
+    "generated_at": "2026-05-31T21:18:00.559328",
+    "modules": [
+        {
+            "name": "uart_top_design",
+            "metadata": {
+                "line_start": 10,
+                "line_end": 99
+            },
+            "parameters": [
+                {
+                    "name": "BAUD_DATA",
+                    "value": "0",
+                    "kind": "localparam",
+                    "line": 24
+                },
+                {
+                    "name": "ENABLE",
+                    "value": "1",
+                    "kind": "localparam",
+                    "line": 25
+                },
+                {
+                    "name": "TX_DATA",
+                    "value": "2",
+                    "kind": "localparam",
+                    "line": 26
+                },
+                {
+                    "name": "RX_DATA",
+                    "value": "3",
+                    "kind": "localparam",
+                    "line": 27
+                }
+            ],
+            "ports": [
+                {
+                    "name": "clk",
+                    "direction": "input",
+                    "datatype": "wire",
+                    "width": null,
+                    "line": 11
+                },
+                {
+                    "name": "rst",
+                    "direction": "input",
+                    "datatype": "wire",
+                    "width": null,
+                    "line": 12
+                },
+                {
+                    "name": "address",
+                    "direction": "input",
+                    "datatype": "wire",
+                    "width": "[1:0]",
+                    "line": 13
+                },
+                {
+                    "name": "write_data",
+                    "direction": "input",
+                    "datatype": "wire",
+                    "width": "[31:0]",
+                    "line": 14
+                },
+                {
+                    "name": "we",
+                    "direction": "input",
+                    "datatype": "wire",
+                    "width": null,
+                    "line": 15
+                },
+                {
+                    "name": "tx",
+                    "direction": "output",
+                    "datatype": "wire",
+                    "width": null,
+                    "line": 16
+                },
+                {
+                    "name": "rx",
+                    "direction": "input",
+                    "datatype": "wire",
+                    "width": null,
+                    "line": 17
+                },
+                {
+                    "name": "re",
+                    "direction": "input",
+                    "datatype": "wire",
+                    "width": null,
+                    "line": 18
+                },
+                {
+                    "name": "read_data",
+                    "direction": "output",
+                    "datatype": "reg",
+                    "width": "[7:0]",
+                    "line": 19
+                }
+            ],
+            "signals": [
+                {
+                    "name": "baud_division",
+                    "datatype": "reg",
+                    "width": "[31:0]",
+                    "line": 29
+                },
+                {
+                    "name": "enable",
+                    "datatype": "reg",
+                    "width": null,
+                    "line": 30
+                },
+                {
+                    "name": "data_out",
+                    "datatype": "reg",
+                    "width": "[7:0]",
+                    "line": 31
+                },
+                {
+                    "name": "data_in",
+                    "datatype": "wire",
+                    "width": "[7:0]",
+                    "line": 32
+                },
+                {
+                    "name": "baud_tick",
+                    "datatype": "wire",
+                    "width": null,
+                    "line": 68
+                }
+            ],
+            "instances": [
+                {
+                    "module": "uart_baud_rate",
+                    "instance": "uut_baud_rate",
+                    "line": 70
+                },
+                {
+                    "module": "uart_tx",
+                    "instance": "uut_tx",
+                    "line": 80
+                },
+                {
+                    "module": "uart_rx",
+                    "instance": "uut_rx",
+                    "line": 91
+                }
+            ],
+            "assigns": [],
+            "always_blocks": [
+                {
+                    "type": "always",
+                    "line_start": 34,
+                    "sensitivity": "@ ( * )"
+                }
+            ]
+        },
+        {
+            "name": "uart_baud_rate",
+            "metadata": {
+                "line_start": 106,
+                "line_end": 165
+            },
+            "parameters": [],
+            "ports": [
+                {
+                    "name": "clk",
+                    "direction": "input",
+                    "datatype": "wire",
+                    "width": null,
+                    "line": 107
+                },
+                {
+                    "name": "rst",
+                    "direction": "input",
+                    "datatype": "wire",
+                    "width": null,
+                    "line": 108
+                },
+                {
+                    "name": "baud_division",
+                    "direction": "input",
+                    "datatype": "wire",
+                    "width": "[31:0]",
+                    "line": 109
+                },
+                {
+                    "name": "en",
+                    "direction": "input",
+                    "datatype": "wire",
+                    "width": null,
+                    "line": 110
+                },
+                {
+                    "name": "baud_tick",
+                    "direction": "output",
+                    "datatype": "reg",
+                    "width": null,
+                    "line": 111
+                }
+            ],
+            "signals": [
+                {
+                    "name": "temp_en",
+                    "datatype": "reg",
+                    "width": null,
+                    "line": 122
+                },
+                {
+                    "name": "delayed_en",
+                    "datatype": "reg",
+                    "width": null,
+                    "line": 123
+                },
+                {
+                    "name": "baud_count",
+                    "datatype": "reg",
+                    "width": "[31:0]",
+                    "line": 140
+                }
+            ],
+            "instances": [],
+            "assigns": [],
+            "always_blocks": [
+                {
+                    "type": "always",
+                    "line_start": 125,
+                    "sensitivity": "@ ( posedge clk )"
+                },
+                {
+                    "type": "always",
+                    "line_start": 142,
+                    "sensitivity": "@ ( posedge clk )"
+                }
+            ]
+        },
+        {
+            "name": "uart_rx",
+            "metadata": {
+                "line_start": 172,
+                "line_end": 305
+            },
+            "parameters": [
+                {
+                    "name": "IDLE",
+                    "value": "0",
+                    "kind": "localparam",
+                    "line": 260
+                },
+                {
+                    "name": "START",
+                    "value": "1",
+                    "kind": "localparam",
+                    "line": 261
+                },
+                {
+                    "name": "DATA",
+                    "value": "2",
+                    "kind": "localparam",
+                    "line": 262
+                },
+                {
+                    "name": "STOP",
+                    "value": "3",
+                    "kind": "localparam",
+                    "line": 263
+                }
+            ],
+            "ports": [
+                {
+                    "name": "clk",
+                    "direction": "input",
+                    "datatype": null,
+                    "width": null,
+                    "line": 173
+                },
+                {
+                    "name": "rst",
+                    "direction": "input",
+                    "datatype": null,
+                    "width": null,
+                    "line": 174
+                },
+                {
+                    "name": "baud_tick",
+                    "direction": "input",
+                    "datatype": null,
+                    "width": null,
+                    "line": 175
+                },
+                {
+                    "name": "rx",
+                    "direction": "input",
+                    "datatype": null,
+                    "width": null,
+                    "line": 176
+                },
+                {
+                    "name": "ext_data_out",
+                    "direction": "output",
+                    "datatype": "reg",
+                    "width": "[7:0]",
+                    "line": 177
+                }
+            ],
+            "signals": [
+                {
+                    "name": "count_16",
+                    "datatype": "reg",
+                    "width": "[3:0]",
+                    "line": 180
+                },
+                {
+                    "name": "count_16_indication",
+                    "datatype": "reg",
+                    "width": null,
+                    "line": 181
+                },
+                {
+                    "name": "count_8",
+                    "datatype": "reg",
+                    "width": "[2:0]",
+                    "line": 216
+                },
+                {
+                    "name": "count_8_indication",
+                    "datatype": "reg",
+                    "width": null,
+                    "line": 217
+                },
+                {
+                    "name": "data_save",
+                    "datatype": "reg",
+                    "width": "[7:0]",
+                    "line": 218
+                },
+                {
+                    "name": "current_state",
+                    "datatype": "reg",
+                    "width": "[1:0]",
+                    "line": 265
+                }
+            ],
+            "instances": [],
+            "assigns": [],
+            "always_blocks": [
+                {
+                    "type": "always",
+                    "line_start": 183,
+                    "sensitivity": "@ ( posedge clk )"
+                },
+                {
+                    "type": "always",
+                    "line_start": 220,
+                    "sensitivity": "@ ( posedge clk )"
+                },
+                {
+                    "type": "always",
+                    "line_start": 250,
+                    "sensitivity": "@ ( posedge clk )"
+                },
+                {
+                    "type": "always",
+                    "line_start": 267,
+                    "sensitivity": "@ ( posedge clk )"
+                },
+                {
+                    "type": "always",
+                    "line_start": 275,
+                    "sensitivity": "@ ( * )"
+                }
+            ]
+        },
+        {
+            "name": "uart_tx",
+            "metadata": {
+                "line_start": 312,
+                "line_end": 434
+            },
+            "parameters": [
+                {
+                    "name": "IDLE",
+                    "value": "0",
+                    "kind": "localparam",
+                    "line": 385
+                },
+                {
+                    "name": "START",
+                    "value": "1",
+                    "kind": "localparam",
+                    "line": 386
+                },
+                {
+                    "name": "DATA",
+                    "value": "2",
+                    "kind": "localparam",
+                    "line": 387
+                },
+                {
+                    "name": "STOP",
+                    "value": "3",
+                    "kind": "localparam",
+                    "line": 388
+                }
+            ],
+            "ports": [
+                {
+                    "name": "clk",
+                    "direction": "input",
+                    "datatype": "wire",
+                    "width": null,
+                    "line": 313
+                },
+                {
+                    "name": "rst",
+                    "direction": "input",
+                    "datatype": "wire",
+                    "width": null,
+                    "line": 314
+                },
+                {
+                    "name": "baud_tick",
+                    "direction": "input",
+                    "datatype": "wire",
+                    "width": null,
+                    "line": 315
+                },
+                {
+                    "name": "ext_data_in",
+                    "direction": "input",
+                    "datatype": "wire",
+                    "width": "[7:0]",
+                    "line": 316
+                },
+                {
+                    "name": "en",
+                    "direction": "input",
+                    "datatype": "wire",
+                    "width": null,
+                    "line": 317
+                },
+                {
+                    "name": "tx",
+                    "direction": "output",
+                    "datatype": "reg",
+                    "width": null,
+                    "line": 318
+                }
+            ],
+            "signals": [
+                {
+                    "name": "count_16",
+                    "datatype": "reg",
+                    "width": "[3:0]",
+                    "line": 321
+                },
+                {
+                    "name": "count_16_indication",
+                    "datatype": "reg",
+                    "width": null,
+                    "line": 322
+                },
+                {
+                    "name": "count_8",
+                    "datatype": "reg",
+                    "width": "[2:0]",
+                    "line": 349
+                },
+                {
+                    "name": "count_8_indication",
+                    "datatype": "reg",
+                    "width": null,
+                    "line": 350
+                },
+                {
+                    "name": "data_save",
+                    "datatype": "reg",
+                    "width": "[7:0]",
+                    "line": 351
+                },
+                {
+                    "name": "current_state",
+                    "datatype": "reg",
+                    "width": "[1:0]",
+                    "line": 390
+                }
+            ],
+            "instances": [],
+            "assigns": [],
+            "always_blocks": [
+                {
+                    "type": "always",
+                    "line_start": 324,
+                    "sensitivity": "@ ( posedge clk )"
+                },
+                {
+                    "type": "always",
+                    "line_start": 353,
+                    "sensitivity": "@ ( posedge clk )"
+                },
+                {
+                    "type": "always",
+                    "line_start": 392,
+                    "sensitivity": "@ ( posedge clk )"
+                },
+                {
+                    "type": "always",
+                    "line_start": 400,
+                    "sensitivity": "@ ( * )"
+                }
+            ]
+        }
+    ]
+}
