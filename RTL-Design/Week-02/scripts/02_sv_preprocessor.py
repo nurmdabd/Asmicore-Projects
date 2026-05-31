@@ -568,9 +568,18 @@ def main():
     if len(sys.argv) != 2:
 
         print(
+            "\n"
+            "============================================================\n"
+            " LEXER TOKENIZER ERROR\n"
+            "============================================================\n\n"
+            "Missing required preprocessed RTL file.\n\n"
             "Usage:\n"
-            "python3 02_sv_preprocessor.py "
-            "<uart_file_manifest.csv>"
+            "    python3 03_lexer_tokenizer.py "
+            "<uart_preprocessed.sv>\n\n"
+            "Example:\n"
+            "    python3 scripts/03_lexer_tokenizer.py \\\n"
+            "        outputs/02_sv_preprocessor/"
+            "uart_preprocessed.sv\n"
         )
 
         sys.exit(1)

@@ -1,0 +1,47 @@
+{
+    "pipeline_version": "1.0",
+    "design_name": "UART",
+    "rtl_root": "/home/nurmdabd/Asmicore-Projects/RTL-Design/Week-02/rtl/UART",
+    "generated_by": "03_lexer_tokenizer.py",
+    "current_stage": "lexer_tokenizer",
+    "top_modules": [
+        "uart_top_design"
+    ],
+    "excluded_testbenches": [
+        "uart_baud_rate_tb",
+        "uart_rx_tb",
+        "uart_tb",
+        "uart_tx_tb"
+    ],
+    "timestamp": "2026-05-31T15:53:39.841495",
+    "previous_stage": "sv_preprocessor",
+    "preprocessed_files": [
+        "src/UART.v",
+        "src/UART_Baud_Rate.v",
+        "src/UART_Rx.v",
+        "src/UART_Tx.v"
+    ],
+    "flattened_output": "uart_preprocessed.sv",
+    "include_count": 0,
+    "macro_count": 0,
+    "conditional_count": 0,
+    "package_count": 0,
+    "parameters": {
+        "BAUD_DATA": "0",
+        "ENABLE": "1",
+        "TX_DATA": "2",
+        "RX_DATA": "3",
+        "IDLE": "0",
+        "START": "1",
+        "DATA": "2",
+        "STOP": "3"
+    },
+    "token_stream": "uart_token_stream.json",
+    "token_count": 1514,
+    "fsm_states_detected": [
+        "IDLE",
+        "START",
+        "DATA",
+        "STOP"
+    ]
+}
