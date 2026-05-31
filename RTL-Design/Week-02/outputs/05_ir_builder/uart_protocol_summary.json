@@ -1,0 +1,90 @@
+{
+    "schema_version": "0.1",
+    "protocol": "UART",
+    "top_module": "uart_top_design",
+    "submodules": [
+        "uart_baud_rate",
+        "uart_tx",
+        "uart_rx"
+    ],
+    "ports": [
+        {
+            "name": "clk",
+            "direction": "input",
+            "width": 1,
+            "role": "clock"
+        },
+        {
+            "name": "rst",
+            "direction": "input",
+            "width": 1,
+            "role": "reset"
+        },
+        {
+            "name": "address",
+            "direction": "input",
+            "width": "[1:0]",
+            "role": "address"
+        },
+        {
+            "name": "write_data",
+            "direction": "input",
+            "width": "[31:0]",
+            "role": "data"
+        },
+        {
+            "name": "we",
+            "direction": "input",
+            "width": 1,
+            "role": "control"
+        },
+        {
+            "name": "tx",
+            "direction": "output",
+            "width": 1,
+            "role": "serial_tx"
+        },
+        {
+            "name": "rx",
+            "direction": "input",
+            "width": 1,
+            "role": "serial_rx"
+        },
+        {
+            "name": "re",
+            "direction": "input",
+            "width": 1,
+            "role": "control"
+        },
+        {
+            "name": "read_data",
+            "direction": "output",
+            "width": "[7:0]",
+            "role": "data"
+        }
+    ],
+    "fsm": {
+        "tx": [
+            "IDLE",
+            "START",
+            "DATA",
+            "STOP"
+        ],
+        "rx": [
+            "IDLE",
+            "START",
+            "DATA",
+            "STOP"
+        ]
+    },
+    "datapath": [
+        "baud_count",
+        "count_16",
+        "count_8",
+        "data_save"
+    ],
+    "reset": {
+        "signal": "rst",
+        "polarity": "active_high"
+    }
+}

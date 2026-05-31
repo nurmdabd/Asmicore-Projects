@@ -178,7 +178,7 @@ def convert_port(
         "name": port.get("name"),
         "direction": port.get("direction"),
         "datatype": port.get("datatype"),
-        "width": port.get("width"),
+        "width": normalize_width(port.get("width")),
         "line": port.get("line"),
         "role": classify_port_role(
             port.get(
@@ -188,6 +188,11 @@ def convert_port(
         ),
     }
 
+def normalize_width(width):
+    if width is None:
+        return 1
+
+    return width
 
 def convert_signal(
     signal,
@@ -471,11 +476,14 @@ def write_observation_log(
 
     observation_file = OUTPUT_DIR / "ir_observation_log.md"
 
+
     lines = []
 
     lines.append("# IR Builder Observations")
 
     lines.append("")
+
+    lines.append("Protocol Summary Generated: Yes")
 
     lines.append(f"Modules Converted: " f"{ir['statistics']['module_count']}")
 
@@ -515,6 +523,8 @@ def build_ir_metadata(
     return {
         "ir_schema_version": SCHEMA_VERSION,
         "ir_file": "uart_ir.json",
+        "protocol_summary":
+            "uart_protocol_summary.json",
         "modules_converted": ir.get(
             "statistics",
             {},
@@ -582,6 +592,75 @@ def write_pipeline_metadata(
     )
 
 
+def build_uart_summary(
+    ir,
+):
+
+    top_module = ir["metadata"].get("top_module", "unknown")
+
+    submodules = ir.get("hierarchy_hints", {}).get(top_module, [])
+
+    top_ports = []
+
+    for module in ir["modules"]:
+
+        if module["module_name"] == top_module:
+
+            top_ports = module["ports"]
+
+            break
+
+    ports = []
+    for port in top_ports:
+
+        ports.append(
+            {
+                "name": port["name"],
+                "direction": port["direction"],
+                "width": port.get("width"),
+                "role": port.get("role", "unknown"),
+            }
+        )
+
+    reset_info = {}
+    for port in top_ports:
+
+        if port.get("role") == "reset":
+
+            reset_info = {"signal": port["name"], "polarity": "active_high"}
+
+            break
+    states = ir.get("fsm_hints", {}).get("states", [])
+
+    fsm = {"tx": states, "rx": states}
+
+    datapath = set()
+
+    for module in ir["modules"]:
+
+        for signal in module["signals"]:
+
+            role = signal.get("role")
+
+            if role in (
+                "shift_register",
+                "bit_counter",
+                "baud_counter",
+            ):
+
+                datapath.add(signal["name"])
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "protocol": "UART",
+        "top_module": top_module,
+        "submodules": submodules,
+        "ports": ports,
+        "fsm": fsm,
+        "datapath": sorted(list(datapath)),
+        "reset": reset_info,
+    }
+
+
 # ============================================================
 # Main Pipeline
 # ============================================================
@@ -603,6 +682,13 @@ def main():
     write_json(
         OUTPUT_DIR / "uart_ir.json",
         ir,
+    )
+
+    summary = build_uart_summary(ir)
+
+    write_json(
+        OUTPUT_DIR / "uart_protocol_summary.json",
+        summary,
     )
 
     write_json(

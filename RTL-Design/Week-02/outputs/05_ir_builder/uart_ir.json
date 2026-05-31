@@ -2,7 +2,7 @@
     "schema_version": "0.1",
     "metadata": {
         "generated_by": "05_ir_builder.py",
-        "generated_at": "2026-05-31T20:00:21.112679+00:00",
+        "generated_at": "2026-05-31T23:28:47.134205+00:00",
         "schema_version": "0.1",
         "design_name": "UART",
         "top_module": "uart_top_design",
@@ -70,7 +70,7 @@
                     "name": "clk",
                     "direction": "input",
                     "datatype": "wire",
-                    "width": null,
+                    "width": 1,
                     "line": 11,
                     "role": "clock"
                 },
@@ -78,7 +78,7 @@
                     "name": "rst",
                     "direction": "input",
                     "datatype": "wire",
-                    "width": null,
+                    "width": 1,
                     "line": 12,
                     "role": "reset"
                 },
@@ -102,7 +102,7 @@
                     "name": "we",
                     "direction": "input",
                     "datatype": "wire",
-                    "width": null,
+                    "width": 1,
                     "line": 15,
                     "role": "control"
                 },
@@ -110,7 +110,7 @@
                     "name": "tx",
                     "direction": "output",
                     "datatype": "wire",
-                    "width": null,
+                    "width": 1,
                     "line": 16,
                     "role": "serial_tx"
                 },
@@ -118,7 +118,7 @@
                     "name": "rx",
                     "direction": "input",
                     "datatype": "wire",
-                    "width": null,
+                    "width": 1,
                     "line": 17,
                     "role": "serial_rx"
                 },
@@ -126,7 +126,7 @@
                     "name": "re",
                     "direction": "input",
                     "datatype": "wire",
-                    "width": null,
+                    "width": 1,
                     "line": 18,
                     "role": "control"
                 },
@@ -214,7 +214,7 @@
                     "name": "clk",
                     "direction": "input",
                     "datatype": "wire",
-                    "width": null,
+                    "width": 1,
                     "line": 107,
                     "role": "clock"
                 },
@@ -222,7 +222,7 @@
                     "name": "rst",
                     "direction": "input",
                     "datatype": "wire",
-                    "width": null,
+                    "width": 1,
                     "line": 108,
                     "role": "reset"
                 },
@@ -238,7 +238,7 @@
                     "name": "en",
                     "direction": "input",
                     "datatype": "wire",
-                    "width": null,
+                    "width": 1,
                     "line": 110,
                     "role": "control"
                 },
@@ -246,7 +246,7 @@
                     "name": "baud_tick",
                     "direction": "output",
                     "datatype": "reg",
-                    "width": null,
+                    "width": 1,
                     "line": 111,
                     "role": "unknown"
                 }
@@ -326,7 +326,7 @@
                     "name": "clk",
                     "direction": "input",
                     "datatype": null,
-                    "width": null,
+                    "width": 1,
                     "line": 173,
                     "role": "clock"
                 },
@@ -334,7 +334,7 @@
                     "name": "rst",
                     "direction": "input",
                     "datatype": null,
-                    "width": null,
+                    "width": 1,
                     "line": 174,
                     "role": "reset"
                 },
@@ -342,7 +342,7 @@
                     "name": "baud_tick",
                     "direction": "input",
                     "datatype": null,
-                    "width": null,
+                    "width": 1,
                     "line": 175,
                     "role": "unknown"
                 },
@@ -350,7 +350,7 @@
                     "name": "rx",
                     "direction": "input",
                     "datatype": null,
-                    "width": null,
+                    "width": 1,
                     "line": 176,
                     "role": "serial_rx"
                 },
@@ -474,7 +474,7 @@
                     "name": "clk",
                     "direction": "input",
                     "datatype": "wire",
-                    "width": null,
+                    "width": 1,
                     "line": 313,
                     "role": "clock"
                 },
@@ -482,7 +482,7 @@
                     "name": "rst",
                     "direction": "input",
                     "datatype": "wire",
-                    "width": null,
+                    "width": 1,
                     "line": 314,
                     "role": "reset"
                 },
@@ -490,7 +490,7 @@
                     "name": "baud_tick",
                     "direction": "input",
                     "datatype": "wire",
-                    "width": null,
+                    "width": 1,
                     "line": 315,
                     "role": "unknown"
                 },
@@ -506,7 +506,7 @@
                     "name": "en",
                     "direction": "input",
                     "datatype": "wire",
-                    "width": null,
+                    "width": 1,
                     "line": 317,
                     "role": "control"
                 },
@@ -514,7 +514,7 @@
                     "name": "tx",
                     "direction": "output",
                     "datatype": "reg",
-                    "width": null,
+                    "width": 1,
                     "line": 318,
                     "role": "serial_tx"
                 }
