@@ -16,10 +16,7 @@ Total Files: 14
 
 ## Detected Top Modules
 
-- uart_baud_rate_tb
-- uart_rx_tb
-- uart_tb
-- uart_tx_tb
+- uart_top_design
 
 ## Suspicious Files
 
@@ -33,3 +30,6 @@ None
 
 Repository scan completed successfully.
 Ready for sv_preprocessor.py
+
+Pipeline Metadata:
+- pipeline_metadata.json

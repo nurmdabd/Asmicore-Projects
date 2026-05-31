@@ -1,0 +1,17 @@
+{
+    "pipeline_version": "1.0",
+    "design_name": "UART",
+    "rtl_root": "/home/nurmdabd/Asmicore-Projects/RTL-Design/Week-02/rtl/UART",
+    "generated_by": "01_input_normalizer.py",
+    "current_stage": "input_normalizer",
+    "top_modules": [
+        "uart_top_design"
+    ],
+    "excluded_testbenches": [
+        "uart_baud_rate_tb",
+        "uart_rx_tb",
+        "uart_tb",
+        "uart_tx_tb"
+    ],
+    "timestamp": "2026-05-31T10:36:29.312449"
+}

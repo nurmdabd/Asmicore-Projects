@@ -22,11 +22,12 @@ from collections import defaultdict
 import csv
 import re
 import sys
+import json
+from datetime import datetime
 
 # ============================================================
 # Configuration
 # ============================================================
-
 RTL_EXTENSIONS = {".v", ".sv"}
 HEADER_EXTENSIONS = {".vh", ".svh"}
 
@@ -56,22 +57,21 @@ SV_KEYWORDS = {
 # ============================================================
 # Regex
 # ============================================================
-
 MODULE_RE = re.compile(
     r"^\s*module\s+([a-zA-Z_][a-zA-Z0-9_]*)",
     re.MULTILINE,
 )
 
 INSTANTIATION_RE = re.compile(
-    r"^\s*([a-zA-Z_][a-zA-Z0-9_]*)\s+" r"[a-zA-Z_][a-zA-Z0-9_]*\s*\(",
+    r"^\s*(?!module\b)"
+    r"([a-zA-Z_][a-zA-Z0-9_]*)\s+"
+    r"[a-zA-Z_][a-zA-Z0-9_]*\s*\(",
     re.MULTILINE,
 )
 
 # ============================================================
 # File Classification
 # ============================================================
-
-
 def classify_file(path: Path) -> str:
 
     if path.name == "Makefile":
@@ -108,8 +108,6 @@ def classify_file(path: Path) -> str:
 # ============================================================
 # Module Extraction
 # ============================================================
-
-
 def extract_modules(filepath: Path):
 
     try:
@@ -131,8 +129,13 @@ def extract_instantiations(filepath: Path):
 
     for match in INSTANTIATION_RE.findall(text):
 
-        if match not in SV_KEYWORDS:
-            insts.append(match)
+        if match in SV_KEYWORDS:
+            continue
+
+        if match == "module":
+            continue
+
+        insts.append(match)
 
     return insts
 
@@ -140,8 +143,6 @@ def extract_instantiations(filepath: Path):
 # ============================================================
 # Repository Scan
 # ============================================================
-
-
 def scan_repository(root_dir: Path):
 
     file_entries = []
@@ -181,12 +182,14 @@ def scan_repository(root_dir: Path):
 
             insts = extract_instantiations(path)
 
-            for inst in insts:
+            if category == "RTL_SOURCE":
 
-                instantiated_modules.add(inst)
+                for inst in insts:
 
-                if module_name:
-                    parent_child[module_name].append(inst)
+                    instantiated_modules.add(inst)
+
+                    if module_name:
+                        parent_child[module_name].append(inst)
 
         processing_scope = (
             "INCLUDE"
@@ -199,7 +202,7 @@ def scan_repository(root_dir: Path):
             else "EXCLUDE"
         )
 
-        dependency = ""
+        dependency = "-"
 
         if module_name:
             dependency = ";".join(
@@ -238,8 +241,6 @@ def scan_repository(root_dir: Path):
 # ============================================================
 # Top Module Detection
 # ============================================================
-
-
 def identify_top_modules(
     module_to_file,
     instantiated_modules,
@@ -248,27 +249,79 @@ def identify_top_modules(
 
     candidates = []
 
+    excluded_testbenches = []
+
+    TB_MODULE_PATTERNS = (
+        "_tb",
+        "tb_",
+        "_test",
+        "test_",
+    )
+
+    TB_DIRECTORY_NAMES = {
+        "tb",
+        "testbench",
+        "testbenches",
+        "sim",
+        "simulation",
+        "dv",
+        "verification",
+    }
+
     for module in module_to_file:
 
-        has_children = module in parent_child and len(parent_child[module]) > 0
+        source_file = module_to_file[module]
 
-        instantiated_elsewhere = module in instantiated_modules
+        has_children = (
+            module in parent_child
+            and len(parent_child[module]) > 0
+        )
+
+        instantiated_elsewhere = (
+            module in instantiated_modules
+        )
+
+        module_lower = module.lower()
+
+        is_tb_module = any(
+            pattern in module_lower
+            for pattern in TB_MODULE_PATTERNS
+        )
+
+        is_tb_directory = any(
+            part.lower() in TB_DIRECTORY_NAMES
+            for part in source_file.parts
+        )
+
+        if is_tb_module or is_tb_directory:
+
+            excluded_testbenches.append(module)
+
+            continue
+
+        print(
+            module,
+            has_children,
+            instantiated_elsewhere,
+        )
 
         if has_children and not instantiated_elsewhere:
             candidates.append(module)
 
-    return sorted(candidates)
+    return (
+        sorted(candidates),
+        sorted(excluded_testbenches),
+    )
 
 
 # ============================================================
 # Module Roles
 # ============================================================
-
-
 def determine_module_roles(
     module_to_file,
     instantiated_modules,
     top_candidates,
+    excluded_testbenches,
 ):
 
     roles = {}
@@ -280,6 +333,9 @@ def determine_module_roles(
 
         elif module in instantiated_modules:
             roles[module] = "SUBMODULE"
+        
+        elif module in excluded_testbenches:
+            roles[module] = "TESTBENCH"
 
         else:
             roles[module] = "UNKNOWN"
@@ -290,8 +346,6 @@ def determine_module_roles(
 # ============================================================
 # Reports
 # ============================================================
-
-
 def write_manifest(entries):
 
     OUTPUT_DIR.mkdir(
@@ -388,26 +442,18 @@ def write_notes(
     }
 
     with notes_file.open("w") as fp:
-
         fp.write("# Input Normalization Notes\n\n")
-
         fp.write(f"Repository: " f"{root_dir}\n\n")
-
         fp.write("## Summary\n\n")
-
         fp.write(f"Total Files: " f"{len(entries)}\n\n")
-
         fp.write("## File Categories\n\n")
-
         for category, count in sorted(category_counts.items()):
             fp.write(f"- {category}: " f"{count}\n")
 
         fp.write("\n")
-
         fp.write("## Detected Top Modules\n\n")
 
         if candidates:
-
             for mod in candidates:
                 fp.write(f"- {mod}\n")
 
@@ -415,11 +461,9 @@ def write_notes(
             fp.write("None\n")
 
         fp.write("\n")
-
         fp.write("## Suspicious Files\n\n")
 
         if unknown_files:
-
             for item in unknown_files:
                 fp.write(f"- {item}\n")
 
@@ -427,37 +471,64 @@ def write_notes(
             fp.write("None\n")
 
         fp.write("\n")
-
         fp.write("## Duplicate Module Definitions\n\n")
 
         if duplicates:
-
             for module, paths in duplicates.items():
-
                 fp.write(f"{module}\n")
-
                 for path in paths:
-
                     fp.write(f"  - {path}\n")
 
         else:
-
             fp.write("None\n")
 
         fp.write("\n")
-
         fp.write("## Normalization Status\n\n")
-
         fp.write("Repository scan completed successfully.\n")
+        fp.write("Ready for " "sv_preprocessor.py\n\n")
+        fp.write("Pipeline Metadata:\n")
+        fp.write("- pipeline_metadata.json\n")
 
-        fp.write("Ready for " "sv_preprocessor.py\n")
+# ============================================================
+# Pipeline Metadata
+# ============================================================
+def write_pipeline_metadata(
+    root_dir,
+    candidates,
+    excluded_testbenches,
+):
+
+    metadata_file = (
+        OUTPUT_DIR
+        / "pipeline_metadata.json"
+    )
+
+    metadata = {
+        "pipeline_version": "1.0",
+        "design_name": root_dir.name,
+        "rtl_root": str(root_dir.resolve()),
+        "generated_by": "01_input_normalizer.py",
+        "current_stage": "input_normalizer",
+        "top_modules": candidates,
+        "excluded_testbenches": (
+            excluded_testbenches
+        ),
+
+        "timestamp": datetime.now().isoformat(),
+    }
+
+    with metadata_file.open("w") as fp:
+
+        json.dump(
+            metadata,
+            fp,
+            indent=4,
+        )
 
 
 # ============================================================
 # Main
 # ============================================================
-
-
 def main():
 
     if len(sys.argv) != 2:
@@ -465,13 +536,15 @@ def main():
         print(
             "\n"
             "============================================================\n"
-            " INPUT NORMALIZER ERROR\n"
+            " SV PREPROCESSOR ERROR\n"
             "============================================================\n\n"
-            "Missing required RTL repository path.\n\n"
+            "Missing required manifest file.\n\n"
             "Usage:\n"
-            "    python3 01_input_normalizer.py <rtl_root>\n\n"
+            "    python3 02_sv_preprocessor.py "
+            "<uart_file_manifest.csv>\n\n"
             "Example:\n"
-            "    python3 scripts/01_input_normalizer.py rtl/UART\n"
+            "    python3 scripts/02_sv_preprocessor.py outputs/01_input_normalizer/"
+            "uart_file_manifest.csv\n"
         )
         sys.exit(1)
 
@@ -490,16 +563,22 @@ def main():
         duplicate_modules,
     ) = scan_repository(rtl_root)
 
-    candidates = identify_top_modules(
+    print(sorted(instantiated_modules))
+
+    (
+        candidates,
+        excluded_testbenches,
+    ) = identify_top_modules(
         module_to_file,
         instantiated_modules,
         parent_child,
-    )
+        )
 
     module_roles = determine_module_roles(
         module_to_file,
         instantiated_modules,
         candidates,
+        excluded_testbenches,
     )
 
     for row in entries:
@@ -524,6 +603,12 @@ def main():
         entries,
         candidates,
         duplicate_modules,
+    )
+
+    write_pipeline_metadata(
+        rtl_root,
+        candidates,
+        excluded_testbenches,
     )
 
     print("\nInput normalization complete.")
