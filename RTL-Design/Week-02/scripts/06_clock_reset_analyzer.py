@@ -24,24 +24,13 @@ ACTIVE_LOW_SUFFIXES = (
 # ============================================================
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-INPUT_DIR = (
-    PROJECT_ROOT
-    / "outputs"
-    / "05_ir_builder"
-)
+INPUT_DIR = PROJECT_ROOT / "outputs" / "05_ir_builder"
 
-OUTPUT_DIR = (
-    PROJECT_ROOT
-    / "outputs"
-    / "06_clock_reset_analyzer"
-)
+OUTPUT_DIR = PROJECT_ROOT / "outputs" / "06_clock_reset_analyzer"
 
 IR_FILE = INPUT_DIR / "uart_ir.json"
 
-METADATA_FILE = (
-    INPUT_DIR
-    / "pipeline_metadata.json"
-)
+METADATA_FILE = INPUT_DIR / "pipeline_metadata.json"
 
 # ============================================================
 # Utility Functions
@@ -89,9 +78,7 @@ def write_json(
 
 def timestamp():
 
-    return datetime.now(
-        timezone.utc
-    ).isoformat()
+    return datetime.now(timezone.utc).isoformat()
 
 
 # ============================================================
@@ -137,14 +124,9 @@ def is_sequential_block(
     sensitivity,
 ):
 
-    sensitivity = (
-        sensitivity or ""
-    ).lower()
+    sensitivity = (sensitivity or "").lower()
 
-    return (
-        "posedge" in sensitivity
-        or "negedge" in sensitivity
-    )
+    return "posedge" in sensitivity or "negedge" in sensitivity
 
 
 def determine_reset_type(
@@ -156,27 +138,19 @@ def determine_reset_type(
 
     for block in always_blocks:
 
-        sensitivity = (
-            block.get(
-                "sensitivity",
-                "",
-            )
-            .lower()
-        )
+        sensitivity = block.get(
+            "sensitivity",
+            "",
+        ).lower()
 
-        if not is_sequential_block(
-            sensitivity
-        ):
+        if not is_sequential_block(sensitivity):
             continue
 
         sequential_found = True
 
         for reset_name in reset_names:
 
-            if (
-                reset_name.lower()
-                in sensitivity
-            ):
+            if reset_name.lower() in sensitivity:
 
                 return "asynchronous"
 
@@ -219,10 +193,7 @@ def analyze_module(
 
             sequential_blocks += 1
 
-    combinational_blocks = (
-        len(always_blocks)
-        - sequential_blocks
-    )
+    combinational_blocks = len(always_blocks) - sequential_blocks
 
     reset_entries = []
 
@@ -230,9 +201,7 @@ def analyze_module(
 
         reset_entries.append(
             {
-                "name": reset.get(
-                    "name"
-                ),
+                "name": reset.get("name"),
                 "polarity": determine_reset_polarity(
                     reset.get(
                         "name",
@@ -242,28 +211,18 @@ def analyze_module(
             }
         )
 
-    reset_names = [
-        reset.get("name")
-        for reset in reset_ports
-    ]
+    reset_names = [reset.get("name") for reset in reset_ports]
 
     return {
-        "module_name": module.get(
-            "module_name"
-        ),
-        "clock_signals": [
-            port.get("name")
-            for port in clock_ports
-        ],
+        "module_name": module.get("module_name"),
+        "clock_signals": [port.get("name") for port in clock_ports],
         "reset_signals": reset_entries,
         "reset_type": determine_reset_type(
             always_blocks,
             reset_names,
         ),
         "always_blocks": {
-            "total": len(
-                always_blocks
-            ),
+            "total": len(always_blocks),
             "sequential": sequential_blocks,
             "combinational": combinational_blocks,
         },
@@ -285,50 +244,32 @@ def analyze_clock_reset(
         [],
     ):
 
-        result = analyze_module(
-            module
-        )
+        result = analyze_module(module)
 
         modules.append(result)
 
-        for clock in result[
-            "clock_signals"
-        ]:
+        for clock in result["clock_signals"]:
 
             clock_names.add(clock)
 
-        for reset in result[
-            "reset_signals"
-        ]:
+        for reset in result["reset_signals"]:
 
-            reset_names.add(
-                reset["name"]
-            )
+            reset_names.add(reset["name"])
 
     return {
-        "schema_version":
-            SCHEMA_VERSION,
+        "schema_version": SCHEMA_VERSION,
         "metadata": {
-            "generated_by":
-                SCRIPT_NAME,
-            "generated_at":
-                timestamp(),
-            "input_ir":
-                "uart_ir.json",
-            "input_metadata":
-                "pipeline_metadata.json",
+            "generated_by": SCRIPT_NAME,
+            "generated_at": timestamp(),
+            "input_ir": "uart_ir.json",
+            "input_metadata": "pipeline_metadata.json",
         },
         "summary": {
-            "modules_analyzed":
-                len(modules),
-            "unique_clock_signals":
-                len(clock_names),
-            "unique_reset_signals":
-                len(reset_names),
-            "clock_names":
-                sorted(clock_names),
-            "reset_names":
-                sorted(reset_names),
+            "modules_analyzed": len(modules),
+            "unique_clock_signals": len(clock_names),
+            "unique_reset_signals": len(reset_names),
+            "clock_names": sorted(clock_names),
+            "reset_names": sorted(reset_names),
         },
         "modules": modules,
     }
@@ -343,94 +284,60 @@ def write_observation_log(
     report,
 ):
 
-    observation_file = (
-        OUTPUT_DIR
-        / "clock_reset_observation_log.md"
-    )
+    observation_file = OUTPUT_DIR / "clock_reset_observation_log.md"
 
     lines = []
 
-    lines.append(
-        "# Clock Reset Analyzer Observations"
-    )
+    lines.append("# Clock Reset Analyzer Observations")
 
     lines.append("")
 
     summary = report["summary"]
 
-    lines.append(
-        f"Modules Analyzed: "
-        f"{summary['modules_analyzed']}"
-    )
+    lines.append(f"Modules Analyzed: " f"{summary['modules_analyzed']}")
 
     lines.append("")
 
-    lines.append(
-        "Clock Signals:"
-    )
+    lines.append("Clock Signals:")
 
-    for clock in summary[
-        "clock_names"
-    ]:
+    for clock in summary["clock_names"]:
 
-        lines.append(
-            f"- {clock}"
-        )
+        lines.append(f"- {clock}")
 
     lines.append("")
 
-    lines.append(
-        "Reset Signals:"
-    )
+    lines.append("Reset Signals:")
 
-    for reset in summary[
-        "reset_names"
-    ]:
+    for reset in summary["reset_names"]:
 
-        lines.append(
-            f"- {reset}"
-        )
+        lines.append(f"- {reset}")
 
     lines.append("")
 
-    for module in report[
-        "modules"
-    ]:
+    for module in report["modules"]:
 
         lines.append("---")
 
         lines.append("")
 
-        lines.append(
-            f"## {module['module_name']}"
-        )
+        lines.append(f"## {module['module_name']}")
+
+        lines.append("")
+
+        lines.append(f"Reset Type: " f"{module['reset_type']}")
 
         lines.append("")
 
         lines.append(
-            f"Reset Type: "
-            f"{module['reset_type']}"
-        )
-
-        lines.append("")
-
-        lines.append(
-            f"Sequential Always Blocks: "
-            f"{module['always_blocks']['sequential']}"
+            f"Sequential Always Blocks: " f"{module['always_blocks']['sequential']}"
         )
 
     lines.append("")
     lines.append("---")
     lines.append("")
-    lines.append(
-        "Limitation:"
-    )
-    lines.append(
-        "IR schema v0.1 does not preserve procedural assignments."
-    )
-    lines.append(
-        "Register reset values cannot be extracted."
-    )
+    lines.append("Limitation:")
+    lines.append("IR schema v0.1 does not preserve procedural assignments.")
+    lines.append("Register reset values cannot be extracted.")
 
     with open(
         observation_file,
@@ -438,17 +345,12 @@ def write_observation_log(
         encoding="utf-8",
     ) as fp:
 
-        fp.write(
-            "\n".join(lines)
-        )
+        fp.write("\n".join(lines))
 
 
 def write_rules_document():
 
-    rules_file = (
-        OUTPUT_DIR
-        / "clock_reset_rules_v0.md"
-    )
+    rules_file = OUTPUT_DIR / "clock_reset_rules_v0.md"
 
     content = """
 # Clock Reset Analysis Rules v0.1
@@ -493,9 +395,7 @@ Register reset values are unavailable.
         encoding="utf-8",
     ) as fp:
 
-        fp.write(
-            content.strip()
-        )
+        fp.write(content.strip())
 
 
 # ============================================================
@@ -507,35 +407,16 @@ def build_clock_reset_metadata(
     report,
 ):
 
-    summary = report[
-        "summary"
-    ]
+    summary = report["summary"]
 
     return {
-        "clock_reset_schema_version":
-            SCHEMA_VERSION,
-        "clock_reset_report":
-            "clock_reset_report.json",
-        "modules_analyzed":
-            summary[
-                "modules_analyzed"
-            ],
-        "unique_clock_signals":
-            summary[
-                "unique_clock_signals"
-            ],
-        "unique_reset_signals":
-            summary[
-                "unique_reset_signals"
-            ],
-        "clock_names":
-            summary[
-                "clock_names"
-            ],
-        "reset_names":
-            summary[
-                "reset_names"
-            ],
+        "clock_reset_schema_version": SCHEMA_VERSION,
+        "clock_reset_report": "clock_reset_report.json",
+        "modules_analyzed": summary["modules_analyzed"],
+        "unique_clock_signals": summary["unique_clock_signals"],
+        "unique_reset_signals": summary["unique_reset_signals"],
+        "clock_names": summary["clock_names"],
+        "reset_names": summary["reset_names"],
     }
 
 
@@ -544,40 +425,25 @@ def write_pipeline_metadata(
     clock_reset_metadata,
 ):
 
-    metadata = dict(
-        previous_metadata
+    metadata = dict(previous_metadata)
+
+    metadata.update(clock_reset_metadata)
+
+    metadata["previous_stage"] = metadata.get(
+        "current_stage",
+        PREVIOUS_STAGE,
     )
 
-    metadata.update(
-        clock_reset_metadata
-    )
+    metadata["current_stage"] = CURRENT_STAGE
 
-    metadata["previous_stage"] = (
-        metadata.get(
-            "current_stage",
-            PREVIOUS_STAGE,
-        )
-    )
+    metadata["generated_by"] = SCRIPT_NAME
 
-    metadata["current_stage"] = (
-        CURRENT_STAGE
-    )
+    metadata["clock_reset_analysis_completed"] = True
 
-    metadata["generated_by"] = (
-        SCRIPT_NAME
-    )
-
-    metadata[
-        "clock_reset_analysis_completed"
-    ] = True
-
-    metadata[
-        "timestamp"
-    ] = timestamp()
+    metadata["timestamp"] = timestamp()
 
     write_json(
-        OUTPUT_DIR
-        / "pipeline_metadata.json",
+        OUTPUT_DIR / "pipeline_metadata.json",
         metadata,
     )
 
@@ -591,49 +457,31 @@ def main():
 
     ensure_output_directory()
 
-    ir = load_json(
-        IR_FILE
-    )
+    ir = load_json(IR_FILE)
 
-    metadata = load_json(
-        METADATA_FILE
-    )
+    metadata = load_json(METADATA_FILE)
 
-    report = analyze_clock_reset(
-        ir
-    )
+    report = analyze_clock_reset(ir)
 
     write_json(
-        OUTPUT_DIR
-        / "clock_reset_report.json",
+        OUTPUT_DIR / "clock_reset_report.json",
         report,
     )
 
-    write_observation_log(
-        report
-    )
+    write_observation_log(report)
 
     write_rules_document()
 
-    clock_reset_metadata = (
-        build_clock_reset_metadata(
-            report
-        )
-    )
+    clock_reset_metadata = build_clock_reset_metadata(report)
 
     write_pipeline_metadata(
         metadata,
         clock_reset_metadata,
     )
 
-    print(
-        "[INFO] Clock Reset Analyzer Completed"
-    )
+    print("[INFO] Clock Reset Analyzer Completed")
 
-    print(
-        f"[INFO] Output Directory: "
-        f"{OUTPUT_DIR}"
-    )
+    print(f"[INFO] Output Directory: " f"{OUTPUT_DIR}")
 
 
 if __name__ == "__main__":

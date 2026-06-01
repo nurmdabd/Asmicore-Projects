@@ -63,11 +63,10 @@ MODULE_RE = re.compile(
 )
 
 INSTANTIATION_RE = re.compile(
-    r"^\s*(?!module\b)"
-    r"([a-zA-Z_][a-zA-Z0-9_]*)\s+"
-    r"[a-zA-Z_][a-zA-Z0-9_]*\s*\(",
+    r"^\s*(?!module\b)" r"([a-zA-Z_][a-zA-Z0-9_]*)\s+" r"[a-zA-Z_][a-zA-Z0-9_]*\s*\(",
     re.MULTILINE,
 )
+
 
 # ============================================================
 # File Classification
@@ -272,25 +271,16 @@ def identify_top_modules(
 
         source_file = module_to_file[module]
 
-        has_children = (
-            module in parent_child
-            and len(parent_child[module]) > 0
-        )
+        has_children = module in parent_child and len(parent_child[module]) > 0
 
-        instantiated_elsewhere = (
-            module in instantiated_modules
-        )
+        instantiated_elsewhere = module in instantiated_modules
 
         module_lower = module.lower()
 
-        is_tb_module = any(
-            pattern in module_lower
-            for pattern in TB_MODULE_PATTERNS
-        )
+        is_tb_module = any(pattern in module_lower for pattern in TB_MODULE_PATTERNS)
 
         is_tb_directory = any(
-            part.lower() in TB_DIRECTORY_NAMES
-            for part in source_file.parts
+            part.lower() in TB_DIRECTORY_NAMES for part in source_file.parts
         )
 
         if is_tb_module or is_tb_directory:
@@ -298,12 +288,6 @@ def identify_top_modules(
             excluded_testbenches.append(module)
 
             continue
-
-        print(
-            module,
-            has_children,
-            instantiated_elsewhere,
-        )
 
         if has_children and not instantiated_elsewhere:
             candidates.append(module)
@@ -333,7 +317,7 @@ def determine_module_roles(
 
         elif module in instantiated_modules:
             roles[module] = "SUBMODULE"
-        
+
         elif module in excluded_testbenches:
             roles[module] = "TESTBENCH"
 
@@ -489,6 +473,7 @@ def write_notes(
         fp.write("Pipeline Metadata:\n")
         fp.write("- pipeline_metadata.json\n")
 
+
 # ============================================================
 # Pipeline Metadata
 # ============================================================
@@ -498,10 +483,7 @@ def write_pipeline_metadata(
     excluded_testbenches,
 ):
 
-    metadata_file = (
-        OUTPUT_DIR
-        / "pipeline_metadata.json"
-    )
+    metadata_file = OUTPUT_DIR / "pipeline_metadata.json"
 
     metadata = {
         "pipeline_version": "1.0",
@@ -510,10 +492,7 @@ def write_pipeline_metadata(
         "generated_by": "01_input_normalizer.py",
         "current_stage": "input_normalizer",
         "top_modules": candidates,
-        "excluded_testbenches": (
-            excluded_testbenches
-        ),
-
+        "excluded_testbenches": (excluded_testbenches),
         "timestamp": datetime.now().isoformat(),
     }
 
@@ -563,8 +542,6 @@ def main():
         duplicate_modules,
     ) = scan_repository(rtl_root)
 
-    print(sorted(instantiated_modules))
-
     (
         candidates,
         excluded_testbenches,
@@ -572,7 +549,7 @@ def main():
         module_to_file,
         instantiated_modules,
         parent_child,
-        )
+    )
 
     module_roles = determine_module_roles(
         module_to_file,

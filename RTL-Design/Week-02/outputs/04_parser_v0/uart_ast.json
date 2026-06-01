@@ -1,6 +1,6 @@
 {
     "schema_version": "0.1",
-    "generated_at": "2026-06-01T00:59:11.757232",
+    "generated_at": "2026-06-01T06:18:00.950713",
     "modules": [
         {
             "name": "uart_top_design",

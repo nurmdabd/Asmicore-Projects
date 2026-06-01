@@ -188,11 +188,13 @@ def convert_port(
         ),
     }
 
+
 def normalize_width(width):
     if width is None:
         return 1
 
     return width
+
 
 def convert_signal(
     signal,
@@ -476,7 +478,6 @@ def write_observation_log(
 
     observation_file = OUTPUT_DIR / "ir_observation_log.md"
 
-
     lines = []
 
     lines.append("# IR Builder Observations")
@@ -523,8 +524,7 @@ def build_ir_metadata(
     return {
         "ir_schema_version": SCHEMA_VERSION,
         "ir_file": "uart_ir.json",
-        "protocol_summary":
-            "uart_protocol_summary.json",
+        "protocol_summary": "uart_protocol_summary.json",
         "modules_converted": ir.get(
             "statistics",
             {},

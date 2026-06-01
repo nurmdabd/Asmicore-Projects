@@ -22,16 +22,9 @@ from datetime import datetime
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 
-OUTPUT_DIR = (
-    SCRIPT_DIR.parent
-    / "outputs"
-    / "04_parser_v0"
-)
+OUTPUT_DIR = SCRIPT_DIR.parent / "outputs" / "04_parser_v0"
 
-OUTPUT_DIR.mkdir(
-    parents=True,
-    exist_ok=True
-)
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # ============================================================
 # CONFIGURATION
@@ -39,22 +32,11 @@ OUTPUT_DIR.mkdir(
 
 SCHEMA_VERSION = "0.1"
 
-SUPPORTED_SIGNAL_TYPES = {
-    "wire",
-    "reg",
-    "logic"
-}
+SUPPORTED_SIGNAL_TYPES = {"wire", "reg", "logic"}
 
-SUPPORTED_PORT_DIRECTIONS = {
-    "input",
-    "output",
-    "inout"
-}
+SUPPORTED_PORT_DIRECTIONS = {"input", "output", "inout"}
 
-SUPPORTED_PARAMETER_TYPES = {
-    "parameter",
-    "localparam"
-}
+SUPPORTED_PARAMETER_TYPES = {"parameter", "localparam"}
 
 UNSUPPORTED_PATTERNS = {
     "interface",
@@ -64,13 +46,14 @@ UNSUPPORTED_PATTERNS = {
     "assert",
     "property",
     "sequence",
-    "generate"
+    "generate",
 }
 
 
 # ============================================================
 # TOKEN HELPERS
 # ============================================================
+
 
 def token_value(token):
     return token.get("value", "")
@@ -81,10 +64,7 @@ def token_type(token):
 
 
 def is_keyword(token, value):
-    return (
-        token_type(token) == "KEYWORD"
-        and token_value(token) == value
-    )
+    return token_type(token) == "KEYWORD" and token_value(token) == value
 
 
 def is_identifier(token):
@@ -96,13 +76,13 @@ def safe_token(tokens, index):
         return tokens[index]
     return None
 
+
 # ============================================================
 # Metadata Loading
 # ============================================================
 
-def load_metadata(
-    metadata_file: Path
-):
+
+def load_metadata(metadata_file: Path):
 
     with metadata_file.open(
         "r",
@@ -111,39 +91,37 @@ def load_metadata(
 
         return json.load(fp)
 
+
 # ============================================================
 # AST INITIALIZATION
 # ============================================================
+
 
 def create_empty_ast():
     return {
         "schema_version": SCHEMA_VERSION,
         "generated_at": datetime.now().isoformat(),
-        "modules": []
+        "modules": [],
     }
 
 
 def create_module_node(name, line_start):
     return {
         "name": name,
-
-        "metadata": {
-            "line_start": line_start,
-            "line_end": None
-        },
-
+        "metadata": {"line_start": line_start, "line_end": None},
         "parameters": [],
         "ports": [],
         "signals": [],
         "instances": [],
         "assigns": [],
-        "always_blocks": []
+        "always_blocks": [],
     }
 
 
 # ============================================================
 # MODULE PARSING
 # ============================================================
+
 
 def parse_modules(tokens):
     """
@@ -165,10 +143,7 @@ def parse_modules(tokens):
 
             if next_tok and is_identifier(next_tok):
 
-                current_module = create_module_node(
-                    next_tok["value"],
-                    token["line"]
-                )
+                current_module = create_module_node(next_tok["value"], token["line"])
 
                 modules.append(current_module)
 
@@ -186,6 +161,7 @@ def parse_modules(tokens):
 # ============================================================
 # PARAMETER PARSING
 # ============================================================
+
 
 def parse_parameters(tokens, modules):
     """
@@ -245,7 +221,7 @@ def parse_parameters(tokens, modules):
                     "name": name_tok["value"],
                     "value": value,
                     "kind": token_value(token),
-                    "line": token["line"]
+                    "line": token["line"],
                 }
             )
 
@@ -254,14 +230,12 @@ def parse_parameters(tokens, modules):
 # PORT PARSING
 # ============================================================
 
+
 def extract_width(tokens, start_idx):
 
     width = None
 
-    if (
-        safe_token(tokens, start_idx)
-        and token_value(tokens[start_idx]) == "["
-    ):
+    if safe_token(tokens, start_idx) and token_value(tokens[start_idx]) == "[":
 
         pieces = []
 
@@ -317,17 +291,11 @@ def parse_ports(tokens, modules):
             datatype = token_value(next_tok)
             cursor += 1
 
-        if (
-            safe_token(tokens, cursor)
-            and token_value(tokens[cursor]) == "["
-        ):
+        if safe_token(tokens, cursor) and token_value(tokens[cursor]) == "[":
 
             width = extract_width(tokens, cursor)
 
-            while (
-                cursor < len(tokens)
-                and token_value(tokens[cursor]) != "]"
-            ):
+            while cursor < len(tokens) and token_value(tokens[cursor]) != "]":
                 cursor += 1
 
             cursor += 1
@@ -346,15 +314,17 @@ def parse_ports(tokens, modules):
                         "direction": direction,
                         "datatype": datatype,
                         "width": width,
-                        "line": token["line"]
+                        "line": token["line"],
                     }
                 )
 
         idx += 1
 
+
 # ============================================================
 # SIGNAL PARSING
 # ============================================================
+
 
 def parse_signals(tokens, modules):
 
@@ -384,17 +354,11 @@ def parse_signals(tokens, modules):
 
         cursor = idx + 1
 
-        if (
-            safe_token(tokens, cursor)
-            and token_value(tokens[cursor]) == "["
-        ):
+        if safe_token(tokens, cursor) and token_value(tokens[cursor]) == "[":
 
             width = extract_width(tokens, cursor)
 
-            while (
-                cursor < len(tokens)
-                and token_value(tokens[cursor]) != "]"
-            ):
+            while cursor < len(tokens) and token_value(tokens[cursor]) != "]":
                 cursor += 1
 
             cursor += 1
@@ -407,27 +371,18 @@ def parse_signals(tokens, modules):
 
             if current_module is not None:
 
-                port_names = {
-                    port["name"]
-                    for port in current_module["ports"]
-                }
+                port_names = {port["name"] for port in current_module["ports"]}
 
-                signal_names = {
-                    signal["name"]
-                    for signal in current_module["signals"]
-                }
+                signal_names = {signal["name"] for signal in current_module["signals"]}
 
-                if (
-                    name not in port_names
-                    and name not in signal_names
-                ):
+                if name not in port_names and name not in signal_names:
 
                     current_module["signals"].append(
                         {
                             "name": name,
                             "datatype": datatype,
                             "width": width,
-                            "line": token["line"]
+                            "line": token["line"],
                         }
                     )
 
@@ -437,6 +392,7 @@ def parse_signals(tokens, modules):
 # ============================================================
 # INSTANCE PARSING
 # ============================================================
+
 
 def parse_instances(tokens, modules):
 
@@ -474,7 +430,7 @@ def parse_instances(tokens, modules):
                     {
                         "module": first["value"],
                         "instance": second["value"],
-                        "line": first["line"]
+                        "line": first["line"],
                     }
                 )
 
@@ -484,6 +440,7 @@ def parse_instances(tokens, modules):
 # ============================================================
 # ASSIGN PARSING
 # ============================================================
+
 
 def parse_assigns(tokens, modules):
 
@@ -538,11 +495,7 @@ def parse_assigns(tokens, modules):
         if current_module is not None:
 
             current_module["assigns"].append(
-                {
-                    "lhs": lhs,
-                    "rhs": rhs,
-                    "line": token["line"]
-                }
+                {"lhs": lhs, "rhs": rhs, "line": token["line"]}
             )
 
         idx += 1
@@ -551,6 +504,7 @@ def parse_assigns(tokens, modules):
 # ============================================================
 # ALWAYS BLOCK PARSING
 # ============================================================
+
 
 def parse_always_blocks(tokens, modules):
 
@@ -579,9 +533,7 @@ def parse_always_blocks(tokens, modules):
 
         while cursor < len(tokens):
 
-            sensitivity_tokens.append(
-                token_value(tokens[cursor])
-            )
+            sensitivity_tokens.append(token_value(tokens[cursor]))
 
             if token_value(tokens[cursor]) == ")":
                 break
@@ -596,7 +548,7 @@ def parse_always_blocks(tokens, modules):
                 {
                     "type": "always",
                     "line_start": token["line"],
-                    "sensitivity": sensitivity
+                    "sensitivity": sensitivity,
                 }
             )
 
@@ -606,6 +558,7 @@ def parse_always_blocks(tokens, modules):
 # ============================================================
 # UNSUPPORTED PATTERN DETECTION
 # ============================================================
+
 
 def detect_unsupported_patterns(tokens):
 
@@ -622,6 +575,7 @@ def detect_unsupported_patterns(tokens):
 # ============================================================
 # REPORT GENERATION
 # ============================================================
+
 
 def write_json(path, data):
 
@@ -689,30 +643,17 @@ def write_observation_log(path, ast):
 
             fp.write(f"## {module['name']}\n")
 
-            fp.write(
-                f"- Parameters: {len(module['parameters'])}\n"
-            )
+            fp.write(f"- Parameters: {len(module['parameters'])}\n")
 
-            fp.write(
-                f"- Ports: {len(module['ports'])}\n"
-            )
+            fp.write(f"- Ports: {len(module['ports'])}\n")
 
-            fp.write(
-                f"- Signals: {len(module['signals'])}\n"
-            )
+            fp.write(f"- Signals: {len(module['signals'])}\n")
 
-            fp.write(
-                f"- Instances: {len(module['instances'])}\n"
-            )
+            fp.write(f"- Instances: {len(module['instances'])}\n")
 
-            fp.write(
-                f"- Assigns: {len(module['assigns'])}\n"
-            )
+            fp.write(f"- Assigns: {len(module['assigns'])}\n")
 
-            fp.write(
-                f"- Always Blocks: "
-                f"{len(module['always_blocks'])}\n\n"
-            )
+            fp.write(f"- Always Blocks: " f"{len(module['always_blocks'])}\n\n")
 
 
 def build_metadata(ast):
@@ -723,27 +664,23 @@ def build_metadata(ast):
         "signals_detected": 0,
         "instances_detected": 0,
         "always_blocks_detected": 0,
-        "assigns_detected": 0
+        "assigns_detected": 0,
     }
 
     for module in ast["modules"]:
 
-        metadata["ports_detected"] += \
-            len(module["ports"])
+        metadata["ports_detected"] += len(module["ports"])
 
-        metadata["signals_detected"] += \
-            len(module["signals"])
+        metadata["signals_detected"] += len(module["signals"])
 
-        metadata["instances_detected"] += \
-            len(module["instances"])
+        metadata["instances_detected"] += len(module["instances"])
 
-        metadata["always_blocks_detected"] += \
-            len(module["always_blocks"])
+        metadata["always_blocks_detected"] += len(module["always_blocks"])
 
-        metadata["assigns_detected"] += \
-            len(module["assigns"])
+        metadata["assigns_detected"] += len(module["assigns"])
 
     return metadata
+
 
 def write_pipeline_metadata(
     previous_metadata,
@@ -751,70 +688,37 @@ def write_pipeline_metadata(
     unsupported,
 ):
 
-    metadata = dict(
-        previous_metadata
-    )
+    metadata = dict(previous_metadata)
 
-    metadata.update(
-        parser_metadata
-    )
+    metadata.update(parser_metadata)
 
-    metadata["previous_stage"] = (
-        metadata.get(
-            "current_stage",
-            "lexer_tokenizer"
-        )
-    )
+    metadata["previous_stage"] = metadata.get("current_stage", "lexer_tokenizer")
 
-    metadata["current_stage"] = (
-        "parser_v0"
-    )
+    metadata["current_stage"] = "parser_v0"
 
-    metadata["generated_by"] = (
-        "04_parser_v0.py"
-    )
+    metadata["generated_by"] = "04_parser_v0.py"
 
-    metadata["ast_file"] = (
-        "uart_ast.json"
-    )
+    metadata["ast_file"] = "uart_ast.json"
 
-    metadata["parser_schema_version"] = (
-        SCHEMA_VERSION
-    )
+    metadata["parser_schema_version"] = SCHEMA_VERSION
 
-    metadata["unsupported_patterns"] = (
-        unsupported
-    )
+    metadata["unsupported_patterns"] = unsupported
 
-    metadata["unsupported_pattern_count"] = (
-        len(unsupported)
-    )
+    metadata["unsupported_pattern_count"] = len(unsupported)
 
-    metadata["timestamp"] = (
-        datetime.now().isoformat()
-    )
+    metadata["timestamp"] = datetime.now().isoformat()
 
-    metadata_file = (
-        OUTPUT_DIR
-        / "pipeline_metadata.json"
-    )
+    metadata_file = OUTPUT_DIR / "pipeline_metadata.json"
 
-    with open(
-        metadata_file,
-        "w",
-        encoding="utf-8"
-    ) as fp:
+    with open(metadata_file, "w", encoding="utf-8") as fp:
 
-        json.dump(
-            metadata,
-            fp,
-            indent=4
-        )
+        json.dump(metadata, fp, indent=4)
 
 
 # ============================================================
 # MAIN
 # ============================================================
+
 
 def main():
 
@@ -836,9 +740,7 @@ def main():
         )
         sys.exit(1)
 
-    token_stream_file = Path(
-        sys.argv[1]
-    ).resolve()
+    token_stream_file = Path(sys.argv[1]).resolve()
 
     if not token_stream_file.exists():
         print(
@@ -851,10 +753,7 @@ def main():
         )
         sys.exit(1)
 
-    metadata_file = (
-        token_stream_file.parent
-        / "pipeline_metadata.json"
-    )
+    metadata_file = token_stream_file.parent / "pipeline_metadata.json"
 
     if not metadata_file.exists():
         print(
@@ -868,9 +767,7 @@ def main():
         )
         sys.exit(1)
 
-    previous_metadata = load_metadata(
-        metadata_file
-    )
+    previous_metadata = load_metadata(metadata_file)
 
     with open(token_stream_file, "r") as fp:
         tokens = json.load(fp)
@@ -890,28 +787,15 @@ def main():
 
     unsupported = detect_unsupported_patterns(tokens)
 
-    write_json(
-        OUTPUT_DIR / "uart_ast.json",
-        ast
-    )
+    write_json(OUTPUT_DIR / "uart_ast.json", ast)
 
-    write_parser_scope(
-        OUTPUT_DIR / "parser_scope_v0.md"
-    )
+    write_parser_scope(OUTPUT_DIR / "parser_scope_v0.md")
 
-    write_unsupported_report(
-        OUTPUT_DIR / "unsupported_sv_patterns.md",
-        unsupported
-    )
+    write_unsupported_report(OUTPUT_DIR / "unsupported_sv_patterns.md", unsupported)
 
-    write_observation_log(
-        OUTPUT_DIR / "parser_observation_log.md",
-        ast
-    )
+    write_observation_log(OUTPUT_DIR / "parser_observation_log.md", ast)
 
-    parser_metadata = build_metadata(
-        ast
-    )
+    parser_metadata = build_metadata(ast)
 
     write_pipeline_metadata(
         previous_metadata,

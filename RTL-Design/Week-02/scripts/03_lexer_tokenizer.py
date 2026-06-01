@@ -30,18 +30,13 @@ from dataclasses import dataclass, asdict
 from datetime import datetime
 from pathlib import Path
 
-
 # ============================================================
 # Configuration
 # ============================================================
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 
-OUTPUT_DIR = (
-    SCRIPT_DIR.parent
-    / "outputs"
-    / "03_lexer_tokenizer"
-)
+OUTPUT_DIR = SCRIPT_DIR.parent / "outputs" / "03_lexer_tokenizer"
 
 OUTPUT_DIR.mkdir(
     parents=True,
@@ -139,13 +134,9 @@ COMMENT_RE = re.compile(
     re.MULTILINE | re.DOTALL,
 )
 
-DIRECTIVE_RE = re.compile(
-    r"`[a-zA-Z_][a-zA-Z0-9_]*"
-)
+DIRECTIVE_RE = re.compile(r"`[a-zA-Z_][a-zA-Z0-9_]*")
 
-IDENTIFIER_RE = re.compile(
-    r"[a-zA-Z_][a-zA-Z0-9_]*"
-)
+IDENTIFIER_RE = re.compile(r"[a-zA-Z_][a-zA-Z0-9_]*")
 
 NUMBER_RE = re.compile(
     r"""
@@ -156,14 +147,13 @@ NUMBER_RE = re.compile(
     re.VERBOSE,
 )
 
-STRING_RE = re.compile(
-    r'"([^"\\]|\\.)*"'
-)
+STRING_RE = re.compile(r'"([^"\\]|\\.)*"')
 
 
 # ============================================================
 # Token Dataclass
 # ============================================================
+
 
 @dataclass
 class Token:
@@ -178,9 +168,8 @@ class Token:
 # Metadata Loading
 # ============================================================
 
-def load_metadata(
-    metadata_file: Path
-):
+
+def load_metadata(metadata_file: Path):
 
     with metadata_file.open(
         "r",
@@ -194,9 +183,8 @@ def load_metadata(
 # Input RTL Loading
 # ============================================================
 
-def load_preprocessed_rtl(
-    rtl_file: Path
-):
+
+def load_preprocessed_rtl(rtl_file: Path):
 
     return rtl_file.read_text(
         encoding="utf-8",
@@ -208,16 +196,17 @@ def load_preprocessed_rtl(
 # Helpers
 # ============================================================
 
-def get_line_column(
-    text: str,
-    position: int
-):
 
-    line = text.count(
-        "\n",
-        0,
-        position,
-    ) + 1
+def get_line_column(text: str, position: int):
+
+    line = (
+        text.count(
+            "\n",
+            0,
+            position,
+        )
+        + 1
+    )
 
     last_newline = text.rfind(
         "\n",
@@ -237,9 +226,8 @@ def get_line_column(
 # Comment Extraction
 # ============================================================
 
-def extract_comments(
-    text: str
-):
+
+def extract_comments(text: str):
 
     tokens = []
 
@@ -266,15 +254,12 @@ def extract_comments(
 # Lexer Engine
 # ============================================================
 
-def tokenize(
-    text: str
-):
+
+def tokenize(text: str):
 
     tokens = []
 
-    comment_tokens = extract_comments(
-        text
-    )
+    comment_tokens = extract_comments(text)
 
     tokens.extend(comment_tokens)
 
@@ -290,17 +275,14 @@ def tokenize(
             position += 1
             continue
 
-        if text[position:position+2] == "//":
+        if text[position : position + 2] == "//":
 
-            while (
-                position < length
-                and text[position] != "\n"
-            ):
+            while position < length and text[position] != "\n":
                 position += 1
 
             continue
 
-        if text[position:position+2] == "/*":
+        if text[position : position + 2] == "/*":
 
             end = text.find(
                 "*/",
@@ -390,7 +372,6 @@ def tokenize(
 
             continue
 
-
         # -----------------------------------------
         # Identifiers / Keywords
         # -----------------------------------------
@@ -404,11 +385,7 @@ def tokenize(
 
             value = match.group(0)
 
-            token_type = (
-                "KEYWORD"
-                if value in SV_KEYWORDS
-                else "IDENTIFIER"
-            )
+            token_type = "KEYWORD" if value in SV_KEYWORDS else "IDENTIFIER"
 
             tokens.append(
                 Token(
@@ -495,14 +472,10 @@ def tokenize(
 # Reports
 # ============================================================
 
-def write_token_stream(
-    tokens
-):
 
-    output_file = (
-        OUTPUT_DIR
-        / "uart_token_stream.json"
-    )
+def write_token_stream(tokens):
+
+    output_file = OUTPUT_DIR / "uart_token_stream.json"
 
     with output_file.open(
         "w",
@@ -510,10 +483,7 @@ def write_token_stream(
     ) as fp:
 
         json.dump(
-            [
-                asdict(token)
-                for token in tokens
-            ],
+            [asdict(token) for token in tokens],
             fp,
             indent=4,
         )
@@ -521,73 +491,41 @@ def write_token_stream(
 
 def write_token_spec():
 
-    output_file = (
-        OUTPUT_DIR
-        / "token_spec_v0.md"
-    )
+    output_file = OUTPUT_DIR / "token_spec_v0.md"
 
     with output_file.open(
         "w",
         encoding="utf-8",
     ) as fp:
 
-        fp.write(
-            "# Token Specification v0\n\n"
-        )
+        fp.write("# Token Specification v0\n\n")
 
-        fp.write(
-            "| Token Type | Description |\n"
-        )
+        fp.write("| Token Type | Description |\n")
 
-        fp.write(
-            "|------------|-------------|\n"
-        )
+        fp.write("|------------|-------------|\n")
 
-        fp.write(
-            "| KEYWORD | SystemVerilog keyword |\n"
-        )
+        fp.write("| KEYWORD | SystemVerilog keyword |\n")
 
-        fp.write(
-            "| IDENTIFIER | User-defined symbol |\n"
-        )
+        fp.write("| IDENTIFIER | User-defined symbol |\n")
 
-        fp.write(
-            "| NUMBER | Numeric literal |\n"
-        )
+        fp.write("| NUMBER | Numeric literal |\n")
 
-        fp.write(
-            "| OPERATOR | Arithmetic / logical operator |\n"
-        )
+        fp.write("| OPERATOR | Arithmetic / logical operator |\n")
 
-        fp.write(
-            "| PUNCTUATION | Structural symbol |\n"
-        )
+        fp.write("| PUNCTUATION | Structural symbol |\n")
 
-        fp.write(
-            "| COMMENT | Single-line or multi-line comment |\n"
-        )
+        fp.write("| COMMENT | Single-line or multi-line comment |\n")
 
-        fp.write(
-            "| STRING | String literal |\n"
-        )
+        fp.write("| STRING | String literal |\n")
 
-        fp.write(
-            "| DIRECTIVE | Compiler directive |\n"
-        )
+        fp.write("| DIRECTIVE | Compiler directive |\n")
 
-        fp.write(
-            "| UNKNOWN | Unrecognized token |\n"
-        )
+        fp.write("| UNKNOWN | Unrecognized token |\n")
 
 
-def write_observation_log(
-    tokens
-):
+def write_observation_log(tokens):
 
-    output_file = (
-        OUTPUT_DIR
-        / "lexer_observation_log.md"
-    )
+    output_file = OUTPUT_DIR / "lexer_observation_log.md"
 
     token_counts = {}
 
@@ -601,39 +539,24 @@ def write_observation_log(
             + 1
         )
 
-    unknown_tokens = [
-        token
-        for token in tokens
-        if token.type == "UNKNOWN"
-    ]
+    unknown_tokens = [token for token in tokens if token.type == "UNKNOWN"]
 
     with output_file.open(
         "w",
         encoding="utf-8",
     ) as fp:
 
-        fp.write(
-            "# Lexer Observation Log\n\n"
-        )
+        fp.write("# Lexer Observation Log\n\n")
 
-        fp.write(
-            "## Token Summary\n\n"
-        )
+        fp.write("## Token Summary\n\n")
 
-        for token_type in sorted(
-            token_counts
-        ):
+        for token_type in sorted(token_counts):
 
-            fp.write(
-                f"- {token_type}: "
-                f"{token_counts[token_type]}\n"
-            )
+            fp.write(f"- {token_type}: " f"{token_counts[token_type]}\n")
 
         fp.write("\n")
 
-        fp.write(
-            "## FSM State Tokens\n\n"
-        )
+        fp.write("## FSM State Tokens\n\n")
 
         fsm_states = {
             "IDLE",
@@ -647,94 +570,60 @@ def write_observation_log(
 
         for token in tokens:
 
-            if (
-                token.type
-                == "IDENTIFIER"
-                and token.value
-                in fsm_states
-            ):
-                found_states.append(
-                    token.value
-                )
+            if token.type == "IDENTIFIER" and token.value in fsm_states:
+                found_states.append(token.value)
 
         if found_states:
 
-            for state in sorted(
-                set(found_states)
-            ):
+            for state in sorted(set(found_states)):
 
-                fp.write(
-                    f"- {state}\n"
-                )
+                fp.write(f"- {state}\n")
 
         else:
 
-            fp.write(
-                "No FSM states detected.\n"
-            )
+            fp.write("No FSM states detected.\n")
 
         fp.write("\n")
 
-        fp.write(
-            "## Unsupported Patterns\n\n"
-        )
+        fp.write("## Unsupported Patterns\n\n")
 
         if unknown_tokens:
 
             for token in unknown_tokens:
 
-                fp.write(
-                    f"- Line {token.line}: "
-                    f"{token.value}\n"
-                )
+                fp.write(f"- Line {token.line}: " f"{token.value}\n")
 
         else:
 
-            fp.write(
-                "No unsupported patterns detected.\n"
-            )
+            fp.write("No unsupported patterns detected.\n")
 
 
 # ============================================================
 # Pipeline Metadata
 # ============================================================
 
+
 def write_pipeline_metadata(
     previous_metadata,
     tokens,
 ):
 
-    metadata_file = (
-        OUTPUT_DIR
-        / "pipeline_metadata.json"
+    metadata_file = OUTPUT_DIR / "pipeline_metadata.json"
+
+    metadata = dict(previous_metadata)
+
+    metadata["previous_stage"] = metadata.get(
+        "current_stage",
+        "sv_preprocessor",
     )
 
-    metadata = dict(
-        previous_metadata
-    )
+    metadata["current_stage"] = "lexer_tokenizer"
 
-    metadata["previous_stage"] = (
-        metadata.get(
-            "current_stage",
-            "sv_preprocessor",
-        )
-    )
+    metadata["generated_by"] = "03_lexer_tokenizer.py"
 
-    metadata["current_stage"] = (
-        "lexer_tokenizer"
-    )
+    metadata["token_stream"] = "uart_token_stream.json"
 
-    metadata["generated_by"] = (
-        "03_lexer_tokenizer.py"
-    )
-
-    metadata["token_stream"] = (
-        "uart_token_stream.json"
-    )
-
-    metadata["token_count"] = (
-        len(tokens)
-    )
+    metadata["token_count"] = len(tokens)
 
     metadata["fsm_states_detected"] = [
         "IDLE",
@@ -743,9 +632,7 @@ def write_pipeline_metadata(
         "STOP",
     ]
 
-    metadata["timestamp"] = (
-        datetime.now().isoformat()
-    )
+    metadata["timestamp"] = datetime.now().isoformat()
 
     with metadata_file.open(
         "w",
@@ -763,34 +650,24 @@ def write_pipeline_metadata(
 # Main
 # ============================================================
 
+
 def main():
 
     if len(sys.argv) != 2:
 
-        print(
-            "Usage:\n"
-            "python3 03_lexer_tokenizer.py "
-            "<uart_preprocessed.sv>"
-        )
+        print("Usage:\n" "python3 03_lexer_tokenizer.py " "<uart_preprocessed.sv>")
 
         sys.exit(1)
 
-    rtl_file = Path(
-        sys.argv[1]
-    ).resolve()
+    rtl_file = Path(sys.argv[1]).resolve()
 
     if not rtl_file.exists():
 
-        print(
-            f"ERROR: {rtl_file} not found"
-        )
+        print(f"ERROR: {rtl_file} not found")
 
         sys.exit(1)
 
-    metadata_file = (
-        rtl_file.parent
-        / "pipeline_metadata.json"
-    )
+    metadata_file = rtl_file.parent / "pipeline_metadata.json"
 
     if not metadata_file.exists():
 
@@ -803,27 +680,17 @@ def main():
 
         sys.exit(1)
 
-    metadata = load_metadata(
-        metadata_file
-    )
+    metadata = load_metadata(metadata_file)
 
-    rtl_text = load_preprocessed_rtl(
-        rtl_file
-    )
+    rtl_text = load_preprocessed_rtl(rtl_file)
 
-    tokens = tokenize(
-        rtl_text
-    )
+    tokens = tokenize(rtl_text)
 
-    write_token_stream(
-        tokens
-    )
+    write_token_stream(tokens)
 
     write_token_spec()
 
-    write_observation_log(
-        tokens
-    )
+    write_observation_log(tokens)
 
     write_pipeline_metadata(
         metadata,

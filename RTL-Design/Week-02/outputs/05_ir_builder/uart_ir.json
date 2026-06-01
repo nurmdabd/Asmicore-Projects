@@ -2,7 +2,7 @@
     "schema_version": "0.1",
     "metadata": {
         "generated_by": "05_ir_builder.py",
-        "generated_at": "2026-05-31T23:28:47.134205+00:00",
+        "generated_at": "2026-06-01T00:18:36.747941+00:00",
         "schema_version": "0.1",
         "design_name": "UART",
         "top_module": "uart_top_design",
