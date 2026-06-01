@@ -2,7 +2,7 @@
     "schema_version": "0.1",
     "metadata": {
         "generated_by": "06_clock_reset_analyzer.py",
-        "generated_at": "2026-06-01T00:19:11.717964+00:00",
+        "generated_at": "2026-06-01T07:40:34.899886+00:00",
         "input_ir": "uart_ir.json",
         "input_metadata": "pipeline_metadata.json"
     },
