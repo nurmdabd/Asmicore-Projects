@@ -1,0 +1,860 @@
+../Week-03_RTL-Synthesis
+├── RTL-to-GDSII-flow-week-03-folder-structure.txt
+├── analysis
+├── configs
+├── docs
+├── rtl
+│   └── tiny-tpu
+│       ├── Makefile
+│       ├── README.md
+│       ├── compile.do
+│       ├── docs
+│       │   ├── fv_coverage_assert.txt
+│       │   ├── fv_coverage_cover.txt
+│       │   ├── fv_results.md
+│       │   ├── gen_fv.ps1
+│       │   ├── gen_fv_plan.py
+│       │   ├── questasim_compilation_log.md
+│       │   ├── single_pass_results.txt
+│       │   ├── training_results.txt
+│       │   └── verification_plan.md
+│       ├── images
+│       │   └── tpu.png
+│       ├── jupyter
+│       │   └── single_pass_numpy.ipynb
+│       ├── mnist_demo
+│       │   ├── README.md
+│       │   ├── __init__.py
+│       │   ├── artifacts
+│       │   │   ├── README.md
+│       │   │   ├── benchmarks
+│       │   │   │   ├── README.md
+│       │   │   │   └── synthetic_handdrawn
+│       │   │   │       ├── README.md
+│       │   │   │       ├── predictions.csv
+│       │   │   │       ├── previews
+│       │   │   │       │   ├── README.md
+│       │   │   │       │   ├── digit_0_sample_000_pred_0.png
+│       │   │   │       │   ├── digit_0_sample_000_pred_0.txt
+│       │   │   │       │   ├── digit_0_sample_001_pred_0.png
+│       │   │   │       │   ├── digit_0_sample_001_pred_0.txt
+│       │   │   │       │   ├── digit_0_sample_002_pred_0.png
+│       │   │   │       │   ├── digit_0_sample_002_pred_0.txt
+│       │   │   │       │   ├── digit_0_sample_003_pred_0.png
+│       │   │   │       │   ├── digit_0_sample_003_pred_0.txt
+│       │   │   │       │   ├── digit_1_sample_000_pred_5.png
+│       │   │   │       │   ├── digit_1_sample_000_pred_5.txt
+│       │   │   │       │   ├── digit_1_sample_001_pred_5.png
+│       │   │   │       │   ├── digit_1_sample_001_pred_5.txt
+│       │   │   │       │   ├── digit_1_sample_002_pred_3.png
+│       │   │   │       │   ├── digit_1_sample_002_pred_3.txt
+│       │   │   │       │   ├── digit_1_sample_003_pred_6.png
+│       │   │   │       │   ├── digit_1_sample_003_pred_6.txt
+│       │   │   │       │   ├── digit_2_sample_000_pred_2.png
+│       │   │   │       │   ├── digit_2_sample_000_pred_2.txt
+│       │   │   │       │   ├── digit_2_sample_001_pred_2.png
+│       │   │   │       │   ├── digit_2_sample_001_pred_2.txt
+│       │   │   │       │   ├── digit_2_sample_002_pred_7.png
+│       │   │   │       │   ├── digit_2_sample_002_pred_7.txt
+│       │   │   │       │   ├── digit_2_sample_003_pred_2.png
+│       │   │   │       │   ├── digit_2_sample_003_pred_2.txt
+│       │   │   │       │   ├── digit_3_sample_000_pred_2.png
+│       │   │   │       │   ├── digit_3_sample_000_pred_2.txt
+│       │   │   │       │   ├── digit_3_sample_001_pred_3.png
+│       │   │   │       │   ├── digit_3_sample_001_pred_3.txt
+│       │   │   │       │   ├── digit_3_sample_002_pred_2.png
+│       │   │   │       │   ├── digit_3_sample_002_pred_2.txt
+│       │   │   │       │   ├── digit_3_sample_003_pred_2.png
+│       │   │   │       │   ├── digit_3_sample_003_pred_2.txt
+│       │   │   │       │   ├── digit_4_sample_000_pred_2.png
+│       │   │   │       │   ├── digit_4_sample_000_pred_2.txt
+│       │   │   │       │   ├── digit_4_sample_001_pred_6.png
+│       │   │   │       │   ├── digit_4_sample_001_pred_6.txt
+│       │   │   │       │   ├── digit_4_sample_002_pred_4.png
+│       │   │   │       │   ├── digit_4_sample_002_pred_4.txt
+│       │   │   │       │   ├── digit_4_sample_003_pred_1.png
+│       │   │   │       │   ├── digit_4_sample_003_pred_1.txt
+│       │   │   │       │   ├── digit_5_sample_000_pred_3.png
+│       │   │   │       │   ├── digit_5_sample_000_pred_3.txt
+│       │   │   │       │   ├── digit_5_sample_001_pred_5.png
+│       │   │   │       │   ├── digit_5_sample_001_pred_5.txt
+│       │   │   │       │   ├── digit_5_sample_002_pred_2.png
+│       │   │   │       │   ├── digit_5_sample_002_pred_2.txt
+│       │   │   │       │   ├── digit_5_sample_003_pred_5.png
+│       │   │   │       │   ├── digit_5_sample_003_pred_5.txt
+│       │   │   │       │   ├── digit_6_sample_000_pred_4.png
+│       │   │   │       │   ├── digit_6_sample_000_pred_4.txt
+│       │   │   │       │   ├── digit_6_sample_001_pred_0.png
+│       │   │   │       │   ├── digit_6_sample_001_pred_0.txt
+│       │   │   │       │   ├── digit_6_sample_002_pred_5.png
+│       │   │   │       │   ├── digit_6_sample_002_pred_5.txt
+│       │   │   │       │   ├── digit_6_sample_003_pred_5.png
+│       │   │   │       │   ├── digit_6_sample_003_pred_5.txt
+│       │   │   │       │   ├── digit_7_sample_000_pred_7.png
+│       │   │   │       │   ├── digit_7_sample_000_pred_7.txt
+│       │   │   │       │   ├── digit_7_sample_001_pred_7.png
+│       │   │   │       │   ├── digit_7_sample_001_pred_7.txt
+│       │   │   │       │   ├── digit_7_sample_002_pred_7.png
+│       │   │   │       │   ├── digit_7_sample_002_pred_7.txt
+│       │   │   │       │   ├── digit_7_sample_003_pred_7.png
+│       │   │   │       │   ├── digit_7_sample_003_pred_7.txt
+│       │   │   │       │   ├── digit_8_sample_000_pred_0.png
+│       │   │   │       │   ├── digit_8_sample_000_pred_0.txt
+│       │   │   │       │   ├── digit_8_sample_001_pred_3.png
+│       │   │   │       │   ├── digit_8_sample_001_pred_3.txt
+│       │   │   │       │   ├── digit_8_sample_002_pred_9.png
+│       │   │   │       │   ├── digit_8_sample_002_pred_9.txt
+│       │   │   │       │   ├── digit_8_sample_003_pred_3.png
+│       │   │   │       │   ├── digit_8_sample_003_pred_3.txt
+│       │   │   │       │   ├── digit_9_sample_000_pred_7.png
+│       │   │   │       │   ├── digit_9_sample_000_pred_7.txt
+│       │   │   │       │   ├── digit_9_sample_001_pred_9.png
+│       │   │   │       │   ├── digit_9_sample_001_pred_9.txt
+│       │   │   │       │   ├── digit_9_sample_002_pred_7.png
+│       │   │   │       │   ├── digit_9_sample_002_pred_7.txt
+│       │   │   │       │   ├── digit_9_sample_003_pred_7.png
+│       │   │   │       │   └── digit_9_sample_003_pred_7.txt
+│       │   │   │       └── results.json
+│       │   │   ├── previews
+│       │   │   │   ├── README.md
+│       │   │   │   ├── bitmask
+│       │   │   │   │   ├── README.md
+│       │   │   │   │   ├── generated_model_sample_image_bin.bmp
+│       │   │   │   │   ├── generated_model_sample_image_bin.png
+│       │   │   │   │   ├── generated_model_sample_image_bin.txt
+│       │   │   │   │   ├── index.html
+│       │   │   │   │   ├── model_sample_image_bin.bmp
+│       │   │   │   │   ├── model_sample_image_bin.png
+│       │   │   │   │   ├── model_sample_image_bin.txt
+│       │   │   │   │   ├── runtime_current_frame_bits.bmp
+│       │   │   │   │   ├── runtime_current_frame_bits.png
+│       │   │   │   │   ├── runtime_current_frame_bits.txt
+│       │   │   │   │   ├── runtime_sample_frame_bits.bmp
+│       │   │   │   │   ├── runtime_sample_frame_bits.png
+│       │   │   │   │   └── runtime_sample_frame_bits.txt
+│       │   │   │   └── dataset
+│       │   │   │       ├── README.md
+│       │   │   │       ├── index.html
+│       │   │   │       ├── metadata.json
+│       │   │   │       ├── test_idx_00000_label_7_binary.png
+│       │   │   │       ├── test_idx_00000_label_7_gray.png
+│       │   │   │       ├── test_idx_00001_label_2_binary.png
+│       │   │   │       ├── test_idx_00001_label_2_gray.png
+│       │   │   │       ├── test_idx_00002_label_1_binary.png
+│       │   │   │       ├── test_idx_00002_label_1_gray.png
+│       │   │   │       ├── test_idx_00003_label_0_binary.png
+│       │   │   │       ├── test_idx_00003_label_0_gray.png
+│       │   │   │       ├── test_idx_00004_label_4_binary.png
+│       │   │   │       ├── test_idx_00004_label_4_gray.png
+│       │   │   │       ├── test_idx_00005_label_1_binary.png
+│       │   │   │       ├── test_idx_00005_label_1_gray.png
+│       │   │   │       ├── test_idx_00006_label_4_binary.png
+│       │   │   │       ├── test_idx_00006_label_4_gray.png
+│       │   │   │       ├── test_idx_00007_label_9_binary.png
+│       │   │   │       ├── test_idx_00007_label_9_gray.png
+│       │   │   │       ├── test_idx_00008_label_5_binary.png
+│       │   │   │       ├── test_idx_00008_label_5_gray.png
+│       │   │   │       ├── test_idx_00009_label_9_binary.png
+│       │   │   │       ├── test_idx_00009_label_9_gray.png
+│       │   │   │       ├── test_idx_00010_label_0_binary.png
+│       │   │   │       ├── test_idx_00010_label_0_gray.png
+│       │   │   │       ├── test_idx_00011_label_6_binary.png
+│       │   │   │       ├── test_idx_00011_label_6_gray.png
+│       │   │   │       ├── test_idx_00012_label_9_binary.png
+│       │   │   │       ├── test_idx_00012_label_9_gray.png
+│       │   │   │       ├── test_idx_00013_label_0_binary.png
+│       │   │   │       ├── test_idx_00013_label_0_gray.png
+│       │   │   │       ├── test_idx_00014_label_1_binary.png
+│       │   │   │       ├── test_idx_00014_label_1_gray.png
+│       │   │   │       ├── test_idx_00015_label_5_binary.png
+│       │   │   │       ├── test_idx_00015_label_5_gray.png
+│       │   │   │       ├── test_idx_00017_label_7_binary.png
+│       │   │   │       ├── test_idx_00017_label_7_gray.png
+│       │   │   │       ├── test_idx_00018_label_3_binary.png
+│       │   │   │       ├── test_idx_00018_label_3_gray.png
+│       │   │   │       ├── test_idx_00019_label_4_binary.png
+│       │   │   │       ├── test_idx_00019_label_4_gray.png
+│       │   │   │       ├── test_idx_00021_label_6_binary.png
+│       │   │   │       ├── test_idx_00021_label_6_gray.png
+│       │   │   │       ├── test_idx_00022_label_6_binary.png
+│       │   │   │       ├── test_idx_00022_label_6_gray.png
+│       │   │   │       ├── test_idx_00023_label_5_binary.png
+│       │   │   │       ├── test_idx_00023_label_5_gray.png
+│       │   │   │       ├── test_idx_00026_label_7_binary.png
+│       │   │   │       ├── test_idx_00026_label_7_gray.png
+│       │   │   │       ├── test_idx_00030_label_3_binary.png
+│       │   │   │       ├── test_idx_00030_label_3_gray.png
+│       │   │   │       ├── test_idx_00032_label_3_binary.png
+│       │   │   │       ├── test_idx_00032_label_3_gray.png
+│       │   │   │       ├── test_idx_00035_label_2_binary.png
+│       │   │   │       ├── test_idx_00035_label_2_gray.png
+│       │   │   │       ├── test_idx_00038_label_2_binary.png
+│       │   │   │       ├── test_idx_00038_label_2_gray.png
+│       │   │   │       ├── test_idx_00061_label_8_binary.png
+│       │   │   │       ├── test_idx_00061_label_8_gray.png
+│       │   │   │       ├── test_idx_00084_label_8_binary.png
+│       │   │   │       ├── test_idx_00084_label_8_gray.png
+│       │   │   │       ├── test_idx_00110_label_8_binary.png
+│       │   │   │       ├── test_idx_00110_label_8_gray.png
+│       │   │   │       ├── train_idx_00000_label_5_binary.png
+│       │   │   │       ├── train_idx_00000_label_5_gray.png
+│       │   │   │       ├── train_idx_00001_label_0_binary.png
+│       │   │   │       ├── train_idx_00001_label_0_gray.png
+│       │   │   │       ├── train_idx_00002_label_4_binary.png
+│       │   │   │       ├── train_idx_00002_label_4_gray.png
+│       │   │   │       ├── train_idx_00003_label_1_binary.png
+│       │   │   │       ├── train_idx_00003_label_1_gray.png
+│       │   │   │       ├── train_idx_00004_label_9_binary.png
+│       │   │   │       ├── train_idx_00004_label_9_gray.png
+│       │   │   │       ├── train_idx_00005_label_2_binary.png
+│       │   │   │       ├── train_idx_00005_label_2_gray.png
+│       │   │   │       ├── train_idx_00006_label_1_binary.png
+│       │   │   │       ├── train_idx_00006_label_1_gray.png
+│       │   │   │       ├── train_idx_00007_label_3_binary.png
+│       │   │   │       ├── train_idx_00007_label_3_gray.png
+│       │   │   │       ├── train_idx_00008_label_1_binary.png
+│       │   │   │       ├── train_idx_00008_label_1_gray.png
+│       │   │   │       ├── train_idx_00009_label_4_binary.png
+│       │   │   │       ├── train_idx_00009_label_4_gray.png
+│       │   │   │       ├── train_idx_00010_label_3_binary.png
+│       │   │   │       ├── train_idx_00010_label_3_gray.png
+│       │   │   │       ├── train_idx_00011_label_5_binary.png
+│       │   │   │       ├── train_idx_00011_label_5_gray.png
+│       │   │   │       ├── train_idx_00012_label_3_binary.png
+│       │   │   │       ├── train_idx_00012_label_3_gray.png
+│       │   │   │       ├── train_idx_00013_label_6_binary.png
+│       │   │   │       ├── train_idx_00013_label_6_gray.png
+│       │   │   │       ├── train_idx_00014_label_1_binary.png
+│       │   │   │       ├── train_idx_00014_label_1_gray.png
+│       │   │   │       ├── train_idx_00015_label_7_binary.png
+│       │   │   │       ├── train_idx_00015_label_7_gray.png
+│       │   │   │       ├── train_idx_00016_label_2_binary.png
+│       │   │   │       ├── train_idx_00016_label_2_gray.png
+│       │   │   │       ├── train_idx_00017_label_8_binary.png
+│       │   │   │       ├── train_idx_00017_label_8_gray.png
+│       │   │   │       ├── train_idx_00018_label_6_binary.png
+│       │   │   │       ├── train_idx_00018_label_6_gray.png
+│       │   │   │       ├── train_idx_00019_label_9_binary.png
+│       │   │   │       ├── train_idx_00019_label_9_gray.png
+│       │   │   │       ├── train_idx_00020_label_4_binary.png
+│       │   │   │       ├── train_idx_00020_label_4_gray.png
+│       │   │   │       ├── train_idx_00021_label_0_binary.png
+│       │   │   │       ├── train_idx_00021_label_0_gray.png
+│       │   │   │       ├── train_idx_00022_label_9_binary.png
+│       │   │   │       ├── train_idx_00022_label_9_gray.png
+│       │   │   │       ├── train_idx_00023_label_1_binary.png
+│       │   │   │       ├── train_idx_00023_label_1_gray.png
+│       │   │   │       ├── train_idx_00025_label_2_binary.png
+│       │   │   │       ├── train_idx_00025_label_2_gray.png
+│       │   │   │       ├── train_idx_00026_label_4_binary.png
+│       │   │   │       ├── train_idx_00026_label_4_gray.png
+│       │   │   │       ├── train_idx_00027_label_3_binary.png
+│       │   │   │       ├── train_idx_00027_label_3_gray.png
+│       │   │   │       ├── train_idx_00028_label_2_binary.png
+│       │   │   │       ├── train_idx_00028_label_2_gray.png
+│       │   │   │       ├── train_idx_00029_label_7_binary.png
+│       │   │   │       ├── train_idx_00029_label_7_gray.png
+│       │   │   │       ├── train_idx_00030_label_3_binary.png
+│       │   │   │       ├── train_idx_00030_label_3_gray.png
+│       │   │   │       ├── train_idx_00031_label_8_binary.png
+│       │   │   │       ├── train_idx_00031_label_8_gray.png
+│       │   │   │       ├── train_idx_00032_label_6_binary.png
+│       │   │   │       ├── train_idx_00032_label_6_gray.png
+│       │   │   │       ├── train_idx_00033_label_9_binary.png
+│       │   │   │       ├── train_idx_00033_label_9_gray.png
+│       │   │   │       ├── train_idx_00034_label_0_binary.png
+│       │   │   │       ├── train_idx_00034_label_0_gray.png
+│       │   │   │       ├── train_idx_00035_label_5_binary.png
+│       │   │   │       ├── train_idx_00035_label_5_gray.png
+│       │   │   │       ├── train_idx_00036_label_6_binary.png
+│       │   │   │       ├── train_idx_00036_label_6_gray.png
+│       │   │   │       ├── train_idx_00037_label_0_binary.png
+│       │   │   │       ├── train_idx_00037_label_0_gray.png
+│       │   │   │       ├── train_idx_00038_label_7_binary.png
+│       │   │   │       ├── train_idx_00038_label_7_gray.png
+│       │   │   │       ├── train_idx_00039_label_6_binary.png
+│       │   │   │       ├── train_idx_00039_label_6_gray.png
+│       │   │   │       ├── train_idx_00041_label_8_binary.png
+│       │   │   │       ├── train_idx_00041_label_8_gray.png
+│       │   │   │       ├── train_idx_00042_label_7_binary.png
+│       │   │   │       ├── train_idx_00042_label_7_gray.png
+│       │   │   │       ├── train_idx_00043_label_9_binary.png
+│       │   │   │       ├── train_idx_00043_label_9_gray.png
+│       │   │   │       ├── train_idx_00046_label_8_binary.png
+│       │   │   │       ├── train_idx_00046_label_8_gray.png
+│       │   │   │       ├── train_idx_00047_label_5_binary.png
+│       │   │   │       ├── train_idx_00047_label_5_gray.png
+│       │   │   │       ├── train_idx_00051_label_0_binary.png
+│       │   │   │       ├── train_idx_00051_label_0_gray.png
+│       │   │   │       ├── train_idx_00052_label_7_binary.png
+│       │   │   │       ├── train_idx_00052_label_7_gray.png
+│       │   │   │       ├── train_idx_00053_label_4_binary.png
+│       │   │   │       ├── train_idx_00053_label_4_gray.png
+│       │   │   │       ├── train_idx_00055_label_8_binary.png
+│       │   │   │       ├── train_idx_00055_label_8_gray.png
+│       │   │   │       ├── train_idx_00065_label_5_binary.png
+│       │   │   │       ├── train_idx_00065_label_5_gray.png
+│       │   │   │       ├── train_idx_00076_label_2_binary.png
+│       │   │   │       └── train_idx_00076_label_2_gray.png
+│       │   │   ├── quartus
+│       │   │   │   ├── README.md
+│       │   │   │   ├── jtag
+│       │   │   │   │   ├── README.md
+│       │   │   │   │   ├── cdb_merge.log
+│       │   │   │   │   ├── de1_soc_mnist_jtag_top.asm.rpt
+│       │   │   │   │   ├── de1_soc_mnist_jtag_top.fit.rpt
+│       │   │   │   │   ├── de1_soc_mnist_jtag_top.fit.smsg
+│       │   │   │   │   ├── de1_soc_mnist_jtag_top.fit.summary
+│       │   │   │   │   ├── de1_soc_mnist_jtag_top.flow.rpt
+│       │   │   │   │   ├── de1_soc_mnist_jtag_top.jdi
+│       │   │   │   │   ├── de1_soc_mnist_jtag_top.map.rpt
+│       │   │   │   │   ├── de1_soc_mnist_jtag_top.map.smsg
+│       │   │   │   │   ├── de1_soc_mnist_jtag_top.map.summary
+│       │   │   │   │   ├── de1_soc_mnist_jtag_top.merge.rpt
+│       │   │   │   │   ├── de1_soc_mnist_jtag_top.merge.summary
+│       │   │   │   │   ├── de1_soc_mnist_jtag_top.pin
+│       │   │   │   │   ├── de1_soc_mnist_jtag_top.sld
+│       │   │   │   │   ├── de1_soc_mnist_jtag_top.sof
+│       │   │   │   │   └── fit_jtag.log
+│       │   │   │   └── serial
+│       │   │   │       ├── README.md
+│       │   │   │       ├── de1_soc_mnist_serial_top.asm.rpt
+│       │   │   │       ├── de1_soc_mnist_serial_top.fit.rpt
+│       │   │   │       ├── de1_soc_mnist_serial_top.fit.smsg
+│       │   │   │       ├── de1_soc_mnist_serial_top.fit.summary
+│       │   │   │       ├── de1_soc_mnist_serial_top.flow.rpt
+│       │   │   │       ├── de1_soc_mnist_serial_top.jdi
+│       │   │   │       ├── de1_soc_mnist_serial_top.jditmp
+│       │   │   │       ├── de1_soc_mnist_serial_top.map.rpt
+│       │   │   │       ├── de1_soc_mnist_serial_top.map.smsg
+│       │   │   │       ├── de1_soc_mnist_serial_top.map.summary
+│       │   │   │       ├── de1_soc_mnist_serial_top.pin
+│       │   │   │       ├── de1_soc_mnist_serial_top.sld
+│       │   │   │       ├── de1_soc_mnist_serial_top.sof
+│       │   │   │       ├── de1_soc_mnist_serial_top.sta.rpt
+│       │   │   │       └── de1_soc_mnist_serial_top.sta.summary
+│       │   │   ├── runtime
+│       │   │   │   ├── README.md
+│       │   │   │   └── jtag_host
+│       │   │   │       ├── README.md
+│       │   │   │       ├── arduino_jtag_loop.log
+│       │   │   │       ├── current_frame.bits
+│       │   │   │       └── sample_image_0.bits
+│       │   │   └── sim
+│       │   │       ├── README.md
+│       │   │       ├── modelsim_de1_soc_mnist_serial_top
+│       │   │       │   ├── README.md
+│       │   │       │   ├── modelsim.ini
+│       │   │       │   ├── transcript
+│       │   │       │   └── work
+│       │   │       │       ├── README.md
+│       │   │       │       ├── _info
+│       │   │       │       ├── _lib.qdb
+│       │   │       │       ├── _lib1_0.qdb
+│       │   │       │       ├── _lib1_0.qpg
+│       │   │       │       ├── _lib1_0.qtl
+│       │   │       │       └── _vmake
+│       │   │       ├── modelsim_mnist_frame_buffer
+│       │   │       │   ├── README.md
+│       │   │       │   ├── modelsim.ini
+│       │   │       │   ├── transcript
+│       │   │       │   └── work
+│       │   │       │       ├── README.md
+│       │   │       │       ├── _info
+│       │   │       │       ├── _lib.qdb
+│       │   │       │       ├── _lib1_0.qdb
+│       │   │       │       ├── _lib1_0.qpg
+│       │   │       │       ├── _lib1_0.qtl
+│       │   │       │       └── _vmake
+│       │   │       ├── modelsim_mnist_jtag_classifier
+│       │   │       │   ├── README.md
+│       │   │       │   ├── modelsim.ini
+│       │   │       │   ├── transcript
+│       │   │       │   └── work
+│       │   │       │       ├── README.md
+│       │   │       │       ├── _info
+│       │   │       │       ├── _lib.qdb
+│       │   │       │       ├── _lib1_0.qdb
+│       │   │       │       ├── _lib1_0.qpg
+│       │   │       │       ├── _lib1_0.qtl
+│       │   │       │       └── _vmake
+│       │   │       ├── modelsim_mnist_jtag_mmio
+│       │   │       │   ├── README.md
+│       │   │       │   ├── modelsim.ini
+│       │   │       │   ├── transcript
+│       │   │       │   └── work
+│       │   │       │       ├── README.md
+│       │   │       │       ├── _info
+│       │   │       │       ├── _lib.qdb
+│       │   │       │       ├── _lib1_0.qdb
+│       │   │       │       ├── _lib1_0.qpg
+│       │   │       │       ├── _lib1_0.qtl
+│       │   │       │       └── _vmake
+│       │   │       ├── modelsim_mnist_jtag_parity
+│       │   │       │   ├── README.md
+│       │   │       │   ├── jtag_full.log
+│       │   │       │   └── serial_full.log
+│       │   │       ├── modelsim_mnist_serial_classifier
+│       │   │       │   ├── README.md
+│       │   │       │   ├── modelsim.ini
+│       │   │       │   ├── transcript
+│       │   │       │   └── work
+│       │   │       │       ├── README.md
+│       │   │       │       ├── _info
+│       │   │       │       ├── _lib.qdb
+│       │   │       │       ├── _lib1_0.qdb
+│       │   │       │       ├── _lib1_0.qpg
+│       │   │       │       ├── _lib1_0.qtl
+│       │   │       │       └── _vmake
+│       │   │       ├── modelsim_mnist_serial_classifier_full
+│       │   │       │   ├── README.md
+│       │   │       │   ├── modelsim.ini
+│       │   │       │   ├── transcript
+│       │   │       │   └── work
+│       │   │       │       ├── README.md
+│       │   │       │       ├── _info
+│       │   │       │       ├── _lib.qdb
+│       │   │       │       ├── _lib1_0.qdb
+│       │   │       │       ├── _lib1_0.qpg
+│       │   │       │       ├── _lib1_0.qtl
+│       │   │       │       └── _vmake
+│       │   │       ├── modelsim_mnist_tpu_tiled_classifier
+│       │   │       │   ├── README.md
+│       │   │       │   ├── modelsim.ini
+│       │   │       │   ├── transcript
+│       │   │       │   └── work
+│       │   │       │       ├── README.md
+│       │   │       │       ├── _info
+│       │   │       │       ├── _lib.qdb
+│       │   │       │       ├── _lib1_0.qdb
+│       │   │       │       ├── _lib1_0.qpg
+│       │   │       │       ├── _lib1_0.qtl
+│       │   │       │       └── _vmake
+│       │   │       ├── modelsim_mnist_uart_ingress
+│       │   │       │   ├── README.md
+│       │   │       │   ├── modelsim.ini
+│       │   │       │   ├── transcript
+│       │   │       │   └── work
+│       │   │       │       ├── README.md
+│       │   │       │       ├── _info
+│       │   │       │       ├── _lib.qdb
+│       │   │       │       ├── _lib1_0.qdb
+│       │   │       │       ├── _lib1_0.qpg
+│       │   │       │       ├── _lib1_0.qtl
+│       │   │       │       └── _vmake
+│       │   │       ├── modelsim_uart_frame_receiver
+│       │   │       │   ├── README.md
+│       │   │       │   ├── modelsim.ini
+│       │   │       │   ├── transcript
+│       │   │       │   └── work
+│       │   │       │       ├── README.md
+│       │   │       │       ├── _info
+│       │   │       │       ├── _lib.qdb
+│       │   │       │       ├── _lib1_0.qdb
+│       │   │       │       ├── _lib1_0.qpg
+│       │   │       │       ├── _lib1_0.qtl
+│       │   │       │       └── _vmake
+│       │   │       └── modelsim_uart_rx
+│       │   │           ├── README.md
+│       │   │           ├── modelsim.ini
+│       │   │           ├── transcript
+│       │   │           └── work
+│       │   │               ├── README.md
+│       │   │               ├── _info
+│       │   │               ├── _lib.qdb
+│       │   │               ├── _lib1_0.qdb
+│       │   │               ├── _lib1_0.qpg
+│       │   │               ├── _lib1_0.qtl
+│       │   │               └── _vmake
+│       │   ├── brush_tools.py
+│       │   ├── commands.txt
+│       │   ├── data
+│       │   │   ├── README.md
+│       │   │   └── model
+│       │   │       ├── README.md
+│       │   │       ├── generated
+│       │   │       │   ├── README.md
+│       │   │       │   ├── b1_q8_8.memh
+│       │   │       │   ├── b2_q8_8.memh
+│       │   │       │   ├── sample_expected_hidden_0_q8_8.memh
+│       │   │       │   ├── sample_expected_logits_0_q8_8.memh
+│       │   │       │   ├── sample_expected_prediction_0.txt
+│       │   │       │   ├── sample_image_0.bin
+│       │   │       │   ├── sample_image_0.memh
+│       │   │       │   ├── sample_label_0.txt
+│       │   │       │   ├── summary.json
+│       │   │       │   ├── w1_tiled_q8_8.memh
+│       │   │       │   └── w2_tiled_q8_8.memh
+│       │   │       └── reference
+│       │   │           ├── README.md
+│       │   │           ├── b1_q8_8.memh
+│       │   │           ├── b2_q8_8.memh
+│       │   │           ├── sample_expected_hidden_0_q8_8.memh
+│       │   │           ├── sample_expected_logits_0_q8_8.memh
+│       │   │           ├── sample_expected_prediction_0.txt
+│       │   │           ├── sample_image_0.bin
+│       │   │           ├── sample_image_0.memh
+│       │   │           ├── sample_label_0.txt
+│       │   │           ├── summary.json
+│       │   │           ├── w1_tiled_q8_8.memh
+│       │   │           └── w2_tiled_q8_8.memh
+│       │   ├── firmware
+│       │   │   ├── README.md
+│       │   │   └── arduino
+│       │   │       ├── README.md
+│       │   │       ├── arduino-blink
+│       │   │       │   ├── README.md
+│       │   │       │   └── arduino-blink.ino
+│       │   │       └── arduino_touch_sender
+│       │   │           ├── README.md
+│       │   │           └── arduino_touch_sender.ino
+│       │   ├── fpga
+│       │   │   ├── README.md
+│       │   │   ├── build_quartus.sh
+│       │   │   ├── build_quartus_jtag.sh
+│       │   │   ├── ip
+│       │   │   │   ├── README.md
+│       │   │   │   ├── generate_mnist_jtag_bridge.sh
+│       │   │   │   ├── mnist_jtag_bridge
+│       │   │   │   │   ├── README.md
+│       │   │   │   │   ├── mnist_jtag_bridge.cmp
+│       │   │   │   │   ├── mnist_jtag_bridge.html
+│       │   │   │   │   ├── mnist_jtag_bridge.xml
+│       │   │   │   │   └── synthesis
+│       │   │   │   │       ├── README.md
+│       │   │   │   │       ├── mnist_jtag_bridge.debuginfo
+│       │   │   │   │       ├── mnist_jtag_bridge.qip
+│       │   │   │   │       ├── mnist_jtag_bridge.v
+│       │   │   │   │       └── submodules
+│       │   │   │   │           ├── README.md
+│       │   │   │   │           ├── altera_avalon_packets_to_master.v
+│       │   │   │   │           ├── altera_avalon_sc_fifo.v
+│       │   │   │   │           ├── altera_avalon_st_bytes_to_packets.v
+│       │   │   │   │           ├── altera_avalon_st_clock_crosser.v
+│       │   │   │   │           ├── altera_avalon_st_idle_inserter.v
+│       │   │   │   │           ├── altera_avalon_st_idle_remover.v
+│       │   │   │   │           ├── altera_avalon_st_jtag_interface.sdc
+│       │   │   │   │           ├── altera_avalon_st_jtag_interface.v
+│       │   │   │   │           ├── altera_avalon_st_packets_to_bytes.v
+│       │   │   │   │           ├── altera_avalon_st_pipeline_base.v
+│       │   │   │   │           ├── altera_avalon_st_pipeline_stage.sv
+│       │   │   │   │           ├── altera_jtag_dc_streaming.v
+│       │   │   │   │           ├── altera_jtag_sld_node.v
+│       │   │   │   │           ├── altera_jtag_streaming.v
+│       │   │   │   │           ├── altera_reset_controller.sdc
+│       │   │   │   │           ├── altera_reset_controller.v
+│       │   │   │   │           ├── altera_reset_synchronizer.v
+│       │   │   │   │           ├── altera_std_synchronizer_nocut.v
+│       │   │   │   │           ├── mnist_jtag_bridge_jtagm.v
+│       │   │   │   │           ├── mnist_jtag_bridge_jtagm_b2p_adapter.sv
+│       │   │   │   │           ├── mnist_jtag_bridge_jtagm_p2b_adapter.sv
+│       │   │   │   │           └── mnist_jtag_bridge_jtagm_timing_adt.sv
+│       │   │   │   ├── mnist_jtag_bridge.qsys
+│       │   │   │   ├── mnist_jtag_bridge.sopcinfo
+│       │   │   │   ├── mnist_jtag_bridge.tcl
+│       │   │   │   ├── probe_jtag_bridge
+│       │   │   │   │   ├── README.md
+│       │   │   │   │   ├── probe_jtag_bridge.cmp
+│       │   │   │   │   ├── probe_jtag_bridge.html
+│       │   │   │   │   ├── probe_jtag_bridge.xml
+│       │   │   │   │   └── synthesis
+│       │   │   │   │       ├── README.md
+│       │   │   │   │       ├── probe_jtag_bridge.debuginfo
+│       │   │   │   │       ├── probe_jtag_bridge.qip
+│       │   │   │   │       ├── probe_jtag_bridge.v
+│       │   │   │   │       └── submodules
+│       │   │   │   │           ├── README.md
+│       │   │   │   │           ├── altera_avalon_packets_to_master.v
+│       │   │   │   │           ├── altera_avalon_sc_fifo.v
+│       │   │   │   │           ├── altera_avalon_st_bytes_to_packets.v
+│       │   │   │   │           ├── altera_avalon_st_clock_crosser.v
+│       │   │   │   │           ├── altera_avalon_st_idle_inserter.v
+│       │   │   │   │           ├── altera_avalon_st_idle_remover.v
+│       │   │   │   │           ├── altera_avalon_st_jtag_interface.sdc
+│       │   │   │   │           ├── altera_avalon_st_jtag_interface.v
+│       │   │   │   │           ├── altera_avalon_st_packets_to_bytes.v
+│       │   │   │   │           ├── altera_avalon_st_pipeline_base.v
+│       │   │   │   │           ├── altera_avalon_st_pipeline_stage.sv
+│       │   │   │   │           ├── altera_jtag_dc_streaming.v
+│       │   │   │   │           ├── altera_jtag_sld_node.v
+│       │   │   │   │           ├── altera_jtag_streaming.v
+│       │   │   │   │           ├── altera_reset_controller.sdc
+│       │   │   │   │           ├── altera_reset_controller.v
+│       │   │   │   │           ├── altera_reset_synchronizer.v
+│       │   │   │   │           ├── altera_std_synchronizer_nocut.v
+│       │   │   │   │           ├── probe_jtag_bridge_jtagm.v
+│       │   │   │   │           ├── probe_jtag_bridge_jtagm_b2p_adapter.sv
+│       │   │   │   │           ├── probe_jtag_bridge_jtagm_p2b_adapter.sv
+│       │   │   │   │           └── probe_jtag_bridge_jtagm_timing_adt.sv
+│       │   │   │   └── probe_jtag_bridge.sopcinfo
+│       │   │   ├── jtag
+│       │   │   │   ├── README.md
+│       │   │   │   ├── de1_soc_mnist_jtag_top.qpf
+│       │   │   │   ├── de1_soc_mnist_jtag_top.qsf
+│       │   │   │   ├── de1_soc_mnist_jtag_top.sdc
+│       │   │   │   └── de1_soc_mnist_jtag_top.v
+│       │   │   ├── program_fpga.sh
+│       │   │   ├── program_fpga_jtag.sh
+│       │   │   ├── quickstart_jtag_demo.sh
+│       │   │   ├── serial
+│       │   │   │   ├── README.md
+│       │   │   │   ├── de1_soc_mnist_serial_top.qpf
+│       │   │   │   ├── de1_soc_mnist_serial_top.qsf
+│       │   │   │   ├── de1_soc_mnist_serial_top.sdc
+│       │   │   │   └── de1_soc_mnist_serial_top.v
+│       │   │   ├── stage_quartus_project.sh
+│       │   │   └── start_mnist_demo.sh
+│       │   ├── host
+│       │   │   ├── README.md
+│       │   │   └── jtag
+│       │   │       ├── README.md
+│       │   │       ├── __pycache__
+│       │   │       │   └── arduino_jtag_mnist_loop.cpython-312.pyc
+│       │   │       ├── arduino_jtag_mnist_loop.py
+│       │   │       ├── mnist_jtag_mmio.tcl
+│       │   │       └── run_system_console_mmio.sh
+│       │   ├── mnist_tools.py
+│       │   ├── rtl
+│       │   │   ├── README.md
+│       │   │   ├── bias_child.v
+│       │   │   ├── bias_parent.v
+│       │   │   ├── control_unit.v
+│       │   │   ├── fixedpoint_simple.v
+│       │   │   ├── gradient_descent.v
+│       │   │   ├── leaky_relu_child.v
+│       │   │   ├── leaky_relu_derivative_child.v
+│       │   │   ├── leaky_relu_derivative_parent.v
+│       │   │   ├── leaky_relu_parent.v
+│       │   │   ├── loss_child.v
+│       │   │   ├── loss_parent.v
+│       │   │   ├── mnist_classifier_core.v
+│       │   │   ├── mnist_frame_buffer.v
+│       │   │   ├── mnist_jtag_mmio.v
+│       │   │   ├── mnist_serial_classifier.v
+│       │   │   ├── mnist_tpu_tiled_classifier.v
+│       │   │   ├── mnist_uart_ingress.v
+│       │   │   ├── pe.v
+│       │   │   ├── systolic.v
+│       │   │   ├── tpu.v
+│       │   │   ├── tpu_mnist.v
+│       │   │   ├── uart_frame_receiver.v
+│       │   │   ├── uart_rx.v
+│       │   │   ├── unified_buffer.v
+│       │   │   └── vpu.v
+│       │   ├── sim
+│       │   │   ├── README.md
+│       │   │   ├── run_de1_soc_mnist_serial_top_tb.sh
+│       │   │   ├── run_mnist_frame_buffer_tb.sh
+│       │   │   ├── run_mnist_jtag_classifier_tb.sh
+│       │   │   ├── run_mnist_jtag_mmio_tb.sh
+│       │   │   ├── run_mnist_jtag_parity_regression.sh
+│       │   │   ├── run_mnist_serial_classifier_full_tb.sh
+│       │   │   ├── run_mnist_serial_classifier_tb.sh
+│       │   │   ├── run_mnist_tpu_tiled_classifier_tb.sh
+│       │   │   ├── run_mnist_uart_ingress_tb.sh
+│       │   │   ├── run_uart_frame_receiver_tb.sh
+│       │   │   ├── run_uart_rx_tb.sh
+│       │   │   ├── tb_de1_soc_mnist_serial_top.v
+│       │   │   ├── tb_mnist_frame_buffer.v
+│       │   │   ├── tb_mnist_jtag_classifier.v
+│       │   │   ├── tb_mnist_jtag_mmio.v
+│       │   │   ├── tb_mnist_serial_classifier.v
+│       │   │   ├── tb_mnist_serial_classifier_full.v
+│       │   │   ├── tb_mnist_tpu_tiled_classifier.v
+│       │   │   ├── tb_mnist_uart_ingress.v
+│       │   │   ├── tb_uart_frame_receiver.v
+│       │   │   └── tb_uart_rx.v
+│       │   ├── tests
+│       │   │   ├── README.md
+│       │   │   ├── test_brush_tools.py
+│       │   │   ├── test_mnist_tools.py
+│       │   │   ├── test_program_fpga_fallback.sh
+│       │   │   └── test_train_mnist.py
+│       │   ├── tools
+│       │   │   ├── README.md
+│       │   │   ├── __pycache__
+│       │   │   │   ├── benchmark_synthetic_handdrawn.cpython-312.pyc
+│       │   │   │   ├── export_bitmask_previews.cpython-312.pyc
+│       │   │   │   └── export_mnist_dataset_previews.cpython-312.pyc
+│       │   │   ├── benchmark_synthetic_handdrawn.py
+│       │   │   ├── export_bitmask_previews.py
+│       │   │   └── export_mnist_dataset_previews.py
+│       │   └── train_mnist.py
+│       ├── src
+│       │   ├── bias_child.sv
+│       │   ├── bias_parent.sv
+│       │   ├── control_unit.sv
+│       │   ├── fixedpoint.sv
+│       │   ├── gradient_descent.sv
+│       │   ├── leaky_relu_child.sv
+│       │   ├── leaky_relu_derivative_child.sv
+│       │   ├── leaky_relu_derivative_parent.sv
+│       │   ├── leaky_relu_parent.sv
+│       │   ├── loss_child.sv
+│       │   ├── loss_parent.sv
+│       │   ├── pe.sv
+│       │   ├── systolic.sv
+│       │   ├── tpu.sv
+│       │   ├── unified_buffer.sv
+│       │   └── vpu.sv
+│       ├── sva
+│       │   ├── bias_child_assertions.sv
+│       │   ├── bind_all_assertions.sv
+│       │   ├── control_unit_assertions.sv
+│       │   ├── gradient_descent_assertions.sv
+│       │   ├── leaky_relu_child_assertions.sv
+│       │   ├── leaky_relu_derivative_child_assertions.sv
+│       │   ├── loss_child_assertions.sv
+│       │   ├── pe_assertions.sv
+│       │   ├── systolic_assertions.sv
+│       │   ├── tb_tpu.sv
+│       │   ├── unified_buffer_assertions.sv
+│       │   └── vpu_assertions.sv
+│       ├── test
+│       │   ├── dump_bias_child.sv
+│       │   ├── dump_bias_parent.sv
+│       │   ├── dump_gradient_descent.sv
+│       │   ├── dump_leaky_relu_child.sv
+│       │   ├── dump_leaky_relu_derivative_child.sv
+│       │   ├── dump_leaky_relu_derivative_parent.sv
+│       │   ├── dump_leaky_relu_parent.sv
+│       │   ├── dump_loss_child.sv
+│       │   ├── dump_loss_parent.sv
+│       │   ├── dump_pe.sv
+│       │   ├── dump_systolic.sv
+│       │   ├── dump_tpu.sv
+│       │   ├── dump_unified_buffer.sv
+│       │   ├── dump_vpu.sv
+│       │   ├── test_bias_parent.py
+│       │   ├── test_gradient_descent.py
+│       │   ├── test_leaky_relu_derivative_parent.py
+│       │   ├── test_leaky_relu_parent.py
+│       │   ├── test_loss_parent.py
+│       │   ├── test_pe.py
+│       │   ├── test_systolic.py
+│       │   ├── test_tpu.py
+│       │   ├── test_unified_buffer.py
+│       │   └── test_vpu.py
+│       ├── tiny-tpu-hardened
+│       │   ├── README.md
+│       │   ├── openlane
+│       │   │   ├── README.md
+│       │   │   ├── config.json
+│       │   │   └── runs
+│       │   │       ├── README.md
+│       │   │       └── tiny-tpu
+│       │   ├── rtl
+│       │   │   ├── README.md
+│       │   │   ├── bias_child.v
+│       │   │   ├── bias_parent.v
+│       │   │   ├── control_unit.v
+│       │   │   ├── fixedpoint.v
+│       │   │   ├── fixedpoint_simple.v
+│       │   │   ├── gradient_descent.v
+│       │   │   ├── leaky_relu_child.v
+│       │   │   ├── leaky_relu_derivative_child.v
+│       │   │   ├── leaky_relu_derivative_parent.v
+│       │   │   ├── leaky_relu_parent.v
+│       │   │   ├── loss_child.v
+│       │   │   ├── loss_parent.v
+│       │   │   ├── pe.v
+│       │   │   ├── systolic.v
+│       │   │   ├── tpu.v
+│       │   │   ├── unified_buffer.v
+│       │   │   └── vpu.v
+│       │   └── sim
+│       │       ├── README.md
+│       │       ├── fixedpoint_simple_regression.v
+│       │       ├── run_fixedpoint_simple_regression.sh
+│       │       ├── run_tpu_xor_forward_regression.sh
+│       │       ├── run_unified_buffer_regression.sh
+│       │       ├── tpu_xor_forward_regression.v
+│       │       └── unified_buffer_regression.v
+│       ├── tpu_run.log
+│       ├── videos
+│       │   ├── tiny-tpu-demo.mp4
+│       │   └── tinytpu.mp4
+│       ├── waveforms
+│       │   ├── acc_input.gtkw
+│       │   ├── acc_output.gtkw
+│       │   ├── accumulator.gtkw
+│       │   ├── bias.gtkw
+│       │   ├── bias_child.gtkw
+│       │   ├── bias_parent.gtkw
+│       │   ├── gradient_descent.gtkw
+│       │   ├── leaky_relu.gtkw
+│       │   ├── leaky_relu_child.gtkw
+│       │   ├── leaky_relu_derivative_parent.gtkw
+│       │   ├── leaky_relu_parent.gtkw
+│       │   ├── loss.gtkw
+│       │   ├── loss_child.gtkw
+│       │   ├── loss_parent.gtkw
+│       │   ├── nn.gtkw
+│       │   ├── pe.gtkw
+│       │   ├── systolic.gtkw
+│       │   ├── tpu.gtkw
+│       │   ├── unified_buffer.gtkw
+│       │   └── vpu.gtkw
+│       ├── xor_demo
+│       │   ├── README.md
+│       │   ├── artifacts
+│       │   │   ├── README.md
+│       │   │   └── quartus
+│       │   │       ├── README.md
+│       │   │       ├── de1_soc_tiny_tpu_xor.asm.rpt
+│       │   │       ├── de1_soc_tiny_tpu_xor.done
+│       │   │       ├── de1_soc_tiny_tpu_xor.fit.rpt
+│       │   │       ├── de1_soc_tiny_tpu_xor.fit.smsg
+│       │   │       ├── de1_soc_tiny_tpu_xor.fit.summary
+│       │   │       ├── de1_soc_tiny_tpu_xor.flow.rpt
+│       │   │       ├── de1_soc_tiny_tpu_xor.jdi
+│       │   │       ├── de1_soc_tiny_tpu_xor.jditmp
+│       │   │       ├── de1_soc_tiny_tpu_xor.map.rpt
+│       │   │       ├── de1_soc_tiny_tpu_xor.map.smsg
+│       │   │       ├── de1_soc_tiny_tpu_xor.map.summary
+│       │   │       ├── de1_soc_tiny_tpu_xor.pin
+│       │   │       ├── de1_soc_tiny_tpu_xor.sld
+│       │   │       └── de1_soc_tiny_tpu_xor.sof
+│       │   ├── fpga
+│       │   │   ├── README.md
+│       │   │   ├── build_quartus.sh
+│       │   │   ├── de1_soc_tiny_tpu_xor.qpf
+│       │   │   ├── de1_soc_tiny_tpu_xor.qsf
+│       │   │   ├── de1_soc_tiny_tpu_xor.sdc
+│       │   │   ├── de1_soc_tiny_tpu_xor_top.v
+│       │   │   ├── program_fpga.sh
+│       │   │   └── stage_quartus_project.sh
+│       │   ├── rtl
+│       │   │   ├── README.md
+│       │   │   ├── bias_child.v
+│       │   │   ├── bias_parent.v
+│       │   │   ├── control_unit.v
+│       │   │   ├── fixedpoint_simple.v
+│       │   │   ├── gradient_descent.v
+│       │   │   ├── leaky_relu_child.v
+│       │   │   ├── leaky_relu_derivative_child.v
+│       │   │   ├── leaky_relu_derivative_parent.v
+│       │   │   ├── leaky_relu_parent.v
+│       │   │   ├── loss_child.v
+│       │   │   ├── loss_parent.v
+│       │   │   ├── pe.v
+│       │   │   ├── systolic.v
+│       │   │   ├── tpu.v
+│       │   │   ├── unified_buffer.v
+│       │   │   └── vpu.v
+│       │   └── sim
+│       │       ├── README.md
+│       │       ├── de1_soc_tiny_tpu_xor_top_tb.v
+│       │       └── run_de1_soc_tiny_tpu_xor_top_tb.sh
+│       ├── xsim.dir
+│       │   └── xsim.svtype
+│       ├── xvlog.log
+│       └── xvlog.pb
+├── runs
+│   ├── baseline
+│   ├── delay_opt
+│   └── timing_10ns
+├── scripts
+└── synthesis_final
+
+92 directories, 765 files

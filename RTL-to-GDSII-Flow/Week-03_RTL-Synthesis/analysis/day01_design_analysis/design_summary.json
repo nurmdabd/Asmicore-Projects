@@ -1,0 +1,11 @@
+{
+    "design_name": "tiny-tpu",
+    "top_module": "tpu",
+    "clock_ports": [
+        "clk"
+    ],
+    "reset_ports": [
+        "rst"
+    ],
+    "module_count": 28
+}

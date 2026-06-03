@@ -1,0 +1,204 @@
+./README.md:module dump();
+./test/dump_leaky_relu_child.sv:module dump();
+./test/dump_vpu.sv:module dump();
+./test/dump_unified_buffer.sv:module dump();
+./test/dump_leaky_relu_parent.sv:module dump();
+./test/dump_loss_parent.sv:module dump();
+./test/dump_loss_child.sv:module dump();
+./test/dump_tpu.sv:module dump();
+./test/dump_bias_parent.sv:module dump();
+./test/dump_leaky_relu_derivative_child.sv:module dump();
+./test/dump_bias_child.sv:module dump();
+./test/dump_leaky_relu_derivative_parent.sv:module dump();
+./xor_demo/fpga/de1_soc_tiny_tpu_xor_top.v:module de1_soc_tiny_tpu_xor_top #(
+./xor_demo/rtl/loss_parent.v:module loss_parent (
+./xor_demo/rtl/systolic.v:module systolic #(
+./xor_demo/rtl/pe.v:module pe #(
+./xor_demo/rtl/bias_child.v:module bias_child (
+./xor_demo/rtl/bias_parent.v:module bias_parent(
+./xor_demo/rtl/vpu.v:module vpu (
+./xor_demo/rtl/leaky_relu_parent.v:module leaky_relu_parent (
+./xor_demo/rtl/unified_buffer.v:module unified_buffer #(
+./xor_demo/rtl/leaky_relu_derivative_parent.v:module leaky_relu_derivative_parent (
+./xor_demo/rtl/gradient_descent.v:module gradient_descent (
+./xor_demo/rtl/control_unit.v:module control_unit (
+./xor_demo/rtl/tpu.v:module tpu #(
+./xor_demo/rtl/fixedpoint_simple.v:module fxp_add #(
+./xor_demo/rtl/fixedpoint_simple.v:module fxp_mul #(
+./xor_demo/rtl/fixedpoint_simple.v:module fxp_addsub #(
+./xor_demo/rtl/leaky_relu_derivative_child.v:module leaky_relu_derivative_child(
+./xor_demo/rtl/leaky_relu_child.v:module leaky_relu_child (
+./xor_demo/rtl/loss_child.v:module loss_child (
+./xor_demo/sim/de1_soc_tiny_tpu_xor_top_tb.v:module de1_soc_tiny_tpu_xor_top_tb;
+./sva/tb_tpu.sv:module tb_tpu;
+./sva/gradient_descent_assertions.sv:module gradient_descent_assertions (
+./sva/unified_buffer_assertions.sv:module unified_buffer_assertions #(
+./sva/leaky_relu_child_assertions.sv:module leaky_relu_child_assertions (
+./sva/bind_all_assertions.sv:module bind_wrapper;
+./sva/control_unit_assertions.sv:module control_unit_assertions (
+./sva/vpu_assertions.sv:module vpu_assertions (
+./sva/pe_assertions.sv:module pe_assertions (
+./sva/loss_child_assertions.sv:module loss_child_assertions (
+./sva/bias_child_assertions.sv:module bias_child_assertions (
+./sva/systolic_assertions.sv:module systolic_assertions #(
+./sva/leaky_relu_derivative_child_assertions.sv:module leaky_relu_derivative_child_assertions (
+./src/pe.sv:module pe (
+./src/unified_buffer.sv:module unified_buffer #(
+./src/leaky_relu_child.sv:module leaky_relu_child (
+./src/leaky_relu_parent.sv:module leaky_relu_parent (
+./src/fixedpoint.sv:module fxp_zoom #(
+./src/fixedpoint.sv:module fxp_add # (
+./src/fixedpoint.sv:module fxp_addsub # (
+./src/fixedpoint.sv:module fxp_mul # (
+./src/fixedpoint.sv:module fxp_mul_pipe # (
+./src/fixedpoint.sv:module fxp_div #(
+./src/fixedpoint.sv:module fxp_div_pipe #(
+./src/fixedpoint.sv:module fxp_sqrt #(
+./src/fixedpoint.sv:module fxp_sqrt_pipe #(
+./src/fixedpoint.sv:module fxp2float #(
+./src/fixedpoint.sv:module fxp2float_pipe #(
+./src/fixedpoint.sv:module float2fxp #(
+./src/fixedpoint.sv:module float2fxp_pipe #(
+./src/bias_child.sv:module bias_child (
+./src/leaky_relu_derivative_child.sv:module leaky_relu_derivative_child(
+./src/systolic.sv:module systolic #(
+./src/vpu.sv:module vpu (
+./src/gradient_descent.sv:module gradient_descent (
+./src/tpu.sv:module tpu #(
+./src/bias_parent.sv:module bias_parent(
+./src/leaky_relu_derivative_parent.sv:module leaky_relu_derivative_parent (
+./src/control_unit.sv:module control_unit (
+./src/loss_parent.sv:module loss_parent (
+./src/loss_child.sv:module loss_child (
+./tiny-tpu-hardened/rtl/fixedpoint.v:module fxp_zoom #(
+./tiny-tpu-hardened/rtl/fixedpoint.v:module fxp_add # (
+./tiny-tpu-hardened/rtl/fixedpoint.v:module fxp_addsub # (
+./tiny-tpu-hardened/rtl/fixedpoint.v:module fxp_mul # (
+./tiny-tpu-hardened/rtl/fixedpoint.v:module fxp_mul_pipe # (
+./tiny-tpu-hardened/rtl/fixedpoint.v:module fxp_div #(
+./tiny-tpu-hardened/rtl/fixedpoint.v:module fxp_div_pipe #(
+./tiny-tpu-hardened/rtl/fixedpoint.v:module fxp_sqrt #(
+./tiny-tpu-hardened/rtl/fixedpoint.v:module fxp_sqrt_pipe #(
+./tiny-tpu-hardened/rtl/fixedpoint.v:module fxp2float #(
+./tiny-tpu-hardened/rtl/fixedpoint.v:module fxp2float_pipe #(
+./tiny-tpu-hardened/rtl/fixedpoint.v:module float2fxp #(
+./tiny-tpu-hardened/rtl/fixedpoint.v:module float2fxp_pipe #(
+./tiny-tpu-hardened/rtl/loss_parent.v:module loss_parent (
+./tiny-tpu-hardened/rtl/systolic.v:module systolic #(
+./tiny-tpu-hardened/rtl/pe.v:module pe #(
+./tiny-tpu-hardened/rtl/bias_child.v:module bias_child (
+./tiny-tpu-hardened/rtl/bias_parent.v:module bias_parent(
+./tiny-tpu-hardened/rtl/vpu.v:module vpu (
+./tiny-tpu-hardened/rtl/leaky_relu_parent.v:module leaky_relu_parent (
+./tiny-tpu-hardened/rtl/unified_buffer.v:module unified_buffer #(
+./tiny-tpu-hardened/rtl/leaky_relu_derivative_parent.v:module leaky_relu_derivative_parent (
+./tiny-tpu-hardened/rtl/gradient_descent.v:module gradient_descent (
+./tiny-tpu-hardened/rtl/control_unit.v:module control_unit (
+./tiny-tpu-hardened/rtl/tpu.v:module tpu #(
+./tiny-tpu-hardened/rtl/fixedpoint_simple.v:module fxp_add #(
+./tiny-tpu-hardened/rtl/fixedpoint_simple.v:module fxp_mul #(
+./tiny-tpu-hardened/rtl/fixedpoint_simple.v:module fxp_addsub #(
+./tiny-tpu-hardened/rtl/leaky_relu_derivative_child.v:module leaky_relu_derivative_child(
+./tiny-tpu-hardened/rtl/leaky_relu_child.v:module leaky_relu_child (
+./tiny-tpu-hardened/rtl/loss_child.v:module loss_child (
+./tiny-tpu-hardened/sim/fixedpoint_simple_regression.v:module fixedpoint_simple_regression;
+./tiny-tpu-hardened/sim/tpu_xor_forward_regression.v:module tpu_xor_forward_regression;
+./tiny-tpu-hardened/sim/unified_buffer_regression.v:module unified_buffer_regression;
+./mnist_demo/fpga/serial/de1_soc_mnist_serial_top.v:module de1_soc_mnist_serial_top #(
+./mnist_demo/fpga/jtag/de1_soc_mnist_jtag_top.v:module de1_soc_mnist_jtag_top #(
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/mnist_jtag_bridge_jtagm.v:module mnist_jtag_bridge_jtagm #(
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_avalon_st_pipeline_stage.sv:module altera_avalon_st_pipeline_stage #(
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_avalon_st_packets_to_bytes.v:module altera_avalon_st_packets_to_bytes
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_reset_controller.v:module altera_reset_controller
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_avalon_st_jtag_interface.v:module altera_avalon_st_jtag_interface #(
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/mnist_jtag_bridge_jtagm_b2p_adapter.sv:module mnist_jtag_bridge_jtagm_b2p_adapter 
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_avalon_st_pipeline_base.v:module altera_avalon_st_pipeline_base (
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/mnist_jtag_bridge_jtagm_p2b_adapter.sv:module mnist_jtag_bridge_jtagm_p2b_adapter 
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_jtag_dc_streaming.v:module altera_jtag_control_signal_crosser (
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_jtag_dc_streaming.v:module altera_jtag_src_crosser (
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_jtag_dc_streaming.v:module altera_jtag_dc_streaming  #(
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_avalon_packets_to_master.v:module altera_avalon_packets_to_master (
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_avalon_packets_to_master.v:module packets_to_fifo (
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_avalon_packets_to_master.v:module fifo_buffer_single_clock_fifo (
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_avalon_packets_to_master.v:module fifo_buffer_scfifo_with_controls (
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_avalon_packets_to_master.v:module fifo_buffer (
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_avalon_packets_to_master.v:module fifo_to_packet (
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_avalon_packets_to_master.v:module packets_to_master (
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_reset_synchronizer.v:module altera_reset_synchronizer
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_jtag_sld_node.v:module altera_jtag_sld_node (
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_std_synchronizer_nocut.v:module altera_std_synchronizer_nocut (
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_avalon_st_idle_inserter.v:module altera_avalon_st_idle_inserter (
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/mnist_jtag_bridge_jtagm_timing_adt.sv:module mnist_jtag_bridge_jtagm_timing_adt
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_avalon_sc_fifo.v:module altera_avalon_sc_fifo
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_avalon_st_clock_crosser.v:module altera_avalon_st_clock_crosser(
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_jtag_streaming.v:module altera_jtag_streaming #(
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_avalon_st_idle_remover.v:module altera_avalon_st_idle_remover (
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/submodules/altera_avalon_st_bytes_to_packets.v:module altera_avalon_st_bytes_to_packets
+./mnist_demo/fpga/ip/mnist_jtag_bridge/synthesis/mnist_jtag_bridge.v:module mnist_jtag_bridge (
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_avalon_st_pipeline_stage.sv:module altera_avalon_st_pipeline_stage #(
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_avalon_st_packets_to_bytes.v:module altera_avalon_st_packets_to_bytes
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_reset_controller.v:module altera_reset_controller
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_avalon_st_jtag_interface.v:module altera_avalon_st_jtag_interface #(
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_avalon_st_pipeline_base.v:module altera_avalon_st_pipeline_base (
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/probe_jtag_bridge_jtagm.v:module probe_jtag_bridge_jtagm #(
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/probe_jtag_bridge_jtagm_timing_adt.sv:module probe_jtag_bridge_jtagm_timing_adt
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_jtag_dc_streaming.v:module altera_jtag_control_signal_crosser (
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_jtag_dc_streaming.v:module altera_jtag_src_crosser (
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_jtag_dc_streaming.v:module altera_jtag_dc_streaming  #(
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_avalon_packets_to_master.v:module altera_avalon_packets_to_master (
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_avalon_packets_to_master.v:module packets_to_fifo (
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_avalon_packets_to_master.v:module fifo_buffer_single_clock_fifo (
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_avalon_packets_to_master.v:module fifo_buffer_scfifo_with_controls (
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_avalon_packets_to_master.v:module fifo_buffer (
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_avalon_packets_to_master.v:module fifo_to_packet (
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_avalon_packets_to_master.v:module packets_to_master (
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/probe_jtag_bridge_jtagm_b2p_adapter.sv:module probe_jtag_bridge_jtagm_b2p_adapter 
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_reset_synchronizer.v:module altera_reset_synchronizer
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_jtag_sld_node.v:module altera_jtag_sld_node (
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_std_synchronizer_nocut.v:module altera_std_synchronizer_nocut (
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/probe_jtag_bridge_jtagm_p2b_adapter.sv:module probe_jtag_bridge_jtagm_p2b_adapter 
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_avalon_st_idle_inserter.v:module altera_avalon_st_idle_inserter (
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_avalon_sc_fifo.v:module altera_avalon_sc_fifo
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_avalon_st_clock_crosser.v:module altera_avalon_st_clock_crosser(
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_jtag_streaming.v:module altera_jtag_streaming #(
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_avalon_st_idle_remover.v:module altera_avalon_st_idle_remover (
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/submodules/altera_avalon_st_bytes_to_packets.v:module altera_avalon_st_bytes_to_packets
+./mnist_demo/fpga/ip/probe_jtag_bridge/synthesis/probe_jtag_bridge.v:module probe_jtag_bridge (
+./mnist_demo/rtl/loss_parent.v:module loss_parent (
+./mnist_demo/rtl/systolic.v:module systolic #(
+./mnist_demo/rtl/pe.v:module pe #(
+./mnist_demo/rtl/tpu_mnist.v:module tpu_mnist #(
+./mnist_demo/rtl/bias_child.v:module bias_child (
+./mnist_demo/rtl/uart_rx.v:module uart_rx #(
+./mnist_demo/rtl/mnist_serial_classifier.v:module mnist_serial_classifier #(
+./mnist_demo/rtl/bias_parent.v:module bias_parent(
+./mnist_demo/rtl/vpu.v:module vpu (
+./mnist_demo/rtl/mnist_frame_buffer.v:module mnist_frame_buffer #(
+./mnist_demo/rtl/leaky_relu_parent.v:module leaky_relu_parent (
+./mnist_demo/rtl/unified_buffer.v:module unified_buffer #(
+./mnist_demo/rtl/leaky_relu_derivative_parent.v:module leaky_relu_derivative_parent (
+./mnist_demo/rtl/gradient_descent.v:module gradient_descent (
+./mnist_demo/rtl/control_unit.v:module control_unit (
+./mnist_demo/rtl/tpu.v:module tpu #(
+./mnist_demo/rtl/fixedpoint_simple.v:module fxp_add #(
+./mnist_demo/rtl/fixedpoint_simple.v:module fxp_mul #(
+./mnist_demo/rtl/fixedpoint_simple.v:module fxp_addsub #(
+./mnist_demo/rtl/mnist_tpu_tiled_classifier.v:module mnist_tpu_tiled_classifier #(
+./mnist_demo/rtl/leaky_relu_derivative_child.v:module leaky_relu_derivative_child(
+./mnist_demo/rtl/leaky_relu_child.v:module leaky_relu_child (
+./mnist_demo/rtl/loss_child.v:module loss_child (
+./mnist_demo/rtl/mnist_uart_ingress.v:module mnist_uart_ingress #(
+./mnist_demo/rtl/uart_frame_receiver.v:module uart_frame_receiver #(
+./mnist_demo/rtl/mnist_jtag_mmio.v:module mnist_jtag_mmio #(
+./mnist_demo/rtl/mnist_classifier_core.v:module mnist_sync_rom_2r #(
+./mnist_demo/rtl/mnist_classifier_core.v:module mnist_classifier_core #(
+./mnist_demo/sim/tb_mnist_frame_buffer.v:module tb_mnist_frame_buffer;
+./mnist_demo/sim/tb_uart_frame_receiver.v:module tb_uart_frame_receiver;
+./mnist_demo/sim/tb_mnist_uart_ingress.v:module tb_mnist_uart_ingress;
+./mnist_demo/sim/tb_mnist_jtag_classifier.v:module tb_mnist_jtag_classifier;
+./mnist_demo/sim/tb_mnist_serial_classifier.v:module tb_mnist_serial_classifier;
+./mnist_demo/sim/tb_mnist_jtag_mmio.v:module tb_mnist_jtag_mmio;
+./mnist_demo/sim/tb_mnist_serial_classifier_full.v:module tb_mnist_serial_classifier_full;
+./mnist_demo/sim/tb_uart_rx.v:module tb_uart_rx;
+./mnist_demo/sim/tb_de1_soc_mnist_serial_top.v:module tb_de1_soc_mnist_serial_top;
+./mnist_demo/sim/tb_mnist_tpu_tiled_classifier.v:module tb_mnist_tpu_tiled_classifier;

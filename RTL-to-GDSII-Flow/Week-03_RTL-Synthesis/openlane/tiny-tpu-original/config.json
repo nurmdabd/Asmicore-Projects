@@ -1,0 +1,9 @@
+{
+    "DESIGN_NAME": "tpu",
+    "VERILOG_FILES": "dir::src/*.sv",
+    "CLOCK_PORT": "clk",
+    "CLOCK_PERIOD": 10,
+
+    "FP_CORE_UTIL": 35,
+    "PL_TARGET_DENSITY": 0.45
+}
