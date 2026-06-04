@@ -1,0 +1,28 @@
+
+63. Printing statistics.
+
+=== tpu ===
+
+   Number of wires:             126929
+   Number of wire bits:         130151
+   Number of public wires:         257
+   Number of public wire bits:    3448
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:             129888
+     $_ANDNOT_                   36370
+     $_AND_                       6156
+     $_DFFE_PP0P_                  185
+     $_DFF_PP0_                   2789
+     $_MUX_                      37064
+     $_NAND_                      2077
+     $_NOR_                       1850
+     $_NOT_                       1258
+     $_ORNOT_                      895
+     $_OR_                       34394
+     $_SDFFCE_PN0P_                 64
+     $_SDFFCE_PP0P_                 32
+     $_XNOR_                      2498
+     $_XOR_                       4256
+

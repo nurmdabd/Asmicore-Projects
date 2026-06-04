@@ -1,0 +1,7 @@
+=== Day 2 Acceptance Check ===
+[FAIL] Error count: 0
+0
+[PASS] Netlist exists and non-empty
+[PASS] Cell count: 93781
+[PASS] Flip-flops mapped: 3040
+==============================

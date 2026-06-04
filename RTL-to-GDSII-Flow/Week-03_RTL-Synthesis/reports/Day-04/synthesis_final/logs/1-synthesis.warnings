@@ -1,0 +1,4 @@
+Warning: Replacing memory \ub_memory with list of registers. See /openlane/designs/tiny-tpu-hardened/src/unified_buffer.v:364, /openlane/designs/tiny-tpu-hardened/src/unified_buffer.v:175
+Warning: Replacing memory \ub_memory with list of registers. See /openlane/designs/tiny-tpu-hardened/src/unified_buffer.v:364, /openlane/designs/tiny-tpu-hardened/src/unified_buffer.v:175
+ABC: Warning: Detected 2 multi-output gates (for example, "sky130_fd_sc_hd__fa_1").
+Warnings: 1 unique messages, 2 total

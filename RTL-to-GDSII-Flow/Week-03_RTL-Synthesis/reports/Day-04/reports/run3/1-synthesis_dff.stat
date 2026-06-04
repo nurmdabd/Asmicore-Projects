@@ -1,0 +1,26 @@
+
+69. Printing statistics.
+
+=== tpu ===
+
+   Number of wires:             130280
+   Number of wire bits:         133502
+   Number of public wires:         257
+   Number of public wire bits:    3448
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:             133239
+     $_ANDNOT_                   36370
+     $_AND_                       6156
+     $_MUX_                      37441
+     $_NAND_                      2077
+     $_NOR_                       1850
+     $_NOT_                       4232
+     $_ORNOT_                      895
+     $_OR_                       34394
+     $_XNOR_                      2498
+     $_XOR_                       4256
+     sky130_fd_sc_hd__dfrtp_2     2974
+     sky130_fd_sc_hd__dfxtp_2       96
+
