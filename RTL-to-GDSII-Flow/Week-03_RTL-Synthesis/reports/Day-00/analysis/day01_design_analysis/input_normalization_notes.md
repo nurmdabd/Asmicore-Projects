@@ -4,7 +4,7 @@ Repository: /home/nurmdabd/Asmicore-Projects/RTL-to-GDSII-Flow/Week-03_RTL-Synth
 
 ## Summary
 
-Total Files: 82
+Total Files: 56
 
 ## File Categories
 
@@ -12,7 +12,7 @@ Total Files: 82
 - DOCUMENTATION: 4
 - IMAGE: 1
 - RTL_SOURCE: 16
-- UNKNOWN: 60
+- UNKNOWN: 34
 
 ## Detected Top Modules
 
@@ -21,32 +21,6 @@ Total Files: 82
 
 ## Suspicious Files
 
-- .git/HEAD
-- .git/config
-- .git/description
-- .git/hooks/applypatch-msg.sample
-- .git/hooks/commit-msg.sample
-- .git/hooks/fsmonitor-watchman.sample
-- .git/hooks/post-update.sample
-- .git/hooks/pre-applypatch.sample
-- .git/hooks/pre-commit.sample
-- .git/hooks/pre-merge-commit.sample
-- .git/hooks/pre-push.sample
-- .git/hooks/pre-rebase.sample
-- .git/hooks/pre-receive.sample
-- .git/hooks/prepare-commit-msg.sample
-- .git/hooks/push-to-checkout.sample
-- .git/hooks/update.sample
-- .git/index
-- .git/info/exclude
-- .git/logs/HEAD
-- .git/logs/refs/heads/main
-- .git/logs/refs/remotes/origin/HEAD
-- .git/objects/pack/pack-5fc89db5964d9587cd245691c14713ba61792699.idx
-- .git/objects/pack/pack-5fc89db5964d9587cd245691c14713ba61792699.pack
-- .git/packed-refs
-- .git/refs/heads/main
-- .git/refs/remotes/origin/HEAD
 - compile.do
 - docs/fv_coverage_assert.txt
 - docs/fv_coverage_cover.txt

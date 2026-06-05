@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-01_input_normalizer.py
+rtl_design_analyzer.py
 
-Input Normalization Stage for RTL Analysis Pipeline
+RTL Design Analyzer
 
 Responsibilities:
     - Scan RTL repository
@@ -14,7 +14,7 @@ Responsibilities:
     - Generate manifest and reports
 
 Usage:
-    python3 scripts/01_input_normalizer.py rtl/UART
+    python3 scripts/rtl_design_analyzer.py
 """
 
 from pathlib import Path
@@ -34,7 +34,7 @@ HEADER_EXTENSIONS = {".vh", ".svh"}
 SCRIPT_DIR = Path(__file__).resolve().parent
 
 OUTPUT_DIR = SCRIPT_DIR.parent / "analysis" / "day01_design_analysis"
-rtl_root = SCRIPT_DIR.parent / "rtl" / "tiny-tpu"
+rtl_root = SCRIPT_DIR.parent.parent.parent / "rtl" / "tiny-tpu"
 
 SV_KEYWORDS = {
     "module",
