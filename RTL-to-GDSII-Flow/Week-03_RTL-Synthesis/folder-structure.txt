@@ -85,94 +85,109 @@
 │   │   └── scripts
 │   │       └── check_synthesis.sh
 │   ├── Day-03
-│   │   └── raw
-│   │       ├── 1-synthesis - Copy.log:Zone.Identifier
-│   │       ├── 1-synthesis.AREA_0.chk - Copy.rpt:Zone.Identifier
+│   │   ├── logs
+│   │   │   └── 1-synthesis.log
+│   │   ├── outputs
+│   │   │   ├── tpu.sdf
+│   │   │   └── tpu.v
+│   │   └── reports
 │   │       ├── 1-synthesis.AREA_0.chk.rpt
-│   │       ├── 1-synthesis.AREA_0.chk.rpt:Zone.Identifier
-│   │       ├── 1-synthesis.AREA_0.stat - Copy.rpt:Zone.Identifier
 │   │       ├── 1-synthesis.AREA_0.stat.rpt
-│   │       ├── 1-synthesis.AREA_0.stat.rpt:Zone.Identifier
-│   │       ├── 1-synthesis.log
-│   │       ├── 1-synthesis.log:Zone.Identifier
-│   │       ├── 1-synthesis_dff - Copy.stat:Zone.Identifier
 │   │       ├── 1-synthesis_dff.stat
-│   │       ├── 1-synthesis_dff.stat:Zone.Identifier
-│   │       ├── 1-synthesis_pre - Copy.stat:Zone.Identifier
 │   │       ├── 1-synthesis_pre.stat
-│   │       ├── 1-synthesis_pre.stat:Zone.Identifier
-│   │       ├── 1-synthesis_pre_synth.chk - Copy.rpt:Zone.Identifier
-│   │       ├── 1-synthesis_pre_synth.chk.rpt
-│   │       ├── 1-synthesis_pre_synth.chk.rpt:Zone.Identifier
-│   │       ├── tpu - Copy.sdf:Zone.Identifier
-│   │       ├── tpu - Copy.v:Zone.Identifier
-│   │       ├── tpu.sdf
-│   │       ├── tpu.sdf:Zone.Identifier
-│   │       ├── tpu.v
-│   │       └── tpu.v:Zone.Identifier
+│   │       └── 1-synthesis_pre_synth.chk.rpt
 │   ├── Day-04
 │   │   ├── comparison_table.md
-│   │   ├── configs
-│   │   │   ├── config_run1_baseline.json
-│   │   │   ├── config_run2_10ns.json
-│   │   │   └── config_run3_delay.json
 │   │   ├── final_selection.md
-│   │   ├── logs
-│   │   │   ├── run1
-│   │   │   │   ├── 1-synthesis.errors
-│   │   │   │   ├── 1-synthesis.log
-│   │   │   │   ├── 1-synthesis.warnings
-│   │   │   │   ├── 2-sta.errors
-│   │   │   │   ├── 2-sta.log
-│   │   │   │   └── 2-sta.warnings
-│   │   │   ├── run2
-│   │   │   │   ├── 1-synthesis.errors
-│   │   │   │   ├── 1-synthesis.log
-│   │   │   │   ├── 1-synthesis.warnings
-│   │   │   │   ├── 2-sta.errors
-│   │   │   │   ├── 2-sta.log
-│   │   │   │   └── 2-sta.warnings
-│   │   │   └── run3
-│   │   │       ├── 1-synthesis.errors
-│   │   │       ├── 1-synthesis.log
-│   │   │       ├── 1-synthesis.warnings
-│   │   │       ├── 2-sta.errors
-│   │   │       ├── 2-sta.log
-│   │   │       └── 2-sta.warnings
-│   │   ├── outputs
-│   │   │   ├── run1
-│   │   │   │   ├── tpu.sdf
-│   │   │   │   └── tpu.v
-│   │   │   ├── run2
-│   │   │   │   ├── tpu.sdf
-│   │   │   │   └── tpu.v
-│   │   │   └── run3
-│   │   │       ├── tpu.sdf
-│   │   │       └── tpu.v
 │   │   ├── package_verification.txt
-│   │   ├── reports
-│   │   │   ├── run1
+│   │   ├── run1
+│   │   │   ├── OPENLANE_COMMIT
+│   │   │   ├── PDK_SOURCES
+│   │   │   ├── cmds.log
+│   │   │   ├── config.tcl
+│   │   │   ├── config_in.tcl
+│   │   │   ├── configs
+│   │   │   │   └── config_run1_baseline.json
+│   │   │   ├── logs
+│   │   │   │   ├── 1-synthesis.errors
+│   │   │   │   ├── 1-synthesis.log
+│   │   │   │   ├── 1-synthesis.warnings
+│   │   │   │   ├── 2-sta.errors
+│   │   │   │   ├── 2-sta.log
+│   │   │   │   └── 2-sta.warnings
+│   │   │   ├── openlane.log
+│   │   │   ├── outputs
+│   │   │   │   ├── tpu.sdf
+│   │   │   │   └── tpu.v
+│   │   │   ├── reports
 │   │   │   │   ├── 1-synthesis.AREA_0.chk.rpt
 │   │   │   │   ├── 1-synthesis.AREA_0.stat.rpt
 │   │   │   │   ├── 1-synthesis_dff.stat
 │   │   │   │   ├── 1-synthesis_pre.stat
 │   │   │   │   └── 1-synthesis_pre_synth.chk.rpt
-│   │   │   ├── run2
+│   │   │   └── runtime.yaml
+│   │   ├── run2
+│   │   │   ├── OPENLANE_COMMIT
+│   │   │   ├── PDK_SOURCES
+│   │   │   ├── cmds.log
+│   │   │   ├── config.tcl
+│   │   │   ├── config_in.tcl
+│   │   │   ├── configs
+│   │   │   │   └── config_run2_10ns.json
+│   │   │   ├── logs
+│   │   │   │   ├── 1-synthesis.errors
+│   │   │   │   ├── 1-synthesis.log
+│   │   │   │   ├── 1-synthesis.warnings
+│   │   │   │   ├── 2-sta.errors
+│   │   │   │   ├── 2-sta.log
+│   │   │   │   └── 2-sta.warnings
+│   │   │   ├── openlane.log
+│   │   │   ├── outputs
+│   │   │   │   ├── tpu.sdf
+│   │   │   │   └── tpu.v
+│   │   │   ├── reports
 │   │   │   │   ├── 1-synthesis.AREA_0.chk.rpt
 │   │   │   │   ├── 1-synthesis.AREA_0.stat.rpt
 │   │   │   │   ├── 1-synthesis_dff.stat
 │   │   │   │   ├── 1-synthesis_pre.stat
 │   │   │   │   └── 1-synthesis_pre_synth.chk.rpt
-│   │   │   └── run3
-│   │   │       ├── 1-synthesis.DELAY_0.chk.rpt
-│   │   │       ├── 1-synthesis.DELAY_0.stat.rpt
-│   │   │       ├── 1-synthesis_dff.stat
-│   │   │       ├── 1-synthesis_pre.stat
-│   │   │       └── 1-synthesis_pre_synth.chk.rpt
+│   │   │   └── runtime.yaml
+│   │   ├── run3
+│   │   │   ├── OPENLANE_COMMIT
+│   │   │   ├── PDK_SOURCES
+│   │   │   ├── cmds.log
+│   │   │   ├── config.tcl
+│   │   │   ├── config_in.tcl
+│   │   │   ├── configs
+│   │   │   │   └── config_run3_delay.json
+│   │   │   ├── logs
+│   │   │   │   ├── 1-synthesis.errors
+│   │   │   │   ├── 1-synthesis.log
+│   │   │   │   ├── 1-synthesis.warnings
+│   │   │   │   ├── 2-sta.errors
+│   │   │   │   ├── 2-sta.log
+│   │   │   │   └── 2-sta.warnings
+│   │   │   ├── openlane.log
+│   │   │   ├── outputs
+│   │   │   │   ├── tpu.sdf
+│   │   │   │   └── tpu.v
+│   │   │   ├── reports
+│   │   │   │   ├── 1-synthesis.DELAY_0.chk.rpt
+│   │   │   │   ├── 1-synthesis.DELAY_0.stat.rpt
+│   │   │   │   ├── 1-synthesis_dff.stat
+│   │   │   │   ├── 1-synthesis_pre.stat
+│   │   │   │   └── 1-synthesis_pre_synth.chk.rpt
+│   │   │   └── runtime.yaml
 │   │   ├── scripts
 │   │   │   └── extract_metrics.sh
 │   │   ├── synthesis_final
-│   │   │   ├── config.json
+│   │   │   ├── OPENLANE_COMMIT
+│   │   │   ├── PDK_SOURCES
+│   │   │   ├── cmds.log
+│   │   │   ├── config
+│   │   │   │   └── config.json
+│   │   │   ├── config.tcl
+│   │   │   ├── config_in.tcl
 │   │   │   ├── logs
 │   │   │   │   ├── 1-synthesis.errors
 │   │   │   │   ├── 1-synthesis.errors:Zone.Identifier
@@ -186,6 +201,7 @@
 │   │   │   │   ├── 2-sta.log:Zone.Identifier
 │   │   │   │   ├── 2-sta.warnings
 │   │   │   │   └── 2-sta.warnings:Zone.Identifier
+│   │   │   ├── openlane.log
 │   │   │   ├── outputs
 │   │   │   │   ├── tpu.sdf
 │   │   │   │   ├── tpu.sdf:Zone.Identifier
@@ -202,10 +218,10 @@
 │   │   │   │   ├── 1-synthesis_pre.stat:Zone.Identifier
 │   │   │   │   ├── 1-synthesis_pre_synth.chk.rpt
 │   │   │   │   └── 1-synthesis_pre_synth.chk.rpt:Zone.Identifier
+│   │   │   ├── runtime.yaml
 │   │   │   └── scripts
 │   │   └── synthesis_notes.md
 │   └── Day-05
-│       ├── analysis_questions.md
 │       └── joint_comparison_table.md
 └── rtl
     └── tiny-tpu
@@ -1055,4 +1071,4 @@
         ├── xvlog.log
         └── xvlog.pb
 
-126 directories, 929 files
+131 directories, 940 files

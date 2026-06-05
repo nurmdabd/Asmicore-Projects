@@ -6,10 +6,21 @@
 # DATE: 2026.06.05
 # ===========================================================================
 
-echo "=== Day 2 Acceptance Check ==="
+FILE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+REPORT_FILE="$FILE_DIR/acceptance_check.txt"
 
-NETLIST="../outputs/tpu.v"
-SYNLOG="../logs/1-synthesis.log"
+log_output() {
+    tee "$REPORT_FILE"
+}
+
+{
+NETLIST="$FILE_DIR/outputs/tpu.v"
+SYNLOG="$FILE_DIR/logs/1-synthesis.log"
+
+
+echo "=== Day 2 Acceptance Check ==="
+echo "Timestamp: $(date '+%Y-%m-%d %H:%M:%S')"
+echo "---------------------------------------------------"
 
 # ---------------------------------------------------------------------------
 # Check 1: No errors in synthesis log (Isolated Safe Check)
@@ -26,7 +37,7 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Check 1: No errors in synthesis log (Isolated Safe Check)
+# Check 2: No errors in synthesis log (Isolated Safe Check)
 # ---------------------------------------------------------------------------
 if [ ! -f "$SYNLOG" ]; then
     echo "[CRITICAL] Synthesis log file is missing or not found!"
@@ -40,13 +51,13 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Check 2: Netlist exists and is non-empty
+# Check 3: Netlist exists and is non-empty
 # ---------------------------------------------------------------------------
 if [ -s "$NETLIST" ]; then
     echo "[PASS] Netlist exists and non-empty"
     
     # -----------------------------------------------------------------------
-    # Check 3: Standard-cell count (Only runs if Netlist safely exists)
+    # Check 4: Standard-cell count (Only runs if Netlist safely exists)
     # -----------------------------------------------------------------------
     CELLS=$(grep -c 'sky130_fd_sc_hd' "$NETLIST" 2>/dev/null)
     if [ "$CELLS" -gt 100 ]; then
@@ -56,7 +67,7 @@ if [ -s "$NETLIST" ]; then
     fi
 
     # -----------------------------------------------------------------------
-    # Check 4: Flip-flops present (Only runs if Netlist safely exists)
+    # Check 5: Flip-flops present (Only runs if Netlist safely exists)
     # -----------------------------------------------------------------------
     FFS=$(grep -c 'sky130_fd_sc_hd__df' "$NETLIST" 2>/dev/null)
     if [ "$FFS" -gt 0 ]; then
@@ -70,4 +81,5 @@ else
     echo "[CRITICAL] Skipping Cell and Flip-Flop count checks due to missing Netlist."
 fi
 
-echo "=============================="
+echo "==================================================="
+} | log_output

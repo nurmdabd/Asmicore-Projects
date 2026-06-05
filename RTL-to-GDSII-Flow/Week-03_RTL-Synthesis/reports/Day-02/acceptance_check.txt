@@ -1,7 +1,9 @@
 === Day 2 Acceptance Check ===
-[FAIL] Error count: 0
-0
+Timestamp: 2026-06-06 00:26:00
+---------------------------------------------------
+[PASS] Error count: 0
+[FAIL] Warning count: 4
 [PASS] Netlist exists and non-empty
 [PASS] Cell count: 93781
 [PASS] Flip-flops mapped: 3040
-==============================
+===================================================

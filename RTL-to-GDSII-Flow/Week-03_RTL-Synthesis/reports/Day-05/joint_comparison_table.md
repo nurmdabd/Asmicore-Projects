@@ -1,130 +1,62 @@
 # Joint 4-Design Comparison
 
-## Overview
+## 4-Design Synthesis Comparison Table
 
-This document summarizes the synthesis characteristics of four different accelerator and processor architectures implemented using the SKY130 HD standard-cell library. The objective is to compare resource utilization, timing behavior, and architectural implications across the designs.
+| Metric                      |                 GPU (S1) |               TPU (S2) |                 NPU (S3) |                ibex (S4) |
+| --------------------------- | -----------------------: | ---------------------: | -----------------------: | -----------------------: |
+| Total Cell Count            |                   13,515 |                 93,781 |                  787,924 |                   11,157 |
+| Chip Area (µm²)             |              150,688.272 |             804,275.11 |                1,969,810 |              13,511,277* |
+| Flip-Flop Count             |                    2,284 |                  3,040 |                  131,328 |                      865 |
+| Most Common Cell Type       | sky130_fd_sc_hd__dfxtp_2 | sky130_fd_sc_hd__buf_1 | sky130_fd_sc_hd__nand2_1 | sky130_fd_sc_hd__nand2_1 |
+| WNS at Baseline Clock       |                     0.00 |                   0.00 |                  -81,798 |                       >0 |
+| Timing Met?                 |                      Yes |                    Yes |                       No |                      Yes |
+| Latches Inferred            |                        0 |                      0 |                        0 |                        0 |
+| Unique Cell Types           |                       73 |                     73 |                       63 |                       80 |
+| Run-1 → Run-2 Cell Increase |                       0% |                     0% |                       0% |                       0% |
+| Estimated RTL Modules       |                       12 |                     28 |                       36 |                       25 |
 
-At the time of writing, synthesis results for the ibex (S4) design are not yet available. Therefore, the comparison currently includes GPU (S1), TPU (S2), and NPU (S3) results, with ibex values marked as TBD.
-
----
-
-# Joint 4-Design Comparison Table
-
-| Metric                      |                 GPU (S1) |               TPU (S2) |                 NPU (S3) | ibex (S4) |
-| --------------------------- | -----------------------: | ---------------------: | -----------------------: | --------: |
-| Total Cell Count            |                   13,515 |                 93,781 |                  787,924 |       TBD |
-| Chip Area (µm²)             |               150,688.27 |             804,275.11 |             1,969,810.00 |       TBD |
-| Flip-Flop Count             |                    2,284 |                  3,040 |                  131,328 |       TBD |
-| Most Common Cell Type       | sky130_fd_sc_hd__dfxtp_2 | sky130_fd_sc_hd__buf_1 | sky130_fd_sc_hd__nand2_1 |       TBD |
-| WNS at Baseline Clock       |                  0.00 ns |                0.00 ns |               -81,798 ns |       TBD |
-| Timing Met?                 |                      Yes |                    Yes |                       No |       TBD |
-| Latches Inferred            |                        0 |                      0 |                        0 |       TBD |
-| Unique Cell Types Used      |                       73 |                     73 |                       63 |       TBD |
-| Run-1 → Run-2 Cell Increase |                       0% |                     0% |                       0% |       TBD |
-| Estimated RTL Modules       |                       12 |                     28 |                       36 |       TBD |
+* ibex area was generated using a custom Liberty-based area estimation method and should be interpreted cautiously when compared against OpenLane-reported synthesis areas.
 
 ---
 
-# Preliminary Architectural Observations
+# Analysis Questions
 
-## GPU (S1)
+## Q1. Which design has the most cells? Does this match your expectation based on the architecture?
 
-The GPU implementation produced the smallest synthesized design among the currently available results.
-
-Key observations:
-
-* Lowest cell count.
-* Lowest silicon area.
-* Timing closure achieved.
-* Moderate flip-flop utilization.
-* Dominant cell type is a flip-flop cell (`dfxtp_2`), indicating significant sequential logic usage.
-
-The relatively small implementation size suggests that the tiny-GPU design focuses on lightweight parallel processing rather than large-scale matrix computation.
+The NPU contains the highest cell count (787,924 cells). This matches expectations because neural-network accelerators require substantial arithmetic and memory resources. Memory inference during synthesis further increased implementation size.
 
 ---
 
-## TPU (S2)
+## Q2. GPU and TPU both do parallel arithmetic. Why might their cell counts differ?
 
-The TPU implementation occupies a middle position between the GPU and NPU.
-
-Key observations:
-
-* Approximately seven times larger than the GPU in cell count.
-* More than 800,000 µm² estimated area.
-* Timing closure achieved.
-* Large number of buffer cells inserted during synthesis.
-* Systolic-array architecture creates highly regular datapath structures.
-
-The TPU demonstrates a balance between computational throughput and implementation complexity.
+The TPU uses a systolic-array architecture with dedicated dataflow paths, local interconnects, and extensive buffering. The GPU uses a more compact SIMD-style architecture. Consequently, the TPU requires significantly more hardware resources than the GPU.
 
 ---
 
-## NPU (S3)
+## Q3. ibex is a CPU — why does it have more diverse logic than the GPU or TPU?
 
-The NPU implementation is significantly larger than both GPU and TPU.
-
-Key observations:
-
-* Highest cell count.
-* Highest silicon area.
-* Largest flip-flop count.
-* Timing violation observed.
-* Dominant use of NAND cells.
-
-The extremely large flip-flop count indicates that behavioral memory structures were synthesized into register-based implementations rather than dedicated SRAM macros.
-
-As a result, the design experiences substantial area growth and severe timing degradation.
+The ibex CPU must support instruction fetch, decode, execution, branching, exception handling, and pipeline control. These functions require a broader variety of control-oriented logic structures than accelerator designs, resulting in the highest number of unique cell types.
 
 ---
 
-# Cross-Design Comparison
+## Q4. Which design has the best WNS? What does that tell you about its critical path?
 
-Based on currently available data:
-
-### Area Ranking
-
-1. GPU
-2. TPU
-3. NPU
-
-### Cell Count Ranking
-
-1. GPU
-2. TPU
-3. NPU
-
-### Flip-Flop Ranking
-
-1. GPU
-2. TPU
-3. NPU
-
-### Timing Performance
-
-* GPU meets timing.
-* TPU meets timing.
-* NPU fails timing.
+GPU, TPU, and ibex all achieved timing closure with non-negative WNS values. This indicates that their critical paths satisfy the target timing constraints and are shorter than the available clock period.
 
 ---
 
-# Sections Pending Completion
+## Q5. Which design would be hardest to close timing on in a real tapeout? Why?
 
-The following sections require ibex synthesis results before final analysis can be completed:
-
-* Finalized Joint Comparison Table
-* Q1–Q6 Discussion Questions
-* CPU versus Accelerator Comparison
-* Timing Closure Difficulty Assessment
-* Recommended Design for Week-02 Physical Implementation
-
-These sections will be updated after receiving the ibex (S4) synthesis metrics.
+The NPU would be the most difficult design to close timing on. Its extremely negative WNS (-81,798 ns) indicates severe timing violations caused primarily by behavioral memory structures being synthesized into large amounts of combinational and sequential logic.
 
 ---
 
-# Current Conclusion
+## Q6. All designs used the same sky130_fd_sc_hd library. Did they use the same cell types?
 
-The currently available synthesis results demonstrate substantial variation in implementation complexity across the three accelerator architectures.
+No. Although all designs used the same standard-cell library, each architecture utilized different subsets of cells. TPU was buffer-dominated, GPU used many flip-flops, NPU was NAND-heavy, and ibex employed the widest variety of cell types due to its control-intensive architecture.
 
-The GPU represents the smallest implementation with successful timing closure. The TPU occupies a middle ground, providing increased computational capability while maintaining acceptable area and timing characteristics. The NPU exhibits the largest implementation footprint and fails timing due to the synthesis of behavioral memory structures into large numbers of standard-cell registers.
+---
 
-A complete architectural comparison will be performed after integrating the ibex synthesis results.
+# Group Conclusion
+
+The comparison demonstrates that architecture is the primary factor influencing synthesis outcomes. Accelerator designs emphasize arithmetic throughput and datapath resources, while CPU architectures emphasize control complexity and cell diversity. Memory implementation choices can dramatically affect area, cell count, and timing behavior, as demonstrated by the NPU results.
