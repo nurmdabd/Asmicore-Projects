@@ -36,38 +36,24 @@ The primary objective was not only to obtain synthesis results, but also to inve
 | Critical Path       | PE→GD       | IF→ID       |
 
 # Table of Contents
-
 - [Objectives](#objectives)
-
 - [Environment and Toolchain](#environment-and-toolchain)
-
 - [Design Overview](#design-overview)
-
 - [Methodology](#methodology)
-
 - [Repository Organization](#repository-organization)
-
 - [Important Commands](#important-commands)
-
 - [Synthesis Results](#synthesis-results)
-
 - [Critical Path Analysis](#critical-path-analysis)
-
 - [Challenges Encountered](#challenges-encountered)
-
 - [Engineering Journey Summary](#engineering-journey-summary)
-
 - [Key Findings](#key-findings)
-
 - [Recommended Optimization](#recommended-optimization)
-
+- [Master Metrics Tables](#master-metrics-tables)
 - [Lessons Learned](#lessons-learned)
-
-- [Documentation](#documentation)
+- [Additional Resources](#additional-resources)
 
 
 ---
-
 # Objectives
 
 The goals of this work were:
@@ -83,7 +69,6 @@ The goals of this work were:
 - Recommend potential optimization strategies
 
 ---
-
 # Environment and Toolchain
 
 | Item | Value |
@@ -98,7 +83,6 @@ The goals of this work were:
 | Frequency Targets | 500 MHz, 600 MHz, 700 MHz |
 
 ---
-
 # Design Overview
 
 ## Tiny TPU
@@ -123,7 +107,6 @@ Major architectural blocks include:
 - MAC dominated computation
 
 ---
-
 ## Kronos RISC-V Core
 
 Kronos is a lightweight RV32I-compatible processor implementing a three-stage pipeline.
@@ -147,7 +130,6 @@ The processor contains logic for:
 - Instruction-centric execution
 
 ---
-
 ## Design Summary
 
 | Property | Tiny TPU | Kronos |
@@ -162,7 +144,6 @@ The processor contains logic for:
 | Frequency Targets | 500 / 600 / 700 MHz | 500 / 600 / 700 MHz |
 
 ---
-
 # Methodology
 
 The overall workflow followed during this study is illustrated below.
@@ -231,7 +212,6 @@ The investigation consisted of five major stages.
 - Automation of report extraction
 
 ---
-
 ## Frequency Sweep
 
 Three operating points were evaluated throughout the study.
@@ -283,15 +263,11 @@ reports/synth_stat.txt
 results/1_synth.sdc
 results/1_2_yosys.v
 ```
-
 ---
-
 # Important Commands
-
 The following commands were frequently used during the study.
 
 ## Design Inspection
-
 ### Discover available modules
 
 ```bash
@@ -305,9 +281,7 @@ find rtl \
 \( -name "*.v" -o -name "*.sv" \) \
 | wc -l
 ```
-
 ---
-
 ## ORFS Execution
 
 ### Generate ORFS variables
@@ -315,7 +289,6 @@ find rtl \
 ```bash
 make DESIGN_CONFIG=config.mk vars
 ```
-
 ### Run synthesis
 
 ```bash
@@ -333,9 +306,7 @@ DESIGN_CONFIG=config_700mhz.mk \
 FLOW_VARIANT=700mhz \
 synth-report
 ```
-
 ---
-
 ## Timing Analysis
 
 ### Extract worst timing path
@@ -360,7 +331,6 @@ reports/1_Post_synthesis.rpt
 ```
 
 ---
-
 ## Power Analysis
 
 ```bash
@@ -369,7 +339,6 @@ reports/1_Post_synthesis.rpt
 ```
 
 ---
-
 ## Sequential Cell Count
 
 ```bash
@@ -378,7 +347,6 @@ reports/synth_stat.txt
 ```
 
 ---
-
 # Synthesis Results
 
 ## Design Comparison Summary
@@ -397,7 +365,6 @@ reports/synth_stat.txt
 | Dominant Logic | Arithmetic Datapath | Control Logic |
 
 ---
-
 ## Frequency Scaling Analysis
 
 | Frequency | TPU Slack | Kronos Slack |
@@ -419,7 +386,6 @@ Timing slack decreases as frequency increases, but neither design required:
 Cell count and area remained unchanged from **500 MHz → 700 MHz**.
 
 ---
-
 ## Power Comparison
 
 | Metric | Tiny TPU | Kronos |
@@ -451,7 +417,6 @@ Pdynamic ∝ Frequency
 ```
 
 ---
-
 # Critical Path Analysis
 
 ## Tiny TPU
@@ -460,17 +425,11 @@ Critical Path
 
 ```text
 systolic_inst.pe21.pe_psum_out[8]
-
         ↓
-
 Accumulation Logic
-
         ↓
-
 Gradient Descent Logic
-
         ↓
-
 ub_inst.gradient_descent_inst_0
 .value_updated_out[10]
 ```
@@ -490,43 +449,28 @@ Dominant logic cells
 
 ```text
 FAx1
-
 HAxp5
-
 AO21x1
-
 OA21x2
-
 OA211x2
-
 AO22x1
-
 XNOR2x2
 ```
 
 ---
-
 ## Kronos
 
 Critical Path
 
 ```text
 u_if.fetch[2]
-
       ↓
-
 Instruction Fetch
-
       ↓
-
 Decode Logic
-
       ↓
-
 Control Generation
-
       ↓
-
 u_id.decode[50]
 ```
 
@@ -544,20 +488,14 @@ Dominant cells
 
 ```text
 INVx1
-
 NOR2x1
-
 AO221x1
-
 OA211x2
-
 OR3x1
-
 XOR2x2
 ```
 
 ---
-
 # Timing Bottleneck Discussion
 
 Several observations can be made from the STA reports.
@@ -587,7 +525,6 @@ deeper than Kronos
 ```
 
 ---
-
 ### Observation-02
 
 Kronos maximum frequency
@@ -613,7 +550,6 @@ faster
 than Tiny TPU.
 
 ---
-
 ### Observation-03
 
 The critical path of Tiny TPU is dominated by
@@ -629,7 +565,6 @@ Instruction Decode
 ```
 
 ---
-
 ### Observation-04
 
 The integrated system frequency is ultimately constrained by
@@ -651,7 +586,6 @@ Fmax ≈ 1.89 GHz
 Consequently, the TPU arithmetic datapath becomes the dominant timing bottleneck of the complete accelerator system.
 
 ---
-
 # Challenges Encountered
 
 Throughout this study, several engineering and toolchain issues were encountered. This section documents the most important challenges, their causes, and the corresponding solutions.
@@ -725,7 +659,6 @@ results/nangate45/gcd/base/6_final.gds
 </details>
 
 ---
-
 <details>
 <summary><b>Problem-02 : ASAP7 Smoke Test Failure</b></summary>
 
@@ -761,7 +694,6 @@ ASAP7 reference designs executed successfully.
 </details>
 
 ---
-
 ## B. Design Migration Issues
 
 <details>
@@ -846,7 +778,6 @@ TPU became a valid ORFS design.
 </details>
 
 ---
-
 <details>
 <summary><b>Problem-04 : Kronos Top Module Ambiguity</b></summary>
 
@@ -873,7 +804,6 @@ Kronos synthesized successfully.
 </details>
 
 ---
-
 ## C. Timing and Constraint Issues
 
 <details>
@@ -935,7 +865,6 @@ grep -i "tns" \
 </details>
 
 ---
-
 <details>
 <summary><b>Problem-06 : Timing Unit Misinterpretation in ASAP7</b></summary>
 
@@ -1036,7 +965,6 @@ Positive slack observed for all runs.
 </details>
 
 ---
-
 ## D. HDL Frontend Issues
 
 <details>
@@ -1081,7 +1009,6 @@ Executing SLANG frontend
 </details>
 
 ---
-
 ## E. Data Collection Issues
 
 <details>
@@ -1112,7 +1039,6 @@ to automate extraction.
 </details>
 
 ---
-
 <details>
 <summary><b>Problem-09 : Incorrect Flip-Flop Counting</b></summary>
 
@@ -1147,7 +1073,6 @@ Double counting during cell extraction.
 </details>
 
 ---
-
 # Engineering Journey Summary
 
 ```text
@@ -1179,7 +1104,6 @@ Comparative Evaluation
 ```
 
 ---
-
 # Key Findings
 
 - Tiny TPU contains approximately **6.16× more cells** than Kronos.
@@ -1199,20 +1123,15 @@ Comparative Evaluation
 - No additional cells were required from **500 MHz → 700 MHz**.
 
 ---
-
 # Recommended Optimization
 
 Current implementation
 
 ```text
 Register
-
 ↓
-
 43 combinational stages
-
 ↓
-
 Register
 ```
 
@@ -1220,43 +1139,131 @@ Suggested implementation
 
 ```text
 Register
-
 ↓
-
 ≈21 stages
-
 ↓
-
 Pipeline Register
-
 ↓
-
 ≈22 stages
-
 ↓
-
 Register
 ```
 
 Expected benefits
 
 - Higher achievable frequency
-
 - Improved timing margin
-
 - Better scalability
-
 - Reduced critical path delay
 
 Trade-offs
-
 - Additional flip-flops
-
 - Increased clock power
-
 - One extra pipeline stage
 
 ---
+
+# Master Metrics Tables
+## Tiny TPU Master Metrics Table
+
+| Count | Metric                         | 500 MHz                                                   | 600 MHz                                                   | 700 MHz                                                   |
+| :---: | ------------------------------ | --------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- |
+|   1   | Clock Period (ps)              | 2000                                                      | 1667                                                      | 1429                                                      |
+|   2   | Top Module                     | `tpu`                                                     | `tpu`                                                     | `tpu`                                                     |
+|   3   | RTL Files                      | 17                                                        | 17                                                        | 17                                                        |
+|   4   | Total Cells                    | 86102                                                     | 86102                                                     | 86102                                                     |
+|   5   | Combinational Cells            | 83062                                                     | 83062                                                     | 83062                                                     |
+|   6   | Sequential Cells               | 3040                                                      | 3040                                                      | 3040                                                      |
+|   7   | DFF Count                      | 3040                                                      | 3040                                                      | 3040                                                      |
+|   8   | Sequential Cell %              | 3.53 %                                                    | 3.53 %                                                    | 3.53 %                                                    |
+|   9   | Sequential Area (%)            | 11.68 %                                                   | 11.68 %                                                   | 11.68 %                                                   |
+|  10   | Chip Area (μm²)                | 9793.109                                                  | 9793.109                                                  | 9793.109                                                  |
+|  11   | Worst Slack                    | 1056.59                                                   | 723.59                                                    | 485.59                                                    |
+|  12   | WNS (ps)                       | 0.00                                                      | 0.00                                                      | 0.00                                                      |
+|  13   | TNS (ps)                       | 0.00                                                      | 0.00                                                      | 0.00                                                      |
+|  14   | FEP                            | 0                                                         | 0                                                         | 0                                                         |
+|  15   | Minimum Period (ps)            | 943.41                                                    | 943.41                                                    | 943.41                                                    |
+|  16   | Estimated Fmax (MHz)           | 1059.99                                                   | 1059.99                                                   | 1059.99                                                   |
+|  17   | Path Groups                    | clk                                                       | clk                                                       | clk                                                       |
+|  18   | Number of Path Groups          | 1                                                         | 1                                                         | 1                                                         |
+|  19   | Most Critical Path Group       | clk                                                       | clk                                                       | clk                                                       |
+|  20   | Number of Max Paths            | 2                                                         | 2                                                         | 2                                                         |
+|  21   | Start Point of Critical Path   | `systolic_inst.pe21.`<br>`pe_psum_out[8]`                 | `systolic_inst.pe21.`<br>`pe_psum_out[8]`                 | `systolic_inst.pe21.`<br>`pe_psum_out[8]`                 |
+|  22   | End Point of Critical Path     | ub_inst.gradient_descent_inst_0.<br>value_updated_out[10] | ub_inst.gradient_descent_inst_0.<br>value_updated_out[10] | ub_inst.gradient_descent_inst_0.<br>value_updated_out[10] |
+|  23   | Critical Path Logic Depth      | 43                                                        | 43                                                        | 43                                                        |
+|  24   | Largest Cell Type              | `HAxp5_ASAP7_75t_R`                                       | `HAxp5_ASAP7_75t_R`                                       | `HAxp5_ASAP7_75t_R`                                       |
+|  25   | Largest Single Cell Delay (ps) | 67.65                                                     | 67.65                                                     | 67.65                                                     |
+|  26   | Data Arrival Time (ps)         | 927.96                                                    | 927.96                                                    | 927.96                                                    |
+|  27   | Setup Time (ps)                | 15.44                                                     | 15.44                                                     | 15.44                                                     |
+|  28   | VT Type                        | RVT                                                       | RVT                                                       | RVT                                                       |
+|  29   | RVT Percentage                 | 100%                                                      | 100%                                                      | 100%                                                      |
+|  30   | Internal Power (W)             | 1.68e-02 W                                                | 2.02e-02                                                  | 2.35e-02 W                                                |
+|  31   | Switching Power (W)            | 1.25e-02                                                  | 1.49e-02                                                  | 1.74e-02 W                                                |
+|  32   | Leakage Power (W)              | 7.25e-06                                                  | 7.25e-06                                                  | 7.25e-06 W                                                |
+|  33   | Total Power (W)                | 2.93e-02                                                  | 3.51e-02                                                  | 4.10e-02 W                                                |
+|  34   | Sequential Contribution (%)    | 13.7 %                                                    | 13.7 %                                                    | 13.7 %                                                    |
+|  35   | Combinational Contribution (%) | 86.3 %                                                    | 86.3 %                                                    | 86.3 %                                                    |
+|  36   | Buffer Count                   | 12781                                                     | 12781                                                     | 12781                                                     |
+|  37   | Inverter Count                 | 6937                                                      | 6937                                                      | 6937                                                      |
+|  38   | Arithmetic Cell Count          | 3864                                                      | 3864                                                      | 3864                                                      |
+|  39   | Average Cell Area (μm²/cell)   | 0.1137                                                    | 0.1137                                                    | 0.1137                                                    |
+|  40   | Power Density (W/μm²)          | 2.99189972e-06                                            | 3.58415291e-06                                            | 4.18661735e-06                                            |
+
+- WNS-Worst Negative Slack
+- TNS-Total Negative Slack
+- DFF-D Flip Flop
+- FEP-Failing Endpoints
+---
+
+## Kronos Master Metrics Table
+
+| Count | Metric                         | 500 MHz                     | 600 MHz                     | 700 MHz                     |
+| :---: | ------------------------------ | --------------------------- | --------------------------- | --------------------------- |
+|   1   | Clock Period (ps)              | 2000                        | 1667                        | 1429                        |
+|   2   | Top Module                     | `kronos_core`               | `kronos_core`               | `kronos_core`               |
+|   3   | RTL Files                      | 13                          | 13                          | 13                          |
+|   4   | Total Cells                    | 13971                       | 13971                       | 13971                       |
+|   5   | Combinational Cells            | 12038                       | 12038                       | 12038                       |
+|   6   | Sequential Cells               | 1933                        | 1933                        | 1933                        |
+|   7   | DFF Count                      | 1933                        | 1933                        | 1933                        |
+|   8   | Sequential Cell %              | 13.84 %                     | 13.84 %                     | 13.84 %                     |
+|   9   | Sequential Area (%)            | 33.58 %                     | 33.58 %                     | 33.58 %                     |
+|  10   | Chip Area (μm²)                | 1745.853                    | 1745.853                    | 1745.853                    |
+|  11   | Worst Slack                    | 1469.73                     | 1136.73                     | 898.73                      |
+|  12   | WNS (ps)                       | 0.00                        | 0.00                        | 0.00                        |
+|  13   | TNS (ps)                       | 0.00                        | 0.00                        | 0.00                        |
+|  14   | FEP                            | 0                           | 0                           | 0                           |
+|  15   | Minimum Period (ps)            | 530.27                      | 530.27                      | 530.27                      |
+|  16   | Estimated Fmax (MHz)           | 1885.85                     | 1885.85                     | 1885.85                     |
+|  17   | Path Groups                    | clk                         | clk                         | clk                         |
+|  18   | Number of Path Groups          | 1                           | 1                           | 1                           |
+|  19   | Most Critical Path Group       | clk                         | clk                         | clk                         |
+|  20   | Number of Max Paths            | 2                           | 2                           | 2                           |
+|  21   | Start Point of Critical Path   | `u_if.fetch[2]$_DFFE_PP_`   | `u_if.fetch[2]$_DFFE_PP_`   | `u_if.fetch[2]$_DFFE_PP_`   |
+|  22   | End Point of Critical Path     | `u_id.decode[50]$_DFFE_PP_` | `u_id.decode[50]$_DFFE_PP_` | `u_id.decode[50]$_DFFE_PP_` |
+|  23   | Critical Path Logic Depth      | 19                          | 19                          | 19                          |
+|  24   | Largest Cell Type              | `HAxp5_ASAP7_75t_R`         | `HAxp5_ASAP7_75t_R`         | `HAxp5_ASAP7_75t_R`         |
+|  25   | Largest Single Cell Delay (ps) | 62.46                       | 62.46                       | 62.46                       |
+|  26   | Data Arrival Time (ps)         | 515.19                      | 515.19                      | 515.19                      |
+|  27   | Setup Time (ps)                | 15.08                       | 15.08                       | 15.08                       |
+|  28   | VT Type                        | RVT                         | RVT                         | RVT                         |
+|  29   | RVT Percentage                 | 100%                        | 100%                        | 100%                        |
+|  30   | Internal Power (W)             | 3.14e-03                    | 3.77e-03                    | 4.40e-03                    |
+|  31   | Switching Power (W)            | 1.21e-03                    | 1.45e-03                    | 1.70e-03                    |
+|  32   | Leakage Power (W)              | 1.25e-06                    | 1.25e-06                    | 1.25e-06                    |
+|  33   | Total Power (W)                | 4.35e-03                    | 5.22e-03                    | 6.09e-03                    |
+|  34   | Sequential Contribution (%)    | 47.3%                       | 47.3%                       | 47.3%                       |
+|  35   | Combinational Contribution (%) | 52.7%                       | 52.7%                       | 52.7%                       |
+|  36   | Buffer Count                   | 1420                        | 1420                        | 1420                        |
+|  37   | Inverter Count                 | 779                         | 779                         | 779                         |
+|  38   | Arithmetic Cell Count          | 171                         | 171                         | 171                         |
+|  39   | Average Cell Area (μm²/cell)   | 0.1250                      | 0.1250                      | 0.1250                      |
+|  40   | Power Density (W/μm²)          | 2.49161880e-06              | 2.98994255e-06              | 2.98994255e-06              |
+
+- WNS-Worst Negative Slack
+- TNS-Total Negative Slack
+- DFF-D Flip Flop
+- FEP-Failing Endpoints
 
 # Lessons Learned
 
@@ -1276,6 +1283,7 @@ Trade-offs
 
 
 ---
+
 
 # Additional Resources
 
