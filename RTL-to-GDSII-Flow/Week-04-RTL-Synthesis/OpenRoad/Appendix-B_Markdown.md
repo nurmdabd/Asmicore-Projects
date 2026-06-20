@@ -176,7 +176,22 @@ $RUN/reports/1_Post_synthesis.rpt
 echo
 done
 ```
+---
 
+### 14. FEP
+```bash
+for RUN in "$RUN1" "$RUN2" "$RUN3"
+do
+echo "===== $RUN ====="
+awk '
+/Endpoint:/ {ep=$2}
+/slack \(VIOLATED\)/ {print ep}
+' $RUN/reports/1_Post_synthesis.rpt \
+| sort -u \
+| wc -l
+echo
+done
+```
 ---
 
 ### 15-16. Minimum Clock Period and Fmax

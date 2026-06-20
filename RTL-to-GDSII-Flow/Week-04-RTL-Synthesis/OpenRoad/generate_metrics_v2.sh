@@ -26,17 +26,25 @@ set -e
 ############################################################
 # DESIGN_DIR Selection
 ############################################################
-DESIGN_DIR=/home/nurmdabd/Asmicore-Projects/RTL-to-GDSII-Flow/Week-04-RTL-Synthesis/OpenRoad/tiny-tpu
-# DESIGN_DIR=/home/nurmdabd/Asmicore-Projects/RTL-to-GDSII-Flow/Week-04-RTL-Synthesis/OpenRoad/kronos
+# DESIGN_DIR=/home/nurmdabd/Asmicore-Projects/RTL-to-GDSII-Flow/Week-04-RTL-Synthesis/OpenRoad/tiny-tpu
+DESIGN_DIR=/home/nurmdabd/Asmicore-Projects/RTL-to-GDSII-Flow/Week-04-RTL-Synthesis/OpenRoad/kronos
 
-RTL_DIR="$DESIGN_DIR/rtl"
+RTL_DIR="$DESIGN_DIR/rtl/core"
 
 RUN1="$DESIGN_DIR/run_500mhz"
 RUN2="$DESIGN_DIR/run_600mhz"
 RUN3="$DESIGN_DIR/run_700mhz"
+RUN4="$DESIGN_DIR/extra_run_1.5GHz"
+RUN5="$DESIGN_DIR/extra_run_2GHz"
 
-RUNS=("$RUN1" "$RUN2" "$RUN3")
-FREQS=("500" "600" "700")
+RUNS=("$RUN1" "$RUN2" "$RUN3" "$RUN4" "$RUN5")
+FREQS=(
+500
+600
+700
+1500
+2000
+)
 
 ############################################################
 # Manual Inputs
@@ -319,6 +327,21 @@ POWER=$(extract_totalpower "$1")
 awk "BEGIN{printf \"%.8e\",$POWER/$AREA}"
 }
 
+extract_elapsed_time(){
+grep -m1 "Elapsed time:" $1/logs/1_2_yosys.log \
+| sed -E 's/.*Elapsed time: ([0-9]+:[0-9]+\.[0-9]+).*/\1/'
+}
+
+extract_peak_memory_usage(){
+grep -m1 "Peak memory:" $1/logs/1_2_yosys.log \
+| awk '
+{
+for(i=1;i<=NF;i++)
+if($i=="memory:")
+printf "%.2f\n",$(i+1)/1024
+}'
+}
+
 ############################################################
 # Arrays
 ############################################################
@@ -375,6 +398,9 @@ ARITH=()
 
 AVGAREA=()
 DENSITY=()
+
+ELAPSED_TIME=()
+PEAK_MEMORY_USAGE=()
 
 ############################################################
 # Collect Metrics
@@ -436,47 +462,100 @@ ARITH+=("$(extract_arith "$RUN")")
 AVGAREA+=("$(extract_avgarea "$RUN")")
 DENSITY+=("$(extract_density "$RUN")")
 
+ELAPSED_TIME+=("$(extract_elapsed_time "$RUN")")
+PEAK_MEMORY_USAGE+=("$(extract_peak_memory_usage "$RUN")")
+
 done
+
 
 ############################################################
 # Markdown Initialization
 ############################################################
 
-cat > "$OUT_MD" << EOF
-# ${DESIGN_DIR} Metrics Summary
+HEADER="| Count | Metric |"
+ALIGN="|:---:|---|"
 
-| Count | Metric | 500 MHz | 600 MHz | 700 MHz |
-|:---:|---|---|---|---|
-EOF
+for F in "${FREQS[@]}"
+do
+    HEADER+=" ${F} MHz |"
+    ALIGN+="---|"
+done
+
+{
+echo "# ${DESIGN_DIR} Metrics Summary"
+echo
+echo "$HEADER"
+echo "$ALIGN"
+} > "$OUT_MD"
 
 ############################################################
 # CSV Initialization
 ############################################################
 
-echo "Count,Metric,500MHz,600MHz,700MHz" \
-> "$OUT_CSV"
+CSV_HEADER="Count,Metric"
+
+for F in "${FREQS[@]}"
+do
+CSV_HEADER+=",${F}MHz"
+done
+
+echo "$CSV_HEADER" > "$OUT_CSV"
 
 ############################################################
 # Metric Writer
 ############################################################
 
+
 write_metric(){
+
 IDX="$1"
 NAME="$2"
-A="$3"
-B="$4"
-C="$5"
 
-printf "| %2d | %-30s | %s | %s | %s |\n" \
-"$IDX" "$NAME" "$A" "$B" "$C" \
->> "$OUT_MD"
+shift 2
 
-echo "$IDX,\"$NAME\",\"$A\",\"$B\",\"$C\"" \
->> "$OUT_CSV"
 
-printf "%2d. %-30s : %-20s %-20s %-20s\n" \
-"$IDX" "$NAME" "$A" "$B" "$C"
+MD="| $IDX | $NAME |"
+CSV="$IDX,\"$NAME\""
+
+TERM=$(printf "%2d. %-35s :" \
+"$IDX" "$NAME")
+
+
+for V in "$@"
+do
+
+MD+=" $V |"
+
+CSV+=",\"$V\""
+
+TERM+=" $(printf '%-18s' "$V")"
+
+done
+
+
+echo "$MD" >> "$OUT_MD"
+
+echo "$CSV" >> "$OUT_CSV"
+
+echo "$TERM"
+
 }
+
+
+SEQP_P=()
+SEQA_P=()
+RVT_P=()
+SEQC_P=()
+COMBC_P=()
+
+for i in "${!SEQP[@]}"
+do
+    SEQP_P+=("${SEQP[$i]}%")
+    SEQA_P+=("${SEQA[$i]}%")
+    RVT_P+=("${RVT[$i]}%")
+    SEQC_P+=("${SEQC[$i]}%")
+    COMBC_P+=("${COMBC[$i]}%")
+done
 
 ############################################################
 # Terminal Header
@@ -488,66 +567,91 @@ echo "               ${DESIGN_DIR} Metrics Summary"
 echo "=============================================================="
 echo
 
+
+
 ############################################################
 # Populate Table
 ############################################################
 
-write_metric 1  "Clock Period (ps)"                     "${CLOCK[0]}" "${CLOCK[1]}" "${CLOCK[2]}"
-write_metric 2  "Top Module"                            "${TOP[0]}" "${TOP[1]}" "${TOP[2]}"
-write_metric 3  "RTL Files"                             "${RTL[0]}" "${RTL[1]}" "${RTL[2]}"
+write_metric 1  "Clock Period (ps)"                     "${CLOCK[@]}"
+write_metric 2  "Top Module"                            "${TOP[@]}" 
+write_metric 3  "RTL Files"                             "${RTL[@]}" 
 
-write_metric 4  "Total Cells"                           "${TOTAL[0]}" "${TOTAL[1]}" "${TOTAL[2]}"
-write_metric 5  "Combinational Cells"                   "${COMB[0]}" "${COMB[1]}" "${COMB[2]}"
-write_metric 6  "Sequential Cells"                      "${SEQ[0]}" "${SEQ[1]}" "${SEQ[2]}"
-write_metric 7  "DFF Count"                             "${DFF[0]}" "${DFF[1]}" "${DFF[2]}"
+write_metric 4  "Total Cells"                           "${TOTAL[@]}" 
+write_metric 5  "Combinational Cells"                   "${COMB[@]}" 
+write_metric 6  "Sequential Cells"                      "${SEQ[@]}" 
+write_metric 7  "DFF Count"                             "${DFF[@]}" 
 
-write_metric 8  "Sequential Cell %"                     "${SEQP[0]}%" "${SEQP[1]}%" "${SEQP[2]}%"
-write_metric 9  "Sequential Area (%)"                   "${SEQA[0]}%" "${SEQA[1]}%" "${SEQA[2]}%"
+write_metric 8 "Sequential Cell %"                      "${SEQP_P[@]}"
+write_metric 9  "Sequential Area (%)"                   "${SEQA_P[@]}"
 
-write_metric 10 "Chip Area (um2)"                       "${AREA[0]}" "${AREA[1]}" "${AREA[2]}"
+write_metric 10 "Chip Area (um2)"                       "${AREA[@]}" 
 
-write_metric 11 "Worst Slack"                           "${SLACK[0]}" "${SLACK[1]}" "${SLACK[2]}"
-write_metric 12 "WNS (ps)"                              "${WNS[0]}" "${WNS[1]}" "${WNS[2]}"
-write_metric 13 "TNS (ps)"                              "${TNS[0]}" "${TNS[1]}" "${TNS[2]}"
-write_metric 14 "FEP"                                   "$FEP" "$FEP" "$FEP"
+write_metric 11 "Worst Slack"                           "${SLACK[@]}" 
+write_metric 12 "WNS (ps)"                              "${WNS[@]}"
+write_metric 13 "TNS (ps)"                              "${TNS[@]}" 
+FEP_COLS=()
 
-write_metric 15 "Minimum Period (ps)"                   "${PERIOD[0]}" "${PERIOD[1]}" "${PERIOD[2]}"
-write_metric 16 "Estimated Fmax (MHz)"                  "${FMAX[0]}" "${FMAX[1]}" "${FMAX[2]}"
+for ((i=0;i<${#RUNS[@]};i++))
+do
+FEP_COLS+=("$FEP")
+done
 
-write_metric 17 "Path Groups  (⚠️DCheck)"               "${GROUP[0]}" "${GROUP[1]}" "${GROUP[2]}"
-write_metric 18 "Number of Path Groups (⚠️DCheck)"      "${NGROUP[0]}" "${NGROUP[1]}" "${NGROUP[2]}"
-write_metric 19 "Most Critical Path Group"              "${GROUP[0]}" "${GROUP[1]}" "${GROUP[2]}"
 
-write_metric 20 "Number of Max Paths"                   "${MAXPATH[0]}" "${MAXPATH[1]}" "${MAXPATH[2]}"
+write_metric 14 \
+"FEP" \
+"${FEP_COLS[@]}"
 
-write_metric 21 "Start Point"                           "${START[0]}" "${START[1]}" "${START[2]}"
-write_metric 22 "End Point"                             "${ENDPT[0]}" "${ENDPT[1]}" "${ENDPT[2]}"
+write_metric 15 "Minimum Period (ps)"                   "${PERIOD[@]}" 
+write_metric 16 "Estimated Fmax (MHz)"                  "${FMAX[@]}" 
 
-write_metric 23 "Critical Path Logic Depth"             "${LOGIC_DEPTH}" "${LOGIC_DEPTH}" "${LOGIC_DEPTH}"
+write_metric 17 "Path Groups  (⚠️DCheck)"               "${GROUP[@]}" 
+write_metric 18 "Number of Path Groups (⚠️DCheck)"      "${NGROUP[@]}" 
+write_metric 19 "Most Critical Path Group"              "${GROUP[@]}" 
 
-write_metric 24 "Largest Cell Type (⚠️DCheck)"          "${LTYPE[0]}" "${LTYPE[1]}" "${LTYPE[2]}"
-write_metric 25 "Largest Cell Delay (ps) (⚠️DCheck)"    "${LDELAY[0]}" "${LDELAY[1]}" "${LDELAY[2]}"
+write_metric 20 "Number of Max Paths"                   "${MAXPATH[@]}" 
 
-write_metric 26 "Data Arrival Time (ps)"                "${ARR[0]}" "${ARR[1]}" "${ARR[2]}"
-write_metric 27 "Setup Time (ps)"                       "${SETUP[0]}" "${SETUP[1]}" "${SETUP[2]}"
+write_metric 21 "Start Point"                           "${START[@]}" 
+write_metric 22 "End Point"                             "${ENDPT[@]}" 
 
-write_metric 28 "VT Type"                               "${VT[0]}" "${VT[1]}" "${VT[2]}"
-write_metric 29 "RVT Percentage"                        "${RVT[0]}%" "${RVT[1]}%" "${RVT[2]}%"
+LOGIC_COLS=()
 
-write_metric 30 "Internal Power (W)"                    "${IPWR[0]}" "${IPWR[1]}" "${IPWR[2]}"
-write_metric 31 "Switching Power (W)"                   "${SPWR[0]}" "${SPWR[1]}" "${SPWR[2]}"
-write_metric 32 "Leakage Power (W)"                     "${LPWR[0]}" "${LPWR[1]}" "${LPWR[2]}"
-write_metric 33 "Total Power (W)"                       "${TPWR[0]}" "${TPWR[1]}" "${TPWR[2]}"
+for ((i=0;i<${#RUNS[@]};i++))
+do
+LOGIC_COLS+=("$LOGIC_DEPTH")
+done
 
-write_metric 34 "Sequential Contribution (%)"           "${SEQC[0]}%" "${SEQC[1]}%" "${SEQC[2]}%"
-write_metric 35 "Combinational Contribution (%)"        "${COMBC[0]}%" "${COMBC[1]}%" "${COMBC[2]}%"
 
-write_metric 36 "Buffer Count"                          "${BUF[0]}" "${BUF[1]}" "${BUF[2]}"
-write_metric 37 "Inverter Count"                        "${INV[0]}" "${INV[1]}" "${INV[2]}"
-write_metric 38 "Arithmetic Cell Count"                 "${ARITH[0]}" "${ARITH[1]}" "${ARITH[2]}"
+write_metric 23 \
+"Critical Path Logic Depth" \
+"${LOGIC_COLS[@]}"
 
-write_metric 39 "Average Cell Area"                     "${AVGAREA[0]}" "${AVGAREA[1]}" "${AVGAREA[2]}"
-write_metric 40 "Power Density"                         "${DENSITY[0]}" "${DENSITY[1]}" "${DENSITY[2]}"
+write_metric 24 "Largest Cell Type (⚠️DCheck)"          "${LTYPE[@]}" 
+write_metric 25 "Largest Cell Delay (ps) (⚠️DCheck)"    "${LDELAY[@]}" 
+
+write_metric 26 "Data Arrival Time (ps)"                "${ARR[@]}"
+write_metric 27 "Setup Time (ps)"                       "${SETUP[@]}" 
+
+write_metric 28 "VT Type"                               "${VT[@]}" 
+write_metric 29 "RVT Percentage"                 "${RVT_P[@]}"
+
+write_metric 30 "Internal Power (W)"                    "${IPWR[@]}" 
+write_metric 31 "Switching Power (W)"                   "${SPWR[@]}" 
+write_metric 32 "Leakage Power (W)"                     "${LPWR[@]}" 
+write_metric 33 "Total Power (W)"                       "${TPWR[@]}" 
+
+write_metric 34 "Sequential Contribution (%)"   "${SEQC_P[@]}"
+write_metric 35 "Combinational Contribution (%)" "${COMBC_P[@]}"
+
+write_metric 36 "Buffer Count"                          "${BUF[@]}" 
+write_metric 37 "Inverter Count"                        "${INV[@]}" 
+write_metric 38 "Arithmetic Cell Count"                 "${ARITH[@]}"
+
+write_metric 39 "Average Cell Area"                     "${AVGAREA[@]}" 
+write_metric 40 "Power Density"                         "${DENSITY[@]}" 
+
+write_metric 41 "Elapsed Time (Min:Sec)"                "${ELAPSED_TIME[@]}" 
+write_metric 42 "Peak Memory Usage (MB)"                "${PEAK_MEMORY_USAGE[@]}" 
 
 ############################################################
 # Final Message
