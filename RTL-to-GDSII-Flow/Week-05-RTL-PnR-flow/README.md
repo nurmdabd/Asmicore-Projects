@@ -178,8 +178,8 @@ correction to the final numbers.
 ### Day 1 — Floorplan
 
 <p align="center">
-  <img src="figures/day1_step3_tpu_klayout_floorplan.png" width="420" alt="TPU floorplan in KLayout">
-  <img src="figures/day1_step3_kronos_klayout_floorplan.png.png" width="420" alt="Kronos floorplan in KLayout">
+  <a href="figures/day1_step3_tpu_klayout_floorplan.png" target="_blank"><img src="figures/day1_step3_tpu_klayout_floorplan.png" width="420" alt="TPU floorplan in KLayout"></a>
+  <a href="figures/day1_step3_kronos_klayout_floorplan.png.png" target="_blank"><img src="figures/day1_step3_kronos_klayout_floorplan.png.png" width="420" alt="Kronos floorplan in KLayout"></a>
 </p>
 <p align="center"><em>Left: TPU floorplan. Right: Kronos floorplan. Both loaded in KLayout with real cell geometry after the LEF-merge fix (Problem 1).</em></p>
 
@@ -192,16 +192,16 @@ to 3,863.12 µm².
 ### Day 2 — Power Planning
 
 <p align="center">
-  <img src="figures/day2_step2_tpu_klayout_pdn_view.png" width="420" alt="TPU PDN in KLayout">
-  <img src="figures/day2_step2_kronos_klayout_pdn_view.png" width="420" alt="Kronos PDN in KLayout">
+  <a href="figures/day2_step2_tpu_klayout_pdn_view.png" target="_blank"><img src="figures/day2_step2_tpu_klayout_pdn_view.png" width="420" alt="TPU PDN in KLayout"></a>
+  <a href="figures/day2_step2_kronos_klayout_pdn_view.png" target="_blank"><img src="figures/day2_step2_kronos_klayout_pdn_view.png" width="420" alt="Kronos PDN in KLayout"></a>
 </p>
 <p align="center"><em>Left: TPU's M1/M2 followpin rails + M5/M6 stripe mesh. Right: Kronos, same shared grid strategy, no ring — stripes only for both designs.</em></p>
 
 ### Day 3 — Placement
 
 <p align="center">
-  <img src="figures/day3_step1_tpu_placement_congestion_heatmap.png" width="420" alt="TPU congestion heatmap">
-  <img src="figures/day3_step1_kronos_placement_congestion_heatmap.png" width="420" alt="Kronos congestion heatmap">
+  <a href="figures/day3_step1_tpu_placement_congestion_heatmap.png" target="_blank"><img src="figures/day3_step1_tpu_placement_congestion_heatmap.png" width="420" alt="TPU congestion heatmap"></a>
+  <a href="figures/day3_step1_kronos_placement_congestion_heatmap.png" target="_blank"><img src="figures/day3_step1_kronos_placement_congestion_heatmap.png" width="420" alt="Kronos congestion heatmap"></a>
 </p>
 <p align="center"><em>Left: TPU's post-placement congestion heatmap — final weighted congestion 1.4115 vs. a 1.01 target, never resolved. Right: Kronos, 0.6879, well under target. This gap is what breaks TPU's routing two days later.</em></p>
 
@@ -224,8 +224,8 @@ to 3,863.12 µm².
 ### Day 5 — Routing & Finish
 
 <p align="center">
-  <img src="figures/day5_step4_tpu_klayout_final_gds.png" width="420" alt="TPU final GDS">
-  <img src="figures/day5_step4_kronos_klayout_final_gds.png" width="420" alt="Kronos final GDS">
+  <a href="figures/day5_step4_tpu_klayout_final_gds.png" target="_blank"><img src="figures/day5_step4_tpu_klayout_final_gds.png" width="420" alt="TPU final GDS"></a>
+  <a href="figures/day5_step4_kronos_klayout_final_gds.png" target="_blank"><img src="figures/day5_step4_kronos_klayout_final_gds.png" width="420" alt="Kronos final GDS"></a>
 </p>
 <p align="center"><em>Final, tapeout-ready GDS for both designs, opened in KLayout. TPU (left, 20 µm scale bar) vs. Kronos (right, 10 µm scale bar) — both show a clean die outline with uniform fill and no DRC markers.</em></p>
 
@@ -447,8 +447,8 @@ rather than final answers:
 ## Figure Gallery
 
 <p align="center">
-  <img src="figures/day5_step4_tpu_report_visualization_panel.png" width="420" alt="TPU ORFS report visualization panel">
-  <img src="figures/day5_step4_kronos_report_visualization_panel.png" width="420" alt="Kronos ORFS report visualization panel">
+  <a href="figures/day5_step4_tpu_report_visualization_panel.png" target="_blank"><img src="figures/day5_step4_tpu_report_visualization_panel.png" width="420" alt="TPU ORFS report visualization panel"></a>
+  <a href="figures/day5_step4_kronos_report_visualization_panel.png" target="_blank"><img src="figures/day5_step4_kronos_report_visualization_panel.png" width="420" alt="Kronos ORFS report visualization panel"></a>
 </p>
 <p align="center"><em>ORFS's auto-generated final-report visualization panels (routing, placement, clock tree, IR-drop, congestion) for TPU (left) and Kronos (right).</em></p>
 
