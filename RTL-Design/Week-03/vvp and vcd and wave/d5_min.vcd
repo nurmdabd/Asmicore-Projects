@@ -1,0 +1,203 @@
+$date
+	Mon Aug 17 20:55:22 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module traffic_light_min_duration_tb $end
+$var wire 1 ! side_yellow $end
+$var wire 1 " side_red $end
+$var wire 1 # side_green $end
+$var wire 1 $ main_yellow $end
+$var wire 1 % main_red $end
+$var wire 1 & main_green $end
+$var reg 1 ' clk $end
+$var reg 1 ( rst_n $end
+$var integer 32 ) cycle [31:0] $end
+$scope function state_name $end
+$var reg 2 * s [1:0] $end
+$upscope $end
+$scope module dut $end
+$var wire 1 ' clk $end
+$var wire 1 ( rst_n $end
+$var parameter 32 + CNT_WIDTH $end
+$var parameter 32 , MAIN_GREEN_TIME $end
+$var parameter 32 - MAIN_YELLOW_TIME $end
+$var parameter 32 . MAX_DURATION $end
+$var parameter 32 / SIDE_GREEN_TIME $end
+$var parameter 32 0 SIDE_YELLOW_TIME $end
+$var reg 3 1 count [2:0] $end
+$var reg 1 & main_green $end
+$var reg 1 % main_red $end
+$var reg 1 $ main_yellow $end
+$var reg 3 2 next_duration_m1 [2:0] $end
+$var reg 2 3 next_state [1:0] $end
+$var reg 1 # side_green $end
+$var reg 1 " side_red $end
+$var reg 1 ! side_yellow $end
+$var reg 2 4 state [1:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b10 0
+b110 /
+b110 .
+b1 -
+b100 ,
+b11 +
+$end
+#0
+$dumpvars
+b0 4
+b1 3
+b0 2
+b11 1
+bx *
+b0 )
+0(
+0'
+1&
+0%
+0$
+0#
+1"
+0!
+$end
+#5000
+1'
+#10000
+0'
+#15000
+1'
+#20000
+1(
+0'
+#25000
+b10 1
+b0 *
+b1 )
+1'
+#30000
+0'
+#35000
+b1 1
+b10 )
+1'
+#40000
+0'
+#45000
+b0 1
+b11 )
+1'
+#50000
+0'
+#55000
+b101 2
+b10 3
+1$
+0&
+1"
+b1 4
+b100 )
+1'
+#60000
+0'
+#65000
+b1 2
+b11 3
+1#
+1%
+0$
+0"
+b101 1
+b10 4
+b1 *
+b101 )
+1'
+#70000
+0'
+#75000
+b100 1
+b10 *
+b110 )
+1'
+#80000
+0'
+#85000
+b11 1
+b111 )
+1'
+#90000
+0'
+#95000
+b10 1
+b1000 )
+1'
+#100000
+0'
+#105000
+b1 1
+b1001 )
+1'
+#110000
+0'
+#115000
+b0 1
+b1010 )
+1'
+#120000
+0'
+#125000
+b11 2
+b0 3
+1!
+1%
+0#
+b1 1
+b11 4
+b1011 )
+1'
+#130000
+0'
+#135000
+b0 1
+b11 *
+b1100 )
+1'
+#140000
+0'
+#145000
+b0 2
+b1 3
+1"
+1&
+0%
+0!
+b11 1
+b0 4
+b1101 )
+1'
+#150000
+0'
+#155000
+b10 1
+b0 *
+b1110 )
+1'
+#160000
+0'
+#165000
+b1 1
+b1111 )
+1'
+#170000
+0'
+#175000
+b0 1
+b10000 )
+1'
