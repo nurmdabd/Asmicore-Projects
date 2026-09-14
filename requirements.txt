@@ -15,7 +15,7 @@ certifi==2026.6.17
 chardet==4.0.0
 charset-normalizer==3.4.7
 click==8.4.1
-cloud-init==25.3
+cloud-init==26.1
 colorama==0.4.4
 command-not-found==0.3
 configobj==5.0.6
